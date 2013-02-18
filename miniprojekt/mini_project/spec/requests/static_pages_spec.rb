@@ -13,8 +13,10 @@ describe "Static pages" do
   end
   
   describe "link to new user" do
-    before { visit root_path }
-    #click_link "Registrieren"
+    before do
+      visit root_path
+      click_link "Registrieren"
+    end
     it { should have_selector 'title', text: "Neuer User:" }
   end
   
@@ -27,4 +29,15 @@ describe "Static pages" do
      end
      it { should have_selector('title', text: "Hallo #{@user.name}") }
    end
+   
+   describe "Falsche einloggen Testen" do
+     before do
+        visit root_path
+        @user = User.create(name: "Hodor", email: "hodor@hodor.de")
+        fill_in "Email", with: "falsche@email.com"
+        click_button submit
+      end
+      it { should_not have_selector('title', text: "Hallo #{@user.name}") }
+    end
+       
 end
