@@ -22,20 +22,20 @@ describe "Static pages" do
   
   describe "Korrektes einloggen Testen" do
     before do
-       visit root_path
+       visit signin_path
        @user = User.create(name: "Hodor", email: "hodor@hodor.de")
        fill_in "Email", with: @user.email
-       click_button submit
+       click_button "Einloggen"
      end
      it { should have_selector('title', text: "Hallo #{@user.name}") }
    end
    
    describe "Falsche einloggen Testen" do
      before do
-        visit root_path
+        visit signin_path
         @user = User.create(name: "Hodor", email: "hodor@hodor.de")
         fill_in "Email", with: "falsche@email.com"
-        click_button submit
+        click_button "Einloggen"
       end
       it { should_not have_selector('title', text: "Hallo #{@user.name}") }
     end
