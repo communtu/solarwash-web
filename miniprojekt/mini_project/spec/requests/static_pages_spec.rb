@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Static pages" do
 
   subject { page }
-
+  before { User.create(name: "Hodor", email: "hodor@hodor.de") }
   describe "Home page" do
     before { visit root_path }
 
@@ -23,21 +23,28 @@ describe "Static pages" do
   describe "Korrektes einloggen Testen" do
     before do
        visit signin_path
-       @user = User.create(name: "Hodor", email: "hodor@hodor.de")
+       @user = User.new(name: "Hodor", email: "hodor@hodor.de")
        fill_in "Email", with: @user.email
        click_button "Einloggen"
      end
      it { should have_link('Ausloggen', href: signout_path) }
+     
+     describe "Richtiges Ausloggen" do
+      before { click_link "Ausloggen" }
+      it { should have_link('Einloggen', href: signin_path) } 
+      it { should_not have_link('Ausloggen', href: signout_path) }
+     end
+     
    end
    
    describe "Falsche einloggen Testen" do
      before do
         visit signin_path
-        @user = User.create(name: "Hodor", email: "hodor@hodor.de")
+        @user = User.new(name: "Hodor", email: "hodor@hodor.de")
         fill_in "Email", with: "falsche@email.com"
         click_button "Einloggen"
       end
       it { should_not have_selector('title', text: "Hallo #{@user.name}") }
     end
-       
+  
 end
