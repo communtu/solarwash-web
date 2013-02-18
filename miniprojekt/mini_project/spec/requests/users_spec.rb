@@ -1,3 +1,4 @@
+=begin
 require 'spec_helper'
 
 describe "Users" do
@@ -9,3 +10,4 @@ describe "Users" do
     end
   end
 end
+=end
