@@ -18,5 +18,15 @@
   <b>Beschreibung:</b>
   <%= @user.description %>
 </p>
+
+<div class="span8">
+<% if @user.groups.any? %>
+<h3>Microposts (<%= @user.groups.count %>)</h3>
+<ol class="groups">
+<%= render @groups %>
+</ol>
+<%= will paginate @groups %>
+<% end %>
+</div>
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
