@@ -15,7 +15,7 @@ describe "Static pages" do
   describe "link to new user" do
     before { visit root_path }
     #click_link "Registrieren"
-    page.should have_selector 'title', text: "Neuer User:"
+    it { should have_selector 'title', text: "Neuer User:" }
   end
   
   describe "Korrektes einloggen Testen" do
