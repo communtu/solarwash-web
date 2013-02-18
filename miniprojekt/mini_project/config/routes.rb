@@ -1,5 +1,11 @@
 MiniProject::Application.routes.draw do
   
+  resources :projects
+
+
+  resources :groups
+
+
   root to: 'static_pages#home'
 
   resources :users
