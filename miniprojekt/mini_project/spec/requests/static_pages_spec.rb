@@ -17,7 +17,7 @@ describe "Static pages" do
       visit root_path
       click_link "Registrieren"
     end
-    it { should have_selector 'title', text: "Neuer User:" }
+    it { should have_selector 'h1', text: "New user" }
   end
   
   describe "Korrektes einloggen Testen" do
@@ -27,7 +27,7 @@ describe "Static pages" do
        fill_in "Email", with: @user.email
        click_button "Einloggen"
      end
-     it { should have_selector('title', text: "Hallo #{@user.name}") }
+     it { should have_link('Ausloggen', href: signout_path) }
    end
    
    describe "Falsche einloggen Testen" do
