@@ -1,7 +1,13 @@
 <h1>AWE Benutzerverwaltung</h1>
 <p>Hallo das ist die Benutzerverwaltung, die im Rahmen von AWE entstanden ist!</p>
-<p><%= session[:user].name if session[:user] %></p>
 
-<p><%= link_to "Registrieren", signup_path unless session[:user]%></p>
-<p><%= link_to "Einloggen", signin_path unless session[:user]%></p>
-<p><%= link_to "Ausloggen", signout_path, method: "delete" if session[:user]%></p>
+
+
+<% if session[:user] %>
+<p><%= session[:user].name %></p>
+<p><%= link_to "Ausloggen", signout_path, method: "delete"%></p>
+<p><%= link_to 'Edit', edit_user_path(session[:user])%></p>
+<%else%>
+<p><%= link_to "Registrieren", signup_path %></p>
+<p><%= link_to "Einloggen", signin_path %></p>
+<% end %>
