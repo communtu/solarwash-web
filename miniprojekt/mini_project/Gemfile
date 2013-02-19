@@ -14,6 +14,7 @@ group :development, :test do
   gem 'spork'
   #gem 'childprocess', '0.3.6'
   gem 'guard-spork', :github => 'guard/guard-spork'
+  gem 'faker'
 end
 
 group :development do

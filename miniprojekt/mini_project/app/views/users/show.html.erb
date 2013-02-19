@@ -1,23 +1,18 @@
 <p id="notice"><%= notice %></p>
-<p>
-  <b>Name:</b>
-  <%= @user.name %>
+<div class="row">
+  <aside class="span4">
+    <section>
+      	<h1> <b>Name:	</b><%= @user.name %> </h1>
+		<h1> <b>Email:	</b><%= @user.email %> </h1>
+		<h1> <b>Gruppe:	</b><%= @user.group_id %> </h1>
+		<h1> <b>Beschreibung:	</b><%= @user.description %> </h1>
+	</section>
+</aside>
+</div>
+
 </p>
 
-<p>
-  <b>Email:</b>
-  <%= @user.email %>
-</p>
 
-<p>
-  <b>Gruppe:</b>
-  <%= @user.group_id %>
-</p>
-
-<p>
-  <b>Beschreibung:</b>
-  <%= @user.description %>
-</p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

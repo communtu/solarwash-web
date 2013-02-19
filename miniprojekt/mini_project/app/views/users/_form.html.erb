@@ -21,7 +21,7 @@
   </div>
   <div class="field">
     Gruppe<br />
-    <%= f.select(:group_id, Group.all.map {|g| ["Gruppe #{g.id}",g.id]}, :prompt => "Select a Group") %>
+    <%= f.select(:group_id, possible_groups.compact!, :prompt => "Select a Group") %>
   </div>
   <div class="field">
     Beschreibung<br />
