@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
       session[:user] = @user
       redirect_to root_path
     else
-      flash.now[:error] = 'Invalid email/password combination'    
+      flash.now[:error] = 'Email-Adresse unbekannt.'    
       render 'new'
     end
   end
