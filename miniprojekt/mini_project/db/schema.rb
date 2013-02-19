@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130218190500) do
+ActiveRecord::Schema.define(:version => 20130218192938) do
 
   create_table "groups", :force => true do |t|
     t.integer  "project_id"

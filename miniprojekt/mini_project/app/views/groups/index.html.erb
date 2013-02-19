@@ -2,6 +2,7 @@
 
 <table>
   <tr>
+	<th>Gruppe</th>
     <th>Project</th>
     <th></th>
     <th></th>
@@ -10,6 +11,7 @@
 
 <% @groups.each do |group| %>
   <tr>
+	<td><%= group.id %></td>
     <td><%= group.project_id %></td>
     <td><%= link_to 'Show', group %></td>
     <td><%= link_to 'Edit', edit_group_path(group) %></td>

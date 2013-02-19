@@ -21,7 +21,7 @@
   </div>
   <div class="field">
     Gruppe<br />
-    <%= f.text_field :group_id %>
+    <%= f.select(:group_id, Group.all.map {|g| [g.id,g.id]}, :prompt => "Select a Group") %>
   </div>
   <div class="field">
     Beschreibung<br />
