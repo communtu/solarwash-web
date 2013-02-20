@@ -9,11 +9,12 @@
     <th></th>
     <th></th>
   </tr>
-
+<p><i class="icon-camera-retro icon-large"></i> icon-camera-retro</p>
+<i class="icon-camera-retro"></i>
 <% @devices.each do |device| %>
   <tr>
     <td><%= device.name %></td>
-    <td><%= device.type %></td>
+    <td><%= device.devicetype %></td>
     <td><%= device.state %></td>
     <td><%= link_to 'Show', device %></td>
     <td><%= link_to 'Edit', edit_device_path(device) %></td>
