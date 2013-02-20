@@ -1,3 +1,3 @@
 class Device < ActiveRecord::Base
-  attr_accessible :name, :state, :type
+  attr_accessible :name, :state, :devicetype
 end
