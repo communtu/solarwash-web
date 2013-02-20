@@ -4,7 +4,7 @@ describe "devices/show" do
   before(:each) do
     @device = assign(:device, stub_model(Device,
       :name => "Name",
-      :type => 1,
+      :devicetype => 1,
       :state => 2
     ))
   end
