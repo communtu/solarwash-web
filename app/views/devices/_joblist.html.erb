@@ -1,0 +1,22 @@
+<table class="table">
+	<tr>
+	    <th>Program</th>
+	    <th>Finished</th>
+	    <th>Start of timespan</th>
+	    <th>End of timespan</th>
+	    <th></th>
+	    <th></th>
+	    <th></th>
+	</tr>
+
+	<% Job.all.each do |job| %>
+	  	<% if device_id == job.device_id %>
+			<tr>
+	    		<td><%= job.program_id %></td>
+	    		<td><%= job.finished %></td>
+	    		<td><%= job.start_of_timespan %></td>
+	    		<td><%= job.end_of_timespan %></td>
+			</tr>
+		<% end %>
+	<% end %>
+<table>

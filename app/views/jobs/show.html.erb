@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Device:</b>
+  <%= @job.device_id %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @job.user_id %>
+</p>
+
+<p>
+  <b>Program:</b>
+  <%= @job.program_id %>
+</p>
+
+<p>
+  <b>Finished:</b>
+  <%= @job.finished %>
+</p>
+
+<p>
+  <b>Start of timespan:</b>
+  <%= @job.start_of_timespan %>
+</p>
+
+<p>
+  <b>End of timespan:</b>
+  <%= @job.end_of_timespan %>
+</p>
+
+
+<%= link_to 'Edit', edit_job_path(@job) %> |
+<%= link_to 'Back', jobs_path %>

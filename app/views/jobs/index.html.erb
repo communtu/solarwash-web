@@ -1,0 +1,33 @@
+<h1>Listing jobs</h1>
+
+<table>
+  <tr>
+    <th>Device</th>
+    <th>User</th>
+    <th>Program</th>
+    <th>Finished</th>
+    <th>Start of timespan</th>
+    <th>End of timespan</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @jobs.each do |job| %>
+  <tr>
+    <td><%= job.device_id %></td>
+    <td><%= job.user_id %></td>
+    <td><%= job.program_id %></td>
+    <td><%= job.finished %></td>
+    <td><%= job.start_of_timespan %></td>
+    <td><%= job.end_of_timespan %></td>
+    <td><%= link_to 'Show', job %></td>
+    <td><%= link_to 'Edit', edit_job_path(job) %></td>
+    <td><%= link_to 'Destroy', job, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Job', new_job_path %>

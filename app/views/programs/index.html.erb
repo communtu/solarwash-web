@@ -1,0 +1,29 @@
+<h1>Listing programs</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Degree</th>
+    <th>Duration in min</th>
+    <th>Consumption in wh</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @programs.each do |program| %>
+  <tr>
+    <td><%= program.name %></td>
+    <td><%= program.degree %></td>
+    <td><%= program.duration_in_min %></td>
+    <td><%= program.consumption_in_wh %></td>
+    <td><%= link_to 'Show', program %></td>
+    <td><%= link_to 'Edit', edit_program_path(program) %></td>
+    <td><%= link_to 'Destroy', program, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Program', new_program_path %>

@@ -1,31 +1,32 @@
 <h1>Übersicht</h1>
+
 <div class="row-fluid">
 <% @devices.each_with_index do |device, index| %>
-		<%if (index%2==0) %><div class="row-fluid"><% end %>
-		<div class="span6 device_tile">
-			<div class="container-fluid">
-				<div class="row-fluid">
-  					<div class="span10">
-						<h3>
-							<%= type_title(device.devicetype) %>
-							<i class="<%= state_image(device.state) %>"></i>
-						</h3>
-						<h3><%= device.name %></h3>
-						<button class="btn btn-inverse" type="button">
-              <i class="icon-plus"></i>
-              Neuer Auftrag
-            </button>
-					</div>
-					<div class="span2">	
-						<i class="<%= type_icon(device.devicetype) %> icon-4x icon_devicetype"></i>
-					</div>
-				</div>
-  			</div>
-		</div>	
-		
-		<%if (index%2==1)%>
-			</div>
-			<div class="span12"> </div>
-		<% end %>
-	<% end %>
+    <%if (index%2==0) %><div class="row-fluid"><% end %>
+    <div class="span6 device_tile">
+      <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span10">
+            <h3>
+              <%= type_title(device.devicetype) %>
+              <i class="<%= state_image(device.state) %>"></i>
+            </h3>
+            <h3><%= device.name %></h3>
+            <button class="btn btn-success" type="button">Auftrag starten</button>
+          </div>
+          <div class="span2 test_span"> 
+            <i class="<%= type_icon(device.devicetype) %> icon-4x icon_devicetype"></i>
+          </div>  
+        </div>
+      </div>
+      <div class="container-fluid">
+       <%= render 'joblist', :device_id => device.id %>
+      </div>
+    </div>
+
+    <%if (index%2==1)%>
+      </div>
+      <div class="span12"> </div>
+    <% end %>
+  <% end %>
 </div>

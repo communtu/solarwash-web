@@ -1,4 +1,7 @@
 Awe09::Application.routes.draw do
+  resources :programs
+
+
   root to: 'devices#index'
   resources :devices
 
