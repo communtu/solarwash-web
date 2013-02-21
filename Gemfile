@@ -5,8 +5,8 @@ gem 'bootstrap-sass', '~> 2.3.0.0'
 gem 'bcrypt-ruby', '3.0.1'
 gem "font-awesome-rails"  
 gem 'simple_form'
-
-
+gem 'foreigner'
+gem 'has_scope'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
