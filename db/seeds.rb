@@ -36,4 +36,3 @@ Job.create( device_id: 3,
             start_of_timespan: DateTime.now(),
             end_of_timespan: DateTime.now()+1,
             finished: 0)
->>>>>>> 02d536787ed9a084f6138631a1f95945a5073d36
