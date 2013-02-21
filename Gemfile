@@ -4,6 +4,7 @@ gem 'rails', '3.2.11'
 gem 'bootstrap-sass', '~> 2.3.0.0'
 gem 'bcrypt-ruby', '3.0.1'
 gem "font-awesome-rails"  
+gem 'simple_form'
 
 
 # Bundle edge Rails instead:
@@ -19,6 +20,7 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
+  gem 'haml'
 end
 
 group :development do
