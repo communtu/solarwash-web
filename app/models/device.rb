@@ -13,4 +13,18 @@
 class Device < ActiveRecord::Base
   attr_accessible :name, :state, :devicetype
   has_many :jobs
+  has_many :programs
+  
+  validates :name,
+      :presence   => true,
+      :uniqueness => { :case_sensitive => false }
+  
+  validates :state,
+      :presence => true
+  
+  validates :devicetype,
+      :presence => true
+  
+  
+  
 end
