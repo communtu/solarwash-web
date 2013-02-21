@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(:version => 20130221120507) do
 
   create_table "programs", :force => true do |t|
     t.string   "name"
+    t.integer  "device_id"
     t.integer  "degree"
     t.integer  "duration_in_min"
     t.integer  "consumption_in_wh"
