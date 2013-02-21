@@ -1,0 +1,11 @@
+= simple_form_for @job, html: {class: 'form-horizontal'} do |f|
+  = f.input :device_id
+  = f.input :user_id
+  = f.input :program_id
+  = f.input :finished
+  = f.input :start_of_timespan
+  = f.input :end_of_timespan
+  
+  .form-actions
+    = f.button :submit, class: 'btn-primary'
+
