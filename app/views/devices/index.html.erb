@@ -1,24 +1,15 @@
-<table class="table">
-  <tr>
-    <th>Name</th>
-    <th>Type</th>
-    <th>State</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-<% @devices.each do |device| %>
-  <tr>
-    <td><%= device.name %></td>
-    <td><%= device.devicetype %></td>
-    <td><%= device.state %></td>
-    <td><%= link_to 'Show', device %></td>
-    <td><%= link_to 'Edit', edit_device_path(device) %></td>
-    <td><%= link_to 'Destroy', device, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+	<div class="row-fluid">
+	<% @devices.each_with_index do |device, index| %>
+  		<%if (index%2==0) %><div class="row-fluid"><% end %>
+		<div class="span6">
+			<ul class="center">
+    			<li><%= device.name %></li>
+    			<li><%= device.devicetype %></li>
+    			<li><%= device.state %></li>
+  			</ul>
+		</div>
+		<div cla>
+		<%if (index%2==0)%></div><% end %>
+		<% end %>
+	</div>
 
-<br />
-
-<%= link_to 'New Device', new_device_path %>
