@@ -1,8 +1,9 @@
 <h1>Übersicht</h1>
+
 <div class="row-fluid">
 <% @devices.each_with_index do |device, index| %>
 		<%if (index%2==0) %><div class="row-fluid"><% end %>
-		<div class="span5 device_tile">
+		<div class="span6 device_tile">
 			<div class="container-fluid">
 				<div class="row-fluid">
   					<div class="span10">
@@ -15,12 +16,13 @@
 					</div>
 					<div class="span2 test_span">	
 						<i class="<%= type_icon(device.devicetype) %> icon-4x icon_devicetype"></i>
-					</div>
+					</div>	
 				</div>
-  			</div>
+			</div>
+			<div class="container-fluid">
+			 <%= render 'joblist', :device_id => device.id %>
+			</div>
 		</div>
-	
-		<div class="span2"> </div>
 		<%if (index%2==1)%>
 			</div>
 			<div class="span12"> </div>
