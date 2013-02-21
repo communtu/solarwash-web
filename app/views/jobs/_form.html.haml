@@ -5,9 +5,9 @@
 
   = f.hidden_field :device_id, :device_id => dev_id
   = f.hidden_field :user_id, :user_id => 1 # TODO tatsaechliche User_ID nehmen
-  = f.input :program_id
-  = f.input :finished
-  = f.input :start_of_timespan
+  = f.input :program_id, collection: Device.find(dev_id).programs
+  = f.hidden_field :finished, :finished => 0
+  = f.input :start_of_timespan, :as => :ui_date_picker
   = f.input :end_of_timespan
   = f.full_error :token
 

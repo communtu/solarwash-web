@@ -13,7 +13,7 @@ Device.create(name: "Bosch Keller 1", devicetype: 1, state: 0)
 Device.create(name: "Bauknecht Keller 2", devicetype: 1, state: 2)
 
 #:consumption_in_wh, :degree, :duration_in_min, :name
-Program.create(name: "Pflegeleicht", degree: "40", duration_in_min: 110, consumption_in_wh: 560)
+Program.create(name: "Pflegeleicht", degree: "40", duration_in_min: 110, consumption_in_wh: 560, device_id: 1)
 
 #attr_accessible :device_id, :end_of_timespan, :finished, :program_id, :start_of_timespan, :user_id
 Job.create( device_id: 1,
