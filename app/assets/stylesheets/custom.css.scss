@@ -1,5 +1,29 @@
+
 @import "bootstrap";
 @import "font-awesome";
+
+.device_tile {
+  background-color: palegreen;
+}
+
+.icon_waiting {
+    color: yellow;
+    text-shadow: 1px 1px 1px #ccc;
+    font-size: 1.5em;
+}
+
+.icon_ready {
+    color: green;
+    text-shadow: 1px 1px 1px #ccc;
+    font-size: 1.5em;
+}
+
+.icon_working {
+    color: black;
+    text-shadow: 1px 1px 1px #ccc;
+    font-size: 1.5em;
+}
+
 
 /* move down carets for tabs */
 /*!

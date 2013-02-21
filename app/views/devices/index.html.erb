@@ -1,15 +1,31 @@
+<div class="center hero-unit">
+	<h1>Übersicht</h1>
 	<div class="row-fluid">
 	<% @devices.each_with_index do |device, index| %>
   		<%if (index%2==0) %><div class="row-fluid"><% end %>
-		<div class="span6">
-			<ul class="center">
-    			<li><%= device.name %></li>
-    			<li><%= device.devicetype %></li>
-    			<li><%= device.state %></li>
-  			</ul>
-		</div>
-		<div cla>
-		<%if (index%2==0)%></div><% end %>
+			<div class="span5 device_tile">
+				<div class="container-fluid">
+					<div class="row-fluid">
+    					<div class="span10">
+							<h3>
+								<%= type_title(device.devicetype) %>
+								<i class="<%= state_image(device.state) %>"></i>
+							</h3>
+							<h3><%= device.name %></h3>
+							<button class="btn btn-success" type="button">Auftrag starten</button>
+						</div>
+						<div class="span2">	
+							<i class="<%= type_icon(device.devicetype) %> icon-4x"></i>
+						</div>
+					</div>
+    			</div>
+			</div>
+		
+			<div class="span2"> </div>
+			<%if (index%2==1)%>
+				</div>
+				<div class="span12"> </div>
+			<% end %>
 		<% end %>
 	</div>
-
+</div>
