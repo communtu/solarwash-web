@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.12'
 gem 'bootstrap-sass', '~> 2.3.0.0'
 gem 'bcrypt-ruby', '3.0.1'
 gem "font-awesome-rails"  
@@ -12,7 +12,7 @@ gem 'simple_form'
 
 group :development, :test do
   gem 'sqlite3'
-  gem 'rspec-rails', '2.11.0'
+  gem 'rspec-rails'
   gem 'guard-rspec'
   gem 'spork'
   gem 'guard-spork', :github => 'guard/guard-spork'
@@ -24,7 +24,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'annotate', '2.5.0'
+  gem 'annotate'
 end
 # Gems used only for assets and not required
 # in production environments by default.
@@ -40,10 +40,10 @@ end
 gem 'jquery-rails'
 
 group :test do
-  gem 'capybara', '1.1.2'
+  gem 'capybara'
   gem 'rb-fsevent', '0.9.1', :require => false
-  gem 'growl', '1.0.3'
-  gem 'factory_girl_rails', '4.1.0'
+  gem 'growl'
+  gem 'factory_girl_rails'
 end
 
 group :production do

@@ -1,0 +1,12 @@
+### TODO ###
+
+-Auftragsliste:
+	-Spaltenkoepfe umbenennen (deutsch)
+	-Programm als String
+	-Nur aktive Auftraege
+	-Zeit vernuenftig
+
+-Devise
+	-Developer Bar
+
+-ActiveAdmin
