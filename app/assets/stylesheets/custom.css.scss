@@ -2,7 +2,11 @@
 @import "font-awesome";
 
 body {
-	background-color: #eeeeee !important
+	background-color: #eeeeee !important;
+}
+
+.hero-unit {
+	padding-top: 0px !important;
 }
 
 .device_tile {
@@ -10,21 +14,19 @@ body {
 }
 
 .icon_waiting {
-    color: yellow;
     text-shadow: 1px 1px 1px #ccc;
-    font-size: 1.5em;
+    vertical-align: baseline !important;
 }
 
 .icon_ready {
-    color: green;
     text-shadow: 1px 1px 1px #ccc;
-    font-size: 1.5em;
+    vertical-align: baseline !important;
 }
 
 .icon_working {
-    color: black;
     text-shadow: 1px 1px 1px #ccc;
-    font-size: 1.5em;
+    vertical-align: baseline !important;
+    margin-left: 5px;
 }
 
 .icon_devicetype {

@@ -9,7 +9,7 @@ module DevicesHelper
   
   def state_image(state)
     if state == 0
-      "icon-circle icon_ready icon-align-right"
+      "icon-circle-blank icon_ready"
     elsif state == 1
       "icon-circle icon_waiting"
     else
@@ -21,7 +21,7 @@ module DevicesHelper
     if devicetype == 0
       "icon-tint"
     else
-      "icon-food"
+      "icon-fire"
     end
   end
 end
