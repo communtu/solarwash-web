@@ -6,6 +6,9 @@
   background-color: palegreen;
 }
 
+.test_span {
+  background-color: red;
+}
 .icon_waiting {
     color: yellow;
     text-shadow: 1px 1px 1px #ccc;
@@ -24,7 +27,9 @@
     font-size: 1.5em;
 }
 
-
+.icon_devicetype {
+    vertical-align: middle;
+}
 /* move down carets for tabs */
 /*!
  * metro-bootstrap v2.2.3
