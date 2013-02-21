@@ -1,14 +1,14 @@
-
 @import "bootstrap";
 @import "font-awesome";
 
 .device_tile {
-  background-color: palegreen;
+  background-color: silver;
 }
 
 .test_span {
-  background-color: red;
+  
 }
+
 .icon_waiting {
     color: yellow;
     text-shadow: 1px 1px 1px #ccc;
@@ -30,6 +30,8 @@
 .icon_devicetype {
     vertical-align: middle;
 }
+
+
 /* move down carets for tabs */
 /*!
  * metro-bootstrap v2.2.3

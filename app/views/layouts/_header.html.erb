@@ -1,12 +1,12 @@
-<header class="navbar navbar-fixed-top navbar-inverse">
-  <div class="navbar-inner">
-    <div class="container">
-      <nav>
-        <ul class="nav pull-right">
-			<li></li>
-			<li><%= link_to 'Geräte', devices_path%></li>
-        </ul>
-      </nav>
-    </div>
-  </div>
+<header class="navbar navbar-inverse">
+	<div class="navbar-inner">
+		<div class="container">
+			<%= link_to "SolarWash", '#', class: "brand" %>
+			<ul class="nav pull-right">
+				<li><%= link_to 'Aufträge', '#'%></li>
+				<li><%= link_to 'Geräte', devices_path%></li>
+				<li><%= link_to 'Einstellungen', '#'%></li>
+			</ul>
+		</div>
+	</div>
 </header>
