@@ -12,4 +12,5 @@
 
 class Device < ActiveRecord::Base
   attr_accessible :name, :state, :devicetype
+  has_many :jobs
 end
