@@ -43,6 +43,9 @@ class JobsController < ApplicationController
     @job = Job.new(params[:job])
 
     respond_to do |format|
+      if no_conflict
+      
+      end
       if @job.save
         format.html { redirect_to @job, notice: 'Job was successfully created.' }
         format.json { render json: @job, status: :created, location: @job }
@@ -80,4 +83,42 @@ class JobsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def no_conflict
+    device = Device.find(@job.device_id)
+    duration = Program.find(@job.program_id).duration_in_min
+    best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
+    
+    #TODO test_zeit mit DateTime.now austauschen!
+    test_zeit = DateTime.now.change({:hour => 13, :min => 0, :sec => 0})
+    
+    if device.state == 0
+      #Kein Auftrag
+      if best_time_to_start >= test_zeit && best_time_to_start <= @job.end_of_timespan
+        #Auftrag kann vollstaendig ausgefuehrt werden, wenn er um 12:00Uhr beginnt
+        @job.start = best_time_to_start
+      elsif best_time_to_start >= test_zeit && best_time_to_start > @job.end_of_timespan
+        #Auftrag kann nicht um 12:00Uhr beginnen, wird aber so gestartet, dass er noch
+        #von der Sonne profitiert
+        @job.start = @job.end_of_timespan - duration.min
+      else
+        #Auftrag wird nach 12 Uhr gestartet
+        @job.start = test_zeit
+      end
+      device.update_attributes(:state => 1)
+    
+    else
+      last_job = Device.find(@job.device_id).programs.last
+      if last_job.start + last_job.duration_in_min.min + duration.min > @job.end_of_timespan
+        #Auftrag kann nicht ausgefuehrt werden
+    end
+    true
+  end
+  
+  def get_waiting_time
+    waiting_time = 0
+    Device.find(@job.device_id).programs.each {|p| waiting_time += p.duration_in_min}
+    waiting_time
+  end
+  
 end

@@ -12,6 +12,8 @@
 
 -HAML
 
+-tooltips
+
 -Devise
   -Developer Bar
 

@@ -5,7 +5,7 @@
   = f.input :program_id, collection: Device.find(dev_id).programs, label:"Programm"
   = f.hidden_field :finished, :value => 0
   = f.hidden_field :start_of_timespan, :start_of_timespan => "" # TODO immer aktuelle Zeit
-  = f.input :end_of_timespan, :as => :ui_date_picker, label:"Fertig bis spätestens"
+  = f.input :end_of_timespan, label:"Fertig bis spätestens"
   = f.full_error :token
 
   .form-actions
