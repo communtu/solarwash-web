@@ -1,10 +1,6 @@
 <h1>Übersicht</h1>
 
-<a href="#" title="Tooltip message...">Test</a>
-
-<div class="example" style="padding-bottom: 24px;">
-          <a href="#" class="btn btn-large btn-danger" data-toggle="popover" title="" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">Click to toggle popover</a>
-</div>
+<a href="#" id="example" data-toggle="popover" data-placement="top" title="fff" data-original-title="Tooltip on top">Tooltip on top</a>
 
 <div class="row-fluid">
 <% @devices.each_with_index do |device, index| %>
@@ -15,21 +11,17 @@
             <div class="span10">
             <h3>
               <%= type_title(device.devicetype) %>
-              <i class="<%= state_image(device.state) %>", title: "bla"></i>
+              <i class="<%= state_image(device.state) %>"><a title="bla"></a></i>
             </h3>
             <h3><%= device.name %></h3>            
+            
             <%= link_to '<i class="icon-plus icon_baseline"></i> Neuer Auftrag'.html_safe, new_job_path(:dev_id => device.id), class: "btn btn-inverse novisit ", title: "Neuer Auftrag" %>
 
-            <%  @job = Job.new %>
-            
-            <span>
-            <%= link_to '<i class="icon-plus icon_baseline"></i> Neuesdasdsdasdar Auftrag'.html_safe, "#", "title" => "lalala", :rel => "popover", :"data-content" => "#{render 'jobs/form', :job => @job, :dev_id => device.id}", class: "btn btn-inverse novisit popover-job" %>
-            </span>
-
-            <%= link_to('Popover test', '#', :class => "popover-test", :rel => "popover", :title => "This is a test", :"data-content" => "<b>hello popover world</b>") %>
-
-
-
+            <% @job = Job.new %>            
+            <%= link_to '<i class="icon-plus icon_baseline"></i> Neuer Auftrag (pop)'.html_safe, "#", title: "Neuer Auftrag", :rel => "popover", :"data-content" => "#{render 'jobs/form', :job => @job, :dev_id => device.id}", class: "btn btn-inverse novisit pop"%>
+            <script>
+              $('.pop').popover({ html : true});
+            </script>
 
           </div>
           <div class="span2"> 

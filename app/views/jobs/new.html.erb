@@ -1,9 +1,3 @@
-<h1>Neuer Auftrag</h1>
-
-<% if params[:dev_id] != nil %>
-  <h3>für das Gerät: <%= Device.find(params[:dev_id]).name%></h3>
-<% end %>
-
 <%= render 'form', :dev_id => params[:dev_id] %>
 
 <%= link_to 'Zurück', root_path %>
