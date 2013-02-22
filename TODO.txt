@@ -1,12 +1,25 @@
 ### TODO ###
 
 -Auftragsliste:
-	-Spaltenkoepfe umbenennen (deutsch)
-	-Programm als String
-	-Nur aktive Auftraege
-	-Zeit vernuenftig
+  -Nur aktive Auftraege
+  -Zeit vernuenftig
 
 -Devise
-	-Developer Bar
+  -Developer Bar
 
 -ActiveAdmin
+
+-Background Tasks
+
+-Nutzer sieht alle Auftraege, editieren, loeschen
+
+-Foreignkeys mit Loesch-Abhaengigkeiten
+
+-Date-Time-Picker richtig
+
+-Mehr Validations
+
+-YAML-Import
+
+-Action-Mailer
+  -Exception-Mailer?
