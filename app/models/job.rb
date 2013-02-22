@@ -23,9 +23,11 @@ class Job < ActiveRecord::Base
   
   #scope :without_device, where(:device_id => nil)
   
-  validates :finished, :inclusion => 0..2
+  validates :finished, :inclusion => 0..2#
+
 
   def to_param
     [id, "job"].join("-")
   end
+  
 end

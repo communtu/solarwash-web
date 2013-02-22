@@ -43,7 +43,8 @@ class JobsController < ApplicationController
     @job = Job.new(params[:job])
 
     respond_to do |format|
-      if no_conflict && @job.save
+
+      if @job.save
         format.html { redirect_to @job, notice: 'Job was successfully created.' }
         format.json { render json: @job, status: :created, location: @job }
       else
@@ -87,8 +88,8 @@ class JobsController < ApplicationController
     best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
     
     #TODO test_zeit mit DateTime.now austauschen!
-    test_zeit = DateTime.now.change({:hour => 8, :min => 0, :sec => 0})
-    
+    #test_zeit = DateTime.now.change({:hour => 8, :min => 0, :sec => 0})
+    test_zeit = DateTime.now
     if device.state == 0
       #Kein Auftrag
       if best_time_to_start >= test_zeit && best_time_to_start <= @job.end_of_timespan
@@ -110,7 +111,7 @@ class JobsController < ApplicationController
       last_program = Program.find(last_job.program_id)
       if last_job.start + last_program.duration_in_min.minute + duration.minute > @job.end_of_timespan
         #Auftrag kann nicht ausgefuehrt werden
-        false
+        return false
       else
         #Auftrag kann ausgefuehrt werden
         if last_job.start + last_program.duration_in_min.minute > best_time_to_start

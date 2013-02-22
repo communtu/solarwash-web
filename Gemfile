@@ -8,6 +8,7 @@ gem 'simple_form'
 gem 'foreigner'
 gem 'has_scope'
 gem 'ui_datepicker-rails3'
+gem "validates_date_time"
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
