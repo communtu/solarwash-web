@@ -42,7 +42,7 @@ class JobsController < ApplicationController
   # POST /jobs.json
   def create
     @device = Device.find(params[:device_id])
-    @job = @device.jobs.new
+    @job = @device.jobs.new(params[:job])
 
     respond_to do |format|
 
