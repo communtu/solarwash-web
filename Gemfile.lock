@@ -48,6 +48,9 @@ GEM
       debug_inspector (>= 0.0.1)
     bootstrap-sass (2.3.0.0)
       sass (~> 3.2)
+    bootstrap-tooltip-rails (0.1)
+      rails (>= 3.1)
+      thor
     builder (3.0.4)
     capybara (1.1.2)
       mime-types (>= 1.16)
@@ -209,6 +212,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap-sass (~> 2.3.0.0)
+  bootstrap-tooltip-rails
   capybara
   coffee-rails (~> 3.2.1)
   factory_girl_rails

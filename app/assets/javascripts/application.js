@@ -12,5 +12,22 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require bootstrap
 //= require_tree .
 //= require jquery-ui
+//= require bootstrap-tooltip.js
+//= require bootstrap-popover.js
+
+$('a.ggg').bootstrap-popover({
+    placement: 'right'
+});
+
+$(function(){
+  $("#example").tooltip();
+})
+
+$(function(){
+  $("i[rel='popover']").bootstrap-popover('show')
+})
+
+$('.example').bootstrap-popover('show');
