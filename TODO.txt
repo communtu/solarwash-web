@@ -5,6 +5,7 @@
   -Bestaetigung
 
 -Auftragsliste:
+  -finished=0
   -Nur aktive Auftraege
   -Zeit vernuenftig
   -Progressbar
