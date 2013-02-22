@@ -14,16 +14,14 @@
 #
 
 class Job < ActiveRecord::Base
-  before_validation :check_end_of_timespans
+  #before_validation :check_end_of_timespans
   
   attr_accessible :device_id, :end_of_timespan, :finished,
                   :program_id, :start_of_timespan, :user_id,
                   :start, :confirm
   
-  private
-  
-  def check_end_of_timespans
-    return false if end_of_timespan < DateTime.now + 3.hours
+  def to_param
+    [id, "job"].join("-")
   end
                   
   belongs_to :device
@@ -31,11 +29,9 @@ class Job < ActiveRecord::Base
   
   #scope :without_device, where(:device_id => nil)
   
-  validates :finished, :inclusion => 0..2#
-
-
-  def to_param
-    [id, "job"].join("-")
-  end
+  private
   
+  def check_end_of_timespans
+    return false if end_of_timespan < DateTime.now + 3.hours
+  end
 end

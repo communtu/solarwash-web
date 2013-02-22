@@ -24,7 +24,8 @@ class JobsController < ApplicationController
   # GET /jobs/new
   # GET /jobs/new.json
   def new
-    @job = Job.new
+    @device = Device.find(params[:device_id])
+    @job = @device.jobs.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -40,15 +41,16 @@ class JobsController < ApplicationController
   # POST /jobs
   # POST /jobs.json
   def create
-    @job = Job.new(params[:job])
+    @device = Device.find(params[:device_id])
+    @job = @device.jobs.new
 
     respond_to do |format|
 
       if @job.save
-        format.html { redirect_to @job, notice: 'Job was successfully created.' }
+        format.html { redirect_to [@device, @job], notice: 'Job was successfully created.' }
         format.json { render json: @job, status: :created, location: @job }
       else
-        format.html { render action: "new" }
+        format.html { render action: "new"}
         format.json { render json: @job.errors, status: :unprocessable_entity }
       end
     end

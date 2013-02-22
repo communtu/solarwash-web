@@ -1,8 +1,9 @@
 Awe09::Application.routes.draw do
 
   root to: 'devices#index'
-  resources :devices
-  resources :jobs
+  resources :devices do
+    resources :jobs
+  end
   resources :programs
 
   # The priority is based upon order of creation:
