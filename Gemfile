@@ -10,6 +10,7 @@ gem 'has_scope'
 gem 'ui_datepicker-rails3'
 gem 'haml'
 gem 'bootstrap-tooltip-rails'
+gem "validates_date_time"
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
