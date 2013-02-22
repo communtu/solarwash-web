@@ -8,6 +8,7 @@ gem 'simple_form'
 gem 'foreigner'
 gem 'has_scope'
 gem 'ui_datepicker-rails3'
+gem 'haml'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -21,7 +22,6 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
-  gem 'haml'
 end
 
 group :development do
