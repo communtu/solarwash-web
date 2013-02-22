@@ -5,8 +5,10 @@ class CreateJobs < ActiveRecord::Migration
       t.integer :user_id
       t.integer :program_id
       t.integer :finished
+      t.integer :confirm
       t.datetime :start_of_timespan
       t.datetime :end_of_timespan
+      t.datetime :start
 
       t.timestamps
     end

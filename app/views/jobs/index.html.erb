@@ -8,7 +8,7 @@
     <th>Status</th>
     <th>Auftrag eingestellt</th>
     <th>Fertig bis spätestens</th>
-    <th></th>
+    <th>Start</th>
     <th></th>
     <th></th>
   </tr>
@@ -21,6 +21,7 @@
     <td><%= job.finished %></td>
     <td><%= job.start_of_timespan %></td>
     <td><%= job.end_of_timespan %></td>
+	<td><%= job.start %></td>
     <td><%= link_to 'Anzeigen', job %></td>
     <td><%= link_to 'Bearbeiten', edit_job_path(job) %></td>
     <td><%= link_to 'Löschen', job, method: :delete, data: { confirm: 'Bist Du sicher?' } %></td>
