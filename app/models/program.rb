@@ -16,4 +16,8 @@ class Program < ActiveRecord::Base
   attr_accessible :consumption_in_wh, :degree, :duration_in_min, :name, :device_id
   belongs_to :job
   belongs_to :device
+
+  def to_param
+    [id, name.parameterize].join("-")
+  end
 end

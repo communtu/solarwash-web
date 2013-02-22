@@ -24,4 +24,14 @@ module DevicesHelper
       "icon-fire"
     end
   end
+
+  def vacant_device
+    Device.all.map { |d|
+      if d.state == 0 || d.state == 1 # Geraet laeuft nicht
+        return "icon-ok"
+      end      
+    }
+    "icon-ban-circle"
+  end
+
 end

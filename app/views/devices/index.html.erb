@@ -12,9 +12,9 @@
               <i class="<%= state_image(device.state) %>"></i>
             </h3>
             <h3><%= device.name %></h3>            
-            <%= link_to '<i class="icon-plus icon_add_device"></i> Neuer Auftrag'.html_safe, new_job_path(:dev_id => device.id), class: "btn btn-inverse" %>
+            <%= link_to '<i class="icon-plus icon_baseline"></i> Neuer Auftrag'.html_safe, new_job_path(:dev_id => device.id), class: "btn btn-inverse" %>
           </div>
-          <div class="span2 test_span"> 
+          <div class="span2"> 
             <i class="<%= type_icon(device.devicetype) %> icon-4x icon_devicetype"></i>
           </div>  
         </div>

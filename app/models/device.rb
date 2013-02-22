@@ -25,6 +25,8 @@ class Device < ActiveRecord::Base
   validates :devicetype,
       :presence => true
   
-  
+  def to_param
+    [id, name.parameterize].join("-")
+  end
   
 end

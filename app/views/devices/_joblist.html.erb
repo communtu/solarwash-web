@@ -1,18 +1,15 @@
 <table class="table">
 	<tr>
-	    <th>Program</th>
-	    <th>Finished</th>
-	    <th>Start of timespan</th>
-	    <th>End of timespan</th>
-	    <th></th>
-	    <th></th>
-	    <th></th>
+	    <th>Programm</th>
+	    <th>Status</th>
+	    <th>Auftrag eingestellt</th>
+	    <th>Fertig bis spätestens</th>
 	</tr>
 
 	<% Job.all.each do |job| %>
 	  	<% if device_id == job.device_id %>
 			<tr>
-	    		<td><%= job.program_id %></td>
+	    		<td><%= Program.find(job.program_id).name %></td>
 	    		<td><%= job.finished %></td>
 	    		<td><%= job.start_of_timespan %></td>
 	    		<td><%= job.end_of_timespan %></td>

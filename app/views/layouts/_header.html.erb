@@ -1,12 +1,13 @@
 <header class="navbar navbar-inverse">
-	<div class="navbar-inner">
-		<div class="container">
-			<%= link_to "SolarWash", '#', class: "brand" %>
-			<ul class="nav pull-right">
-				<li><%= link_to 'Aufträge', '#'%></li>
-				<li><%= link_to 'Geräte', devices_path%></li>
-				<li><%= link_to 'Einstellungen', '#'%></li>
-			</ul>
-		</div>
-	</div>
+  <div class="navbar-inner">
+    <div class="container">
+      <%= link_to "SolarWash ", root_path, class: "brand" %>
+      <i class="<%= vacant_device %> icon_baseline brand"></i>
+      <ul class="nav pull-right">
+        <li><%= link_to '<i class="icon-tasks icon_baseline"></i> Aufträge'.html_safe, jobs_path%></li>
+        <li><%= link_to '<i class="icon-briefcase icon_baseline"></i> Geräte'.html_safe, devices_path%></li>
+        <li><%= link_to '<i class="icon-cog icon_baseline"></i> Einstellungen'.html_safe, '#'%></li>
+      </ul>
+    </div>
+  </div>
 </header>
