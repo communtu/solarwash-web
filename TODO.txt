@@ -1,8 +1,15 @@
 ### TODO ###
 
+-Neuer Auftrag
+  -Default end_of_timespan ist aktuelle Zeit+duration von Programm
+  -Bestaetigung
+
 -Auftragsliste:
   -Nur aktive Auftraege
   -Zeit vernuenftig
+  -Progressbar
+
+-HAML
 
 -Devise
   -Developer Bar
@@ -23,3 +30,29 @@
 
 -Action-Mailer
   -Exception-Mailer?
+
+-Konfliktmanagement
+  -Feld in Job: start:datetime
+  -Wenn kein Auftrag für Device:
+    ->Wenn 12:00Uhr zwischen aktuelle Zeit und :end_of_timespan
+      ->start=12:00Uhr
+    ->Wenn 12:00uhr nicht zwischen aktueller Zeit und :end_of_timespan
+      ->start=aktuelle Zeit
+
+  -Wenn Auftrag im Device:
+    ->Wenn start+duration(Auftrag1) < end_of_timespan(Auftrag2):
+      ->start(Auftrag2) = start+duration(Auftrag1)
+    
+    ->Wenn start(a1)+duration(a1)+duration(a2) < end_of_timespan:
+      ->start(a1)= unveraendert
+      ->start(a2)= start(a1)+duration(a2)
+    ->Wenn start(a1)+duration(a1)+duration(a2) > end_of_timespan &&
+      start > aktuelle Zeit:
+      ->Wenn aktuelle Zeit+duration(a1)+duration(a2) < end_of_timespan:
+        ->start(a1)=aktuelle Zeit
+        ->start(a2)=aktuelle Zeit+duration(a1)
+      ->sonst
+        -> Wird nicht mehr rechtzeitig fertig
+    ->sonst
+        -> Wird nicht mehr rechtzeitig fertig
+  
