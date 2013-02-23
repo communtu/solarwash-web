@@ -21,11 +21,12 @@
 
 -Background Tasks
 
--Nutzer sieht alle Auftraege, editieren, loeschen
+-DONE Nutzer sieht alle Auftraege DONE
+-Auftraege editieren, loeschen
 
 -Foreignkeys mit Loesch-Abhaengigkeiten
 
--Date-Time-Picker richtig
+-DONE Date-Time-Picker richtig DONE
 
 -Mehr Validations
 
@@ -59,3 +60,9 @@
     ->sonst
         -> Wird nicht mehr rechtzeitig fertig
   
+
+
+  ### vorm deployen ###
+  -auftrag erstellen (popover) raus
+  -"fertig bis spaetestens" raus auf startseite
+  -logik beim auftrag erstellen korrigieren/kompletieren
