@@ -50,16 +50,16 @@ class JobsController < ApplicationController
     @job.end_of_timespan = DateTime.strptime(params[:job]['end_of_timespan'], '%d.%m.%Y %H:%M') - 1.hour
 
     respond_to do |format|
-      if conflict
-         flash[:error] = "Zeit-Konflikt, Auftrag nicht moeglich"
-         redirect_to root_path
-      elsif @job.save
+      
+      if @object.valid? && !conflict
+        @job.save
         format.html { redirect_to root_path, notice: 'Auftrag wurde erfolgreich angelegt.' }
         format.json { render json: @job, status: :created, location: @job }
       else
         format.html { render action: "new"}
         format.json { render json: @job.errors, status: :unprocessable_entity }
       end
+        
     end
   end
 
