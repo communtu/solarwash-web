@@ -58,13 +58,14 @@ class JobsController < ApplicationController
       if @job.valid?
         if !conflict
           @job.save
-          format.html { redirect_to root_path, notice: 'Auftrag wurde erfolgreich angelegt.' }
+          flash[:success] = "Auftrag wurde erfolgreich angelegt"
+          format.html { redirect_to root_path}
           format.json { render json: @job, status: :created, location: @job }
         else
-          flash[:error] = "Waesche kann in dieser Zeit nicht fertig werden"
+          flash[:error] = "Aufgrund von anderen Auftraegen, kann die Waesche nicht rechtzeitig fertig werden"
         end
       else
-        flash[:error] = "Ungueltiges Datum"
+        flash[:error] = "Waesche kann in dieser Zeit nicht fertig werden"
       end
       format.html { render action: "new"}
       format.json { render json: @job.errors, status: :unprocessable_entity }
@@ -107,8 +108,8 @@ class JobsController < ApplicationController
     duration = Program.find(@job.program_id).duration_in_min
     best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
     
-    #aktuelle_zeit = DateTime.now.change({:hour => 8, :min => 0, :sec => 0})
-    aktuelle_zeit = DateTime.now
+    aktuelle_zeit = DateTime.now.change({:hour => 8, :min => 0, :sec => 0})
+    #aktuelle_zeit = DateTime.now
     
     if device.state == 0
       #Kein Auftrag
@@ -117,7 +118,11 @@ class JobsController < ApplicationController
         if best_time_to_start >= @job.end_of_timespan
           #Auftrag soll vor Sonnenzeit fertig sein => Auftrag wird sofort gestartet
           @job.start = aktuelle_zeit
-          
+          if @job.confirm
+            #Waschmaschine wird angeschaltet
+            device.update_attributes(:state => 2)
+            return false
+          end
         elsif best_time_to_start + duration.minute <= @job.end_of_timespan
           #Auftrag kann vollstaendig ausgefuehrt werden, wenn er um 12:00Uhr beginnt
           @job.start = best_time_to_start
@@ -131,17 +136,18 @@ class JobsController < ApplicationController
         if @job.confirm
           #Waschmaschine wird angeschaltet
           device.update_attributes(:state => 2)
+          return false
         end
       end
       #Waschmaschine wartet auf Startzeitpunkt
-      device.update_attributes(:state => 1) unless @job.confirm
+      device.update_attributes(:state => 1)
     
     else
       #Es gibt Auftraege
       last_job = device.jobs.last
       last_program = Program.find(last_job.program_id)
       
-      if last_job.start + last_program.duration_in_min.minute + duration.minute > @job.end_of_timespan
+      if duration_of_queue(device.id) > @job.end_of_timespan
         #Auftrag kann nicht ausgefuehrt werden
         return true
       else
@@ -163,17 +169,17 @@ class JobsController < ApplicationController
           
           else
             #vorheriger Auftrag ist innerhalb der Sonnenzeit
-            if is_next_job(job_to_tested, device_id)
+            if is_next_job(last_job, last_job.device_id)
               #Waschmaschine ist frei und der vorherige wird als nächstes bearbeitet          
-              if aktuelle_zeit < best_time_to_start - last_program.duration_in_min.minute &&
-                 best_time_to_start + duration <= @job.end_of_timespan
+              if aktuelle_zeit < ( @job.end_of_timespan - duration.minute - last_program.duration_in_min.minute)
                 #vorheriger Auftrag kann verschoben werden
-                job.update_attributes(:start => aktuelle_zeit)
+                last_job.update_attributes(:start => aktuelle_zeit)
                 #Waschmaschine wird gestartet
                 device.update_attributes(:state => 2)
                 #Neuer Auftrag beginnt zur Sonnenzeit
                 @job.start = best_time_to_start
-                false
+
+                return false
               end
             end
           #Verschiebung nicht moeglich
@@ -187,10 +193,20 @@ class JobsController < ApplicationController
   end
   
   def is_next_job(job_to_tested, device_id)
-    if job_to_tested.finished == 0 && Device.find(1).jobs.find_all{ |j| j.finished == 0 }.count == 1
+    if job_to_tested.finished == 0 && Device.find(device_id).jobs.find_all{ |j| j.finished == 0 }.count == 1
       true
     else
       false
     end
+  end
+  
+  def duration_of_queue(device_id)
+      dur = DateTime.now.change({:hour => 8, :min => 0, :sec => 0})
+
+      Device.find(device_id).jobs.find(:all, :conditions => ["finished == ?", 0]).each { |j| 
+        dur += Program.find(j.program_id).duration_in_min.minute
+      }
+
+      dur
   end
 end
