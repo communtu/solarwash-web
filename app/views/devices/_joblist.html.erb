@@ -2,6 +2,7 @@
 	<tr>
 	    <th>Programm</th>
 	    <th>Startzeit</th>
+		<th>Geschätzte Endzeit</th>
 		<th>Fertig bis spätestens</th>
 	</tr>
 
@@ -10,7 +11,8 @@
 			<tr>
 	    		<td><%= Program.find(job.program_id).name %></td>
 				<td><%= format_start_time(job) %></td>
-	    		<td><%= job.end_of_timespan %></td>
+				<td><%= job.start + Program.find(job.program_id).duration_in_min.minute%></td>
+				<td><%= job.end_of_timespan %></td>
 			</tr>
 		<% end %>
 	<% end %>

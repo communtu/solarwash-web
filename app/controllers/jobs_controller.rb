@@ -47,19 +47,27 @@ class JobsController < ApplicationController
     @device = Device.find(params[:device_id])
     @job = @device.jobs.new(params[:job])
     
-    @job.end_of_timespan = DateTime.strptime(params[:job]['end_of_timespan'], '%d.%m.%Y %H:%M') - 1.hour
+    if @job.confirm == nil { confirm = 0 }
+    
+    if !@job.end_of_timespan.is_a?(ActiveSupport::TimeWithZone)
+      @job.end_of_timespan = DateTime.strptime(params[:job]['end_of_timespan'], '%d.%m.%Y %H:%M') - 1.hour
+    end
 
     respond_to do |format|
       
-      if @object.valid? && !conflict
-        @job.save
-        format.html { redirect_to root_path, notice: 'Auftrag wurde erfolgreich angelegt.' }
-        format.json { render json: @job, status: :created, location: @job }
+      if @job.valid?
+        if !conflict
+          @job.save
+          format.html { redirect_to root_path, notice: 'Auftrag wurde erfolgreich angelegt.' }
+          format.json { render json: @job, status: :created, location: @job }
+        else
+          flash[:error] = "Waesche kann in dieser Zeit nicht fertig werden"
+        end
       else
-        format.html { render action: "new"}
-        format.json { render json: @job.errors, status: :unprocessable_entity }
+        flash[:error] = "Ungueltiges Datum"
       end
-        
+      format.html { render action: "new"}
+      format.json { render json: @job.errors, status: :unprocessable_entity }
     end
   end
 
