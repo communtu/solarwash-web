@@ -47,17 +47,19 @@ class JobsController < ApplicationController
     @device = Device.find(params[:device_id])
     @job = @device.jobs.new(params[:job])
     
+    @job.end_of_timespan = DateTime.strptime(params[:job]['end_of_timespan'], '%d.%m.%Y %H:%M') - 1.hour
+
     #if conflict
     #   format.html { render action: "new"}
     #   format.json { render json: @job.errors, status: :unprocessable_entity }
     #end
 
-    @job.end_of_timespan = DateTime.strptime(params[:job]['end_of_timespan'], '%d.%m.%Y %H:%M')
+    
 
 
     respond_to do |format|
       if @job.save
-        format.html { redirect_to [@device, @job], notice: 'Auftrag wurde erfolgreich angelegt.' }
+        format.html { redirect_to root_path, notice: 'Auftrag wurde erfolgreich angelegt.' }
         format.json { render json: @job, status: :created, location: @job }
       else
         format.html { render action: "new"}
@@ -74,7 +76,7 @@ class JobsController < ApplicationController
 
     respond_to do |format|
       if @job.update_attributes(params[:job])
-        format.html { redirect_to @job, notice: 'Auftrag wurde erfolgreich geändert.' }
+        format.html { redirect_to root_path, notice: 'Auftrag wurde erfolgreich geaendert.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
