@@ -18,23 +18,3 @@ Program.create(name: "Pflegeleicht", degree: "40", duration_in_min: 180, consump
 
 
 #attr_accessible :device_id, :end_of_timespan, :finished, :program_id, :start_of_timespan, :user_id
-Job.create( device_id: 1,
-            program_id: 1,
-            user_id: 1,
-            start_of_timespan: DateTime.now.change({:hour => 8, :min => 0, :sec => 0}),
-            end_of_timespan: DateTime.now.change({:hour => 16, :min => 0, :sec => 0}),
-            finished: 0)
-            
-Job.create( device_id: 1,
-            program_id: 1,
-            user_id: 1,
-            start_of_timespan: DateTime.now(),
-            end_of_timespan: DateTime.now()+1,
-            finished: 0)
-            
-Job.create( device_id: 3,
-            program_id: 1,
-            user_id: 1,
-            start_of_timespan: DateTime.now(),
-            end_of_timespan: DateTime.now()+1,
-            finished: 0)

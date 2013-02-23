@@ -27,6 +27,7 @@ class Job < ActiveRecord::Base
   belongs_to :device
   has_one :program
   
+  validates :start, :presence   => true
   #scope :without_device, where(:device_id => nil)
   
   private

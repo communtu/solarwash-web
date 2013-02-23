@@ -34,4 +34,15 @@ module DevicesHelper
     "icon-ban-circle"
   end
 
+  def format_start_time(job)
+    if job.start < DateTime.now
+       entire_duration = Program.find(job.program_id).duration_in_min
+  		 balance_time = entire_duration -  ((DateTime.now - job.start.to_datetime).to_f*24*60).to_i
+  		 percent = 100 - (100/entire_duration * balance_time)
+  		 "Seit #{balance_time} min (#{percent}%) in Bearbeitung"		 
+  	else
+  	    job.start
+	  end
+  end
+  
 end
