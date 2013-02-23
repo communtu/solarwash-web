@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(:version => 20130221120507) do
     t.integer  "user_id"
     t.integer  "program_id"
     t.integer  "finished"
-    t.integer  "confirm"
+    t.boolean  "confirm"
     t.datetime "start_of_timespan"
     t.datetime "end_of_timespan"
     t.datetime "start"

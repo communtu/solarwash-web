@@ -45,7 +45,6 @@ class JobsController < ApplicationController
     @job = @device.jobs.new(params[:job])
 
     respond_to do |format|
-
       if @job.save
         format.html { redirect_to [@device, @job], notice: 'Job was successfully created.' }
         format.json { render json: @job, status: :created, location: @job }

@@ -22,9 +22,6 @@
     <td><%= job.start_of_timespan %></td>
     <td><%= job.end_of_timespan %></td>
 	<td><%= job.start %></td>
-    <td><%= link_to 'Anzeigen', job %></td>
-    <td><%= link_to 'Bearbeiten', edit_job_path(job) %></td>
-    <td><%= link_to 'Löschen', job, method: :delete, data: { confirm: 'Bist Du sicher?' } %></td>
   </tr>
 <% end %>
 </table>

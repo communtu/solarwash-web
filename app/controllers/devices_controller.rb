@@ -41,7 +41,6 @@ class DevicesController < ApplicationController
   # POST /devices.json
   def create
     @device = Device.new(params[:device])
-
     respond_to do |format|
       if @device.save
         format.html { redirect_to @device, notice: 'Device was successfully created.' }
