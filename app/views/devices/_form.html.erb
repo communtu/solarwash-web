@@ -1,7 +1,7 @@
 <%= form_for(@device) do |f| %>
   <% if @device.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@device.errors.count, "error") %> prohibited this device from being saved:</h2>
+      <h2><%= pluralize(@device.errors.count, "error") %> --- Gerät konnte nicht gespeichert werden:</h2>
 
       <ul>
       <% @device.errors.full_messages.each do |msg| %>
@@ -10,7 +10,6 @@
       </ul>
     </div>
   <% end %>
-<i class="icon-camera-retro"></i>
   <div class="field">
     <%= f.label :name %><br />
     <%= f.text_field :name %>
