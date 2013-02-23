@@ -86,6 +86,7 @@ class JobsController < ApplicationController
     end
   end
   
+  # TODO DRY & refactoring machen! :)
   def conflict
     device = Device.find(@job.device_id)
     duration = Program.find(@job.program_id).duration_in_min
@@ -136,10 +137,8 @@ class JobsController < ApplicationController
         else
           #Sonne spielt eine Rolle
           if last_job.start + last_program.duration_in_min.minute < best_time_to_start
-            
             #vorheriger Auftrag ist vor der Sonnenzeit beendet 
-            if best_time_to_start + duration.minute <= @job.end_of_timespan
-              
+            if best_time_to_start + duration.minute <= @job.end_of_timespan  
               #Auftrag kann vollstaendig ausgefuehrt werden, wenn er um 12:00Uhr beginnt
               @job.start = best_time_to_start
             else
@@ -150,20 +149,21 @@ class JobsController < ApplicationController
           else
             #vorheriger Auftrag ist innerhalb der Sonnenzeit
             if is_next_job(job_to_tested, device_id)
-              #vorheriger Auftrag wird als nächstes bearbeitet und kann somit evtl. verschoben werden
-              
+              #Waschmaschine ist frei und der vorherige wird als nächstes bearbeitet          
               if aktuelle_zeit < best_time_to_start - last_program.duration_in_min.minute &&
                  best_time_to_start + duration <= @job.end_of_timespan
-                
                 #vorheriger Auftrag kann verschoben werden
                 job.update_attributes(:start => aktuelle_zeit)
+                #Waschmaschine wird gestartet
+                device.update_attributes(:state => 2)
                 #Neuer Auftrag beginnt zur Sonnenzeit
                 @job.start = best_time_to_start
+                false
               end
             end
-          end
           #Verschiebung nicht moeglich
           @job.start = last_job.start + last_program.duration_in_min.minute
+          end
         end
       end
     end
@@ -172,7 +172,7 @@ class JobsController < ApplicationController
   end
   
   def is_next_job(job_to_tested, device_id)
-    if job_to_tested.finished == 0 && Device.find(1).jobs.find_all{ |j| j.finished == 0 }.count == 2
+    if job_to_tested.finished == 0 && Device.find(1).jobs.find_all{ |j| j.finished == 0 }.count == 1
       true
     else
       false
