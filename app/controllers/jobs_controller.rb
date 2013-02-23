@@ -43,11 +43,14 @@ class JobsController < ApplicationController
   def create
     @device = Device.find(params[:device_id])
     @job = @device.jobs.new(params[:job])
-
+    
+    #if conflict
+    #   format.html { render action: "new"}
+    #   format.json { render json: @job.errors, status: :unprocessable_entity }
+    #end
     respond_to do |format|
       if @job.save
-        format.html { redirect_to [@device, @job], notice: 'Job was successfully created.' }
-        format.json { render json: @job, status: :created, location: @job }
+        format.html { redirect_to root_path, notice: 'Job was successfully created.' }
       else
         format.html { render action: "new"}
         format.json { render json: @job.errors, status: :unprocessable_entity }
@@ -83,7 +86,7 @@ class JobsController < ApplicationController
     end
   end
   
-  def no_conflict
+  def conflict
     device = Device.find(@job.device_id)
     duration = Program.find(@job.program_id).duration_in_min
     best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
@@ -102,17 +105,22 @@ class JobsController < ApplicationController
         # evtl erstmal entfernen
         @job.start = @job.end_of_timespan - duration.minute
       else
-        #Auftrag wird nach 12 Uhr gestartet
+        #Es ist nach 12 Uhr, Auftrag wird jetzt gestartet
         @job.start = test_zeit
+        if @job.confirm
+          #Waschmaschine wird angeschaltet
+          device.update_attributes(:state => 2)
+        end
       end
-      device.update_attributes(:state => 1)
+     
+      device.update_attributes(:state => 1) unless @job.confirm
     
     else
       last_job = device.jobs.last#
       last_program = Program.find(last_job.program_id)
       if last_job.start + last_program.duration_in_min.minute + duration.minute > @job.end_of_timespan
         #Auftrag kann nicht ausgefuehrt werden
-        return false
+        return true
       else
         #Auftrag kann ausgefuehrt werden
         if last_job.start + last_program.duration_in_min.minute > best_time_to_start
@@ -126,7 +134,7 @@ class JobsController < ApplicationController
       end
     end
     
-    true
+    false
   end
   
 end
