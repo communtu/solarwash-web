@@ -91,44 +91,56 @@ class JobsController < ApplicationController
     duration = Program.find(@job.program_id).duration_in_min
     best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
     
-    #TODO test_zeit mit DateTime.now austauschen!
-    #test_zeit = DateTime.now.change({:hour => 8, :min => 0, :sec => 0})
-    test_zeit = DateTime.now
+    #aktuelle_zeit = DateTime.now.change({:hour => 8, :min => 0, :sec => 0})
+    aktuelle_zeit = DateTime.now
+    
     if device.state == 0
       #Kein Auftrag
-      if best_time_to_start >= test_zeit && best_time_to_start <= @job.end_of_timespan
-        #Auftrag kann vollstaendig ausgefuehrt werden, wenn er um 12:00Uhr beginnt
-        @job.start = best_time_to_start
-      elsif best_time_to_start >= test_zeit && best_time_to_start > @job.end_of_timespan
-        #Auftrag kann nicht um 12:00Uhr beginnen, wird aber so gestartet, dass er noch
-        #von der Sonne profitiert
-        # evtl erstmal entfernen
-        @job.start = @job.end_of_timespan - duration.minute
+      if best_time_to_start >= aktuelle_zeit
+        #Es ist vor 12 Uhr, Sonne muss beruecksichtigt werden
+        if best_time_to_start >= @job.end_of_timespan
+          #Auftrag soll vor Sonnenzeit fertig sein => Auftrag wird sofort gestartet
+          @job.start = aktuelle_zeit
+          
+        elsif best_time_to_start + duration.minute <= @job.end_of_timespan
+          #Auftrag kann vollstaendig ausgefuehrt werden, wenn er um 12:00Uhr beginnt
+          @job.start = best_time_to_start
+        else
+          #Auftrag kann nicht um 12:00Uhr beginnen, kann aber teilweise von der Sonne profitieren
+          @job.start = @job.end_of_timespan - duration.minute
+        end
       else
         #Es ist nach 12 Uhr, Auftrag wird jetzt gestartet
-        @job.start = test_zeit
+        @job.start = aktuelle_zeit
         if @job.confirm
           #Waschmaschine wird angeschaltet
           device.update_attributes(:state => 2)
         end
       end
-     
+      #Waschmaschine wartet auf Startzeitpunkt
       device.update_attributes(:state => 1) unless @job.confirm
     
     else
-      last_job = device.jobs.last#
+      #Es gibt Auftraege
+      last_job = device.jobs.last
       last_program = Program.find(last_job.program_id)
+      
       if last_job.start + last_program.duration_in_min.minute + duration.minute > @job.end_of_timespan
         #Auftrag kann nicht ausgefuehrt werden
         return true
       else
         #Auftrag kann ausgefuehrt werden
-        if last_job.start + last_program.duration_in_min.minute > best_time_to_start
+        if last_job.start > best_time_to_start
           #Job kann erst nach Sonne ausgefuehrt werden
           @job.start = last_job.start + last_program.duration_in_min.minute
         else
           #Sonne muss beruecksichtigt werden
-          #TODO
+          if last_job.start + 
+          #Wenn aktuelle Zeit != last_job.start && last_job.start < best_time_to_start && last_job.start > best_time_to_start
+          #Vorheriger Auftrag läuft innerhalb der Sonnenzeit und kann nach vorne verschoben werden
+          
+          #Wenn 
+          #sonst
           @job.start = last_job.start + last_program.duration_in_min.minute
         end
       end
