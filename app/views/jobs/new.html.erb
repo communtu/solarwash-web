@@ -1,5 +1,11 @@
-<%= @job.errors.full_messages %>
+<h1>Neuer Auftrag</h1>
+
+<h3>für das Gerät <%= @job.device.name %></h3>
 
 <%= render 'form' %>
 
 <%= link_to 'Zurück', root_path %>
+
+</ br>
+
+<%= @job.errors.full_messages %>
