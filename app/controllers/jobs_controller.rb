@@ -130,23 +130,52 @@ class JobsController < ApplicationController
         return true
       else
         #Auftrag kann ausgefuehrt werden
-        if last_job.start > best_time_to_start
-          #Job kann erst nach Sonne ausgefuehrt werden
+        if last_job.start > best_time_to_start || aktuelle_zeit > best_time_to_start
+          #Sonne spielt keine Rolle => Auftrag wird nach dem vorherigen ausgefuehrt
           @job.start = last_job.start + last_program.duration_in_min.minute
         else
-          #Sonne muss beruecksichtigt werden
-          if last_job.start + 
-          #Wenn aktuelle Zeit != last_job.start && last_job.start < best_time_to_start && last_job.start > best_time_to_start
-          #Vorheriger Auftrag läuft innerhalb der Sonnenzeit und kann nach vorne verschoben werden
+          #Sonne spielt eine Rolle
+          if last_job.start + last_program.duration_in_min.minute < best_time_to_start
+            
+            #vorheriger Auftrag ist vor der Sonnenzeit beendet 
+            if best_time_to_start + duration.minute <= @job.end_of_timespan
+              
+              #Auftrag kann vollstaendig ausgefuehrt werden, wenn er um 12:00Uhr beginnt
+              @job.start = best_time_to_start
+            else
+              #Auftrag kann nicht um 12:00Uhr beginnen, kann aber teilweise von der Sonne profitieren
+              @job.start = @job.end_of_timespan - duration.minute
+            end
           
-          #Wenn 
-          #sonst
+          else
+            #vorheriger Auftrag ist innerhalb der Sonnenzeit
+            if is_next_job(job_to_tested, device_id)
+              #vorheriger Auftrag wird als nächstes bearbeitet und kann somit evtl. verschoben werden
+              
+              if aktuelle_zeit < best_time_to_start - last_program.duration_in_min.minute &&
+                 best_time_to_start + duration <= @job.end_of_timespan
+                
+                #vorheriger Auftrag kann verschoben werden
+                job.update_attributes(:start => aktuelle_zeit)
+                #Neuer Auftrag beginnt zur Sonnenzeit
+                @job.start = best_time_to_start
+              end
+            end
+          end
+          #Verschiebung nicht moeglich
           @job.start = last_job.start + last_program.duration_in_min.minute
         end
       end
     end
-    
+    #Keine Konflikte
     false
   end
   
+  def is_next_job(job_to_tested, device_id)
+    if job_to_tested.finished == 0 && Device.find(1).jobs.find_all{ |j| j.finished == 0 }.count == 2
+      true
+    else
+      false
+    end
+  end
 end
