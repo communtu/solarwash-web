@@ -10,7 +10,13 @@
 	  	<% if device_id == job.device_id && job.finished == 0%>
 			<tr>
 	    		<td><%= Program.find(job.program_id).name %></td>
-				<td><%= format_start_time(job) %></td>
+				<td><% if format_start_time(job).is_a?(Fixnum) %>
+					<div class="progress progress-striped active">
+					  <div class="bar" style= <%= "width: 50;"%>></div>
+					</div> 
+					<% else %>
+					<%= format_start_time(job) %>
+					<% end %> </td>
 				<td><%= job.start + Program.find(job.program_id).duration_in_min.minute%></td>
 				<td><%= job.end_of_timespan %></td>
 			</tr>

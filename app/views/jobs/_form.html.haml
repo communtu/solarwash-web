@@ -5,8 +5,8 @@
   = f.hidden_field :user_id, :value => 1 # TODO tatsaechliche User_ID nehmen
   = f.input :program_id, collection: @job.device.programs, label:"Programm"
   = f.hidden_field :finished, :value => 0
-  = f.hidden_field :start_of_timespan, :value => DateTime.now # TODO immer aktuelle Zeit
-  = f.input :end_of_timespan, :as => :ui_date_time_picker, label:"Fertig bis spätestens", :value => DateTime.now
+  = f.hidden_field :start_of_timespan, :value => DateTime.now.change({:hour => 8, :min => 0, :sec => 0}) # TODO immer aktuelle Zeit
+  = f.input :end_of_timespan, :as => :ui_date_time_picker, label:"Fertig bis spätestens", :value => DateTime.now.change({:hour => 8, :min => 0, :sec => 0})
   -if @job.device.state == 0
     = f.input :confirm, as: :radio_buttons, label:"Wäsche in der Waschmaschine?", :checked => setDefaultConfirm(@job.device.state)
 
