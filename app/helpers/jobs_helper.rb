@@ -5,5 +5,5 @@ module JobsHelper
     else
       "false"
     end
-  end
+  end    
 end

@@ -1,29 +1,7 @@
-<h1>Alle Aufträge</h1>
+<h1>Meine Aufträge</h1>
 
-<table class="table">
-  <tr>
-    <th>Gerät</th>
-    <th>Auftraggeber</th>
-    <th>Programm</th>
-    <th>Status</th>
-    <th>Auftrag eingestellt</th>
-    <th>Fertig bis spätestens</th>
-    <th>Start</th>
-    <th></th>
-    <th></th>
-  </tr>
+<h3>Aktuelle Aufträge</h3>
+<%= render 'myjoblist', old_jobs: false  %>
 
-<% @jobs.each do |job| %>
-  <tr>
-    <td><%= job.device_id %></td>
-    <td><%= job.user_id %></td>
-    <td><%= Program.find(job.program_id).name %></td>
-    <td><%= job.finished %></td>
-    <td><%= job.start_of_timespan %></td>
-    <td><%= job.end_of_timespan %></td>
-	<td><%= job.start %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
+<h3>Frühere Aufträge</h3>
+<%= render 'myjoblist', old_jobs: true %>
