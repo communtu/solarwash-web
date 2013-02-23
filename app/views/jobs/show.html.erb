@@ -1,8 +1,10 @@
 <p id="notice"><%= notice %></p>
 
+<h1>Auftrag</h1>
+
 <p>
   <b>Gerät:</b>
-  <%= @job.device_id %>
+  <%= Device.find(@job.device_id).name %>
 </p>
 
 <p>
@@ -12,7 +14,7 @@
 
 <p>
   <b>Programm:</b>
-  <%= @job.program_id %>
+  <%= Program.find(@job.program_id).name %>
 </p>
 
 <p>
@@ -31,5 +33,4 @@
 </p>
 
 
-<%= link_to 'Bearbeiten', edit_device_job_path([@device, @job]) %> |
-
+<%= link_to 'Bearbeiten', edit_device_job_path(@device) %>

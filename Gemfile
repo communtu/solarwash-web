@@ -11,6 +11,8 @@ gem 'ui_datepicker-rails3'
 gem 'haml'
 gem 'bootstrap-tooltip-rails'
 gem "validates_date_time"
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -40,8 +42,6 @@ group :assets do
 
   gem 'uglifier', '>= 1.0.3'
 end
-
-gem 'jquery-rails'
 
 group :test do
   gem 'capybara'
