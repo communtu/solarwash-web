@@ -47,7 +47,7 @@ class JobsController < ApplicationController
     @device = Device.find(params[:device_id])
     @job = @device.jobs.new(params[:job])
     
-    if @job.confirm == nil { confirm = 0 }
+    confirm = 0  if @job.confirm == nil
     
     if !@job.end_of_timespan.is_a?(ActiveSupport::TimeWithZone)
       @job.end_of_timespan = DateTime.strptime(params[:job]['end_of_timespan'], '%d.%m.%Y %H:%M') - 1.hour

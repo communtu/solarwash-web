@@ -38,8 +38,8 @@ module DevicesHelper
     if job.start < DateTime.now
        entire_duration = Program.find(job.program_id).duration_in_min
   		 balance_time = entire_duration -  ((DateTime.now - job.start.to_datetime).to_f*24*60).to_i
-  		 percent = 100 - (100/entire_duration * balance_time)
-  		 "Seit #{balance_time} min (#{percent}%) in Bearbeitung"		 
+  		 percent = ((entire_duration-balance_time).to_f/entire_duration.to_f*100).to_i
+  		 "Noch #{balance_time} min verbleibend. #{percent}% verstrichen."		 
   	else
   	    job.start
 	  end
