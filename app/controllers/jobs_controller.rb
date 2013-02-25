@@ -1,9 +1,8 @@
 class JobsController < ApplicationController
   # GET /jobs
   # GET /jobs.json
-  def index
-    @device = Device.find(params[:device_id])
-    @job = @device.jobs.all
+  def index    
+    @jobs = Job.all.find_all{ |job| job.user_id == 1 } # TODO tatsaechlichen User nehmen
 
     respond_to do |format|
       format.html # index.html.erb
