@@ -1,5 +1,10 @@
 ### TODO ###
 
+- Whenever
+ - Confirm berücksichtigen, nicht alle auf finished == 1 setzen
+ - Neben löschen button: Wäsche ist drin bestätigen (nur wenn
+   erster job in der liste und nicht confirmed)
+
 -Neuer Auftrag
   -Default end_of_timespan ist aktuelle Zeit+duration von Programm
   -Bestaetigung
