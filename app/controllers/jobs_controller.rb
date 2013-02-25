@@ -317,20 +317,23 @@ class JobsController < ApplicationController
   def start_now(device_id, job)
     job.update_attributes(:start => DateTime.now)
     if job.confirm
-      device.update_attributes(:state => 2)
+      Device.find(device_id).update_attributes(:state => 2)
     end
   end
   
   #"entire_space_to_shift" gibt an, wieviel verschoben werden soll
-  # Wenn -1, dann maximale Verschiebung
+  # Wenn -1 oder -2 dann maximale Verschiebung
   def shift_jobs(device_id, entire_space_to_shift)
     jobs = Device.find(device_id).jobs.order("id ASC").find(:all, :conditions => ["finished == ?", 0])
     jobs.each_with_index do |j,index| 
-      if !is_processing?(j) && !(index +1 == jobs.count)
+      if !is_processing?(j) && jobs.count == 1
+        #Sonderfall, falls nur 1 job
+        start_now(device_id, j)
+      elsif !is_processing?(j) && index +1 < jobs.count
         current_space = space_between(j, jobs[index+1])
         
         #Beruecksichtigung von maximaler Verschiebung
-        unless entire_space_to_shift == -1
+        if !(entire_space_to_shift == -1) && !(entire_space_to_shift == -2)
           if current_space >= entire_space_to_shift
             current_space = entire_space_to_shift
             entire_space_to_shift = 0
