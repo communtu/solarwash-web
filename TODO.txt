@@ -42,5 +42,5 @@
 
   ### vorm deployen ###
   -auftrag erstellen (popover) raus
-  -"fertig bis spaetestens" raus auf startseite
+  -"fertig bis spätestens" raus auf startseite
   -logik beim auftrag erstellen korrigieren/kompletieren

@@ -102,96 +102,6 @@ class JobsController < ApplicationController
     end
   end
   
-  # TODO DRY & refactoring machen! :)
-  def conflict
-    device = @device #Device.find(@job.device_id)
-    duration = Program.find(@job.program_id).duration_in_min
-    best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
-    
-    #aktuelle_zeit = DateTime.now.change({:hour => 8, :min => 0, :sec => 0})
-    aktuelle_zeit = DateTime.now
-    
-    if device.state == 0
-      #Kein Auftrag
-      if best_time_to_start >= aktuelle_zeit
-        #Es ist vor 12 Uhr, Sonne muss beruecksichtigt werden
-        if best_time_to_start >= @job.end_of_timespan
-          #Auftrag soll vor Sonnenzeit fertig sein => Auftrag wird sofort gestartet
-          @job.start = aktuelle_zeit
-          if @job.confirm
-            #Waschmaschine wird angeschaltet
-            device.update_attributes(:state => 2)
-            return false
-          end
-        elsif best_time_to_start + duration.minute <= @job.end_of_timespan
-          #Auftrag kann vollstaendig ausgefuehrt werden, wenn er um 12:00Uhr beginnt
-          @job.start = best_time_to_start
-        else
-          #Auftrag kann nicht um 12:00Uhr beginnen, kann aber teilweise von der Sonne profitieren
-          @job.start = @job.end_of_timespan - duration.minute
-        end
-      else
-        #Es ist nach 12 Uhr, Auftrag wird jetzt gestartet
-        @job.start = aktuelle_zeit
-        if @job.confirm
-          #Waschmaschine wird angeschaltet
-          device.update_attributes(:state => 2)
-          return false
-        end
-      end
-      #Waschmaschine wartet auf Startzeitpunkt
-      device.update_attributes(:state => 1)
-    
-    else
-      #Es gibt Auftraege
-      last_job = device.jobs.last
-      last_program = Program.find(last_job.program_id)
-      
-      if aktuelle_Zeit + duration_of_queue(device.id) > @job.end_of_timespan
-        #Auftrag kann nicht ausgefuehrt werden
-        return true
-      else
-        #Auftrag kann ausgefuehrt werden
-        if last_job.start > best_time_to_start || aktuelle_zeit > best_time_to_start
-          #Sonne spielt keine Rolle => Auftrag wird nach dem vorherigen ausgefuehrt
-          @job.start = last_job.start + last_program.duration_in_min.minute
-        else
-          #Sonne spielt eine Rolle
-          if last_job.start + last_program.duration_in_min.minute < best_time_to_start
-            #vorheriger Auftrag ist vor der Sonnenzeit beendet 
-            if best_time_to_start + duration.minute <= @job.end_of_timespan  
-              #Auftrag kann vollstaendig ausgefuehrt werden, wenn er um 12:00Uhr beginnt
-              @job.start = best_time_to_start
-            else
-              #Auftrag kann nicht um 12:00Uhr beginnen, kann aber teilweise von der Sonne profitieren
-              @job.start = @job.end_of_timespan - duration.minute
-            end
-          
-          else
-            #vorheriger Auftrag ist innerhalb der Sonnenzeit
-            if is_next_job(last_job, last_job.device_id)
-              #Waschmaschine ist frei und der vorherige wird als nächstes bearbeitet          
-              if aktuelle_zeit < ( @job.end_of_timespan - duration.minute - last_program.duration_in_min.minute)
-                #vorheriger Auftrag kann verschoben werden
-                last_job.update_attributes(:start => aktuelle_zeit)
-                #Waschmaschine wird gestartet
-                device.update_attributes(:state => 2)
-                #Neuer Auftrag beginnt zur Sonnenzeit
-                @job.start = best_time_to_start
-
-                return false
-              end
-            end
-          #Verschiebung nicht moeglich
-          @job.start = last_job.start + last_program.duration_in_min.minute
-          end
-        end
-      end
-    end
-    #Keine Konflikte
-    false
-  end
-  
   def conflict_management
     if @device.state == 0
       management_for_first_job
@@ -204,7 +114,7 @@ class JobsController < ApplicationController
   def management_if_more_jobs
     device = @device #Device.find(@job.device_id)
     duration = get_duration(@job)
-    best_time_to_start = DateTime.now.change({:hour => 16, :min => 0, :sec => 0})
+    best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
     current_time = DateTime.now
     
     if possible_start_if_shifting(device.id).to_datetime + duration.minute >= @job.end_of_timespan.to_datetime
@@ -236,7 +146,7 @@ class JobsController < ApplicationController
   def management_for_first_job
     device = @device #Device.find(@job.device_id)
     duration = get_duration(@job)
-    best_time_to_start = DateTime.now.change({:hour => 16, :min => 0, :sec => 0})
+    best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
     current_time = DateTime.now
   
     if best_time_to_start >= @job.end_of_timespan || best_time_to_start <= current_time
