@@ -60,7 +60,7 @@ class ProgramsController < ApplicationController
 
     respond_to do |format|
       if @program.update_attributes(params[:program])
-        format.html { redirect_to @program, notice: 'Program wurde erfolgreich geändert.' }
+        format.html { redirect_to @program, notice: 'Program wurde erfolgreich geaendert.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

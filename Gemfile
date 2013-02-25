@@ -22,11 +22,12 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'guard-rspec'
   gem 'spork'
-  gem 'guard-spork', :github => 'guard/guard-spork'
+  gem 'guard-spork'
   gem 'faker'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
+  gem 'timecop'
 end
 
 group :development do

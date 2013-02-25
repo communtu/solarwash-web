@@ -9,7 +9,7 @@
     <th>Auftrag eingestellt</th>
     <th>Fertig bis spätestens</th>
     <th>Start</th>
-    <th></th>
+    <th>Loeschen</th>
     <th></th>
   </tr>
 
@@ -22,6 +22,7 @@
     <td><%= job.start_of_timespan %></td>
     <td><%= job.end_of_timespan %></td>
 	<td><%= job.start %></td>
+	<td><%= link_to 'delete', resource_path(job), :method => :delete, :confirm => 'really delete?'%><td>
   </tr>
 <% end %>
 </table>

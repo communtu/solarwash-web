@@ -14,7 +14,7 @@
               <i class="<%= state_image(device.state) %>"><a title="bla"></a></i>
             </h3>
             <h3><%= device.name %></h3>            
-            
+
             <%= link_to '<i class="icon-plus icon_baseline"></i> Neuer Auftrag'.html_safe, new_device_job_path(device), class: "btn btn-inverse novisit ", title: "Neuer Auftrag" %>
 
             <% @job = device.jobs.new %>            
