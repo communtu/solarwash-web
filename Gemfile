@@ -13,6 +13,7 @@ gem 'bootstrap-tooltip-rails'
 gem "validates_date_time"
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'devise'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -22,11 +23,12 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'guard-rspec'
   gem 'spork'
-  gem 'guard-spork', :github => 'guard/guard-spork'
+  gem 'guard-spork'
   gem 'faker'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
+  gem 'timecop'
 end
 
 group :development do

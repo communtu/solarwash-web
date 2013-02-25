@@ -1,24 +1,27 @@
 <table class="table">
 	<tr>
-	    <th>Programm</th>
-	    <th>Startzeit</th>
+	  <th>Programm</th>
+	  <th>Startzeit</th>
 		<th>Geschätzte Endzeit</th>
-		<th>Fertig bis spätestens</th>
+		
+		<th>Löschen</th>
 	</tr>
 
 	<% Job.all.each do |job| %>
 	  	<% if device_id == job.device_id && job.finished == 0%>
 			<tr>
 	    		<td><%= Program.find(job.program_id).name %></td>
-				<td><% if format_start_time(job).is_a?(Fixnum) %>
+				<td><% if format_start_time(job).is_a?(String) %>
 					<div class="progress progress-striped active">
-					  <div class="bar" style= <%= "width: 50;"%>></div>
+					  <div class="bar" style= "<%= format_start_time(job) %>"></div>
 					</div> 
 					<% else %>
-					<%= format_start_time(job) %>
+					<%= l(format_start_time(job), :format => '%a, %d.%m - %H:%M') %>
 					<% end %> </td>
-				<td><%= job.start + Program.find(job.program_id).duration_in_min.minute%></td>
-				<td><%= job.end_of_timespan %></td>
+				<td><%= l(	job.start + Program.find(job.program_id).duration_in_min.minute,
+							:format => '%a, %d.%m - %H:%M')%></td>
+				
+				<td><%= link_to "Auftrag löschen", [Device.find(job.device_id), job], :confirm => "Bist du sicher?", :method => :delete %></td>
 			</tr>
 		<% end %>
 	<% end %>
