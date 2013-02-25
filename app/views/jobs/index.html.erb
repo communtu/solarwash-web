@@ -22,7 +22,7 @@
     <td><%= job.start_of_timespan %></td>
     <td><%= job.end_of_timespan %></td>
 	<td><%= job.start %></td>
-	<td><%= link_to "Delete Attachment", [@attachment.thread.project,@attachment.thread,@attachment], :confirm => "Are you sure?", :method => :delete %><td>
+	<td><%=  %><td>
   </tr>
 <% end %>
 </table>
