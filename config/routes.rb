@@ -4,11 +4,12 @@ Awe09::Application.routes.draw do
 
   root to: 'devices#index'
   resources :devices do
-    resources :jobs
+    resources :jobs, :except => :index
   end
   resources :programs
 
   post '/development/session' => 'sessions#create', as: :development_session
+  match '/my_jobs', to: 'jobs#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
