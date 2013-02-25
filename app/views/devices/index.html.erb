@@ -17,12 +17,6 @@
 
             <%= link_to '<i class="icon-plus icon_baseline"></i> Neuer Auftrag'.html_safe, new_device_job_path(device), class: "btn btn-inverse novisit ", title: "Neuer Auftrag" %>
 
-            <% @job = device.jobs.new %>            
-            <%= link_to '<i class="icon-plus icon_baseline"></i> Neuer Auftrag (pop)'.html_safe, "#", title: "Neuer Auftrag", :rel => "popover", :"data-content" => "#{render 'jobs/form', :job => @job}", class: "btn btn-inverse novisit pop"%>
-            <script>
-              $('.pop').popover({ html : true});
-            </script>
-
           </div>
           <div class="span2"> 
             <i class="<%= type_icon(device.devicetype) %> icon-4x icon_devicetype"></i>
