@@ -8,7 +8,6 @@
   = f.input :end_of_timespan, :as => :ui_date_time_picker, label:"Fertig bis spätestens", :value => DateTime.now.change({:hour => 8, :min => 0, :sec => 0})
   -if @job.device.state == 0
     = f.input :confirm, as: :radio_buttons, label:"Wäsche in der Waschmaschine?", :checked => setDefaultConfirm(@job.device.state)
-  = f.full_error :token
 
   .form-actions
     = f.button :submit, "Auftrag erstellen", class: 'btn-primary'
