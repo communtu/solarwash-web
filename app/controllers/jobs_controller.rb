@@ -178,7 +178,7 @@ class JobsController < ApplicationController
   #Gibt die Gesamtdauer aller wartender Jobs zurueck
   def duration_of_queue(device_id)
     dur = 0
-    Device.find(device_id).jobs.find(:all, :conditions => ["finished == ?", 0]).each { |j| 
+    Device.find(device_id).jobs.find(:all, :conditions => ["finished = ?", 0]).each { |j| 
       dur += get_duration(j) unless is_processing?(j)
     }
 
@@ -188,7 +188,7 @@ class JobsController < ApplicationController
   #Gibt den Gesamtabstand zwischen den Jobs zurueck
   def entire_space_between_jobs(device_id)
     entire_space = 0
-    jobs = Device.find(device_id).jobs.order("id ASC").find(:all, :conditions => ["finished == ?", 0])
+    jobs = Device.find(device_id).jobs.order("id ASC").find(:all, :conditions => ["finished = ?", 0])
     jobs.each_with_index { |j,index|
       if jobs[index+1] != nil
         entire_space += space_between(j, jobs[index+1])
@@ -222,13 +222,13 @@ class JobsController < ApplicationController
   end
   
   def first_job(device_id)
-    first_job = Device.find(device_id).jobs.order("id ASC").limit(1).find(:all, :conditions => ["finished == ?", 0])
+    first_job = Device.find(device_id).jobs.order("id ASC").limit(1).find(:all, :conditions => ["finished = ?", 0])
   
     first_job[0]
   end
   
   def last_job(device_id)
-    last_job = Device.find(device_id).jobs.order("id DESC").limit(1).find(:all, :conditions => ["finished == ?", 0])
+    last_job = Device.find(device_id).jobs.order("id DESC").limit(1).find(:all, :conditions => ["finished = ?", 0])
 
     last_job[0]
   end
@@ -242,7 +242,7 @@ class JobsController < ApplicationController
   #"entire_space_to_shift" gibt an, wieviel verschoben werden soll
   # Wenn -1 oder -2 dann maximale Verschiebung
   def shift_jobs(device_id, entire_space_to_shift)
-    jobs = Device.find(device_id).jobs.order("id ASC").find(:all, :conditions => ["finished == ?", 0])
+    jobs = Device.find(device_id).jobs.order("id ASC").find(:all, :conditions => ["finished = ?", 0])
     jobs.each_with_index do |j,index| 
       if !is_processing?(j) && jobs.count == 1
         #Sonderfall, falls nur 1 job
