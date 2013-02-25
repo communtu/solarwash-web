@@ -13,6 +13,7 @@ gem 'bootstrap-tooltip-rails'
 gem "validates_date_time"
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'devise'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

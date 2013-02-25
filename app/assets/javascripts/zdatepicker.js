@@ -36,11 +36,12 @@ $.timepicker.setDefaults($.timepicker.regional['de']);
 
 $(document).ready(function(){
   $('input.ui-date-picker').datepicker({
-    useLocalTimezone: false,
-    showTimezone: true
+    useLocalTimezone: true
   });
   $('input.ui-datetime-picker').datetimepicker({
-  	useLocalTimezone: false,
-    showTimezone: true
+  	useLocalTimezone: true
+  });
+  $('#simulate_datetime').datetimepicker({
+    useLocalTimezone: true
   });
 });

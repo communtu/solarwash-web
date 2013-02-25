@@ -7,8 +7,10 @@
 #  user_id           :integer
 #  program_id        :integer
 #  finished          :integer
+#  confirm           :boolean
 #  start_of_timespan :datetime
 #  end_of_timespan   :datetime
+#  start             :datetime
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
