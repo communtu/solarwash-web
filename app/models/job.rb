@@ -22,9 +22,9 @@ class Job < ActiveRecord::Base
                   :program_id, :start_of_timespan, :user_id,
                   :start, :confirm
   
-  def to_param
-    [id, "job"].join("-")
-  end
+  #def to_param
+  #  [id, "job"].join("-")
+  #end
                   
   belongs_to :device
   has_one :program

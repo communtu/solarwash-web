@@ -56,7 +56,7 @@ class JobsController < ApplicationController
     respond_to do |format|
       
       if @job.valid?
-        if !conflict_management
+        if !conflict_management(@job)
           @job.save
           flash[:success] = "Auftrag wurde erfolgreich angelegt"
           format.html { redirect_to root_path}
@@ -94,7 +94,19 @@ class JobsController < ApplicationController
   def destroy
     @device = Device.find(params[:device_id])
     @job = @device.jobs.find(params[:id])
-    @job.destroy
+    
+    if is_processing?(@job)
+      flash[:error] = "Auftrag wird gerade bearbeitet und kann nicht mehr geloescht werden"
+    else
+      job_id = @job.id
+      @job.destroy
+      if @device.jobs.count == 0
+        @device.update_attributes(:state => 0)
+      else
+        delete_management(@device, job_id)
+      end
+      flash[:success] = "Auftrag wurde erfolgreich geloescht"
+    end
 
     respond_to do |format|
       format.html { redirect_to root_path }
@@ -102,65 +114,80 @@ class JobsController < ApplicationController
     end
   end
   
-  def conflict_management
-    if @device.state == 0
-      management_for_first_job
-      return false
-    else
-      return management_if_more_jobs
+  def delete_management(device, job_id)
+    #Zwischenspeichern der nachfolgenden Jobs
+    jobs = device.jobs.order("id ASC").find(:all, :conditions => ["finished == ? and id > ?", 0, job_id])
+    #Loeschen der nachfolgenden Jobs
+    Job.delete_all([ "finished = ? AND id > ? AND device_id = ?", 0,job_id,device.id ])
+    jobs.each do |j| 
+      if device.jobs.count == 0
+        device.update_attributes(:state => 0)
+        management_for_first_job(j)
+      else
+        management_if_more_jobs(j)
+      end
+      updated_job = j.dup
+      updated_job.save
     end
   end
   
-  def management_if_more_jobs
-    device = @device #Device.find(@job.device_id)
-    duration = get_duration(@job)
+  def conflict_management(job)
+    if @device.state == 0
+      management_for_first_job(job)
+      return false
+    else
+      return management_if_more_jobs(job)
+    end
+  end
+  
+  def management_if_more_jobs(job)
+    device = Device.find(job.device_id)
+    duration = get_duration(job)
     best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
     current_time = DateTime.now
     
-    if possible_start_if_shifting(device.id).to_datetime + duration.minute >= @job.end_of_timespan.to_datetime
+    if possible_start_if_shifting(device.id).to_datetime + duration.minute >= job.end_of_timespan.to_datetime
       return true
     elsif current_time >= best_time_to_start + duration.minute
       #Sonne kann nicht beruecksichtigt werden => In Queue reihen
-      @job.start = last_job(device.id).to_datetime + get_duration(last_job(device.id)).minute
+      job.start = last_job(device.id).start.to_datetime + get_duration(last_job(device.id)).minute
     else
-      benefit_from_sun = get_benefit_from_sun(@job, duration, best_time_to_start)
+      benefit_from_sun = get_benefit_from_sun(job, duration, best_time_to_start)
       if possible_start_if_shifting(device.id).to_datetime < best_time_to_start
         #< 12 -> Komplett shiften, start so, dass man am meisten von der Sonne profitiert
         shift_jobs(device.id, -1)
-        @job.start = (best_time_to_start + benefit_from_sun.minute) - duration.minute
+        job.start = (best_time_to_start + benefit_from_sun.minute) - duration.minute
       elsif possible_start_if_shifting(device.id).to_datetime > best_time_to_start + duration.minute
-        #sdf
         # > 12 + duration -> Komplett shiften, start danach
         shift_jobs(device.id, -1)
-        @job.start = last_job(device.id).start.to_datetime + get_duration(last_job(device.id)).minute
+        job.start = last_job(device.id).start.to_datetime + get_duration(last_job(device.id)).minute
       else
-        #sdf
         # sonst: benefit_from_sun shiften, start danach
         shift_jobs(device.id, benefit_from_sun)
-        @job.start = last_job(device.id).start.to_datetime + get_duration(last_job(device.id)).minute
+        job.start = last_job(device.id).start.to_datetime + get_duration(last_job(device.id)).minute
       end
     end
     return false
   end
   
-  def management_for_first_job
-    device = @device #Device.find(@job.device_id)
-    duration = get_duration(@job)
+  def management_for_first_job(job)
+    device = Device.find(job.device_id)
+    duration = get_duration(job)
     best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
     current_time = DateTime.now
   
-    if best_time_to_start >= @job.end_of_timespan || best_time_to_start <= current_time
-      @job.start = current_time # Weit vor 12 oder Weit nach 12
-      if @job.confirm
+    if best_time_to_start >= job.end_of_timespan || best_time_to_start <= current_time
+      job.start = current_time # Weit vor 12 oder Weit nach 12
+      if job.confirm
         device.update_attributes(:state => 2)
       else
         device.update_attributes(:state => 1)
-      end     
+      end   
     else
-      if best_time_to_start + duration.minute <= @job.end_of_timespan
-        @job.start = best_time_to_start #12 Uhr starten
+      if best_time_to_start + duration.minute <= job.end_of_timespan
+        job.start = best_time_to_start #12 Uhr starten
       else
-        @job.start = @job.end_of_timespan - duration.minute
+        job.start = job.end_of_timespan - duration.minute
       end
       device.update_attributes(:state => 1)
     end
@@ -297,4 +324,6 @@ class JobsController < ApplicationController
       return DateTime.now + duration_of_queue(device_id).minute
     end
   end
+  
+  
 end
