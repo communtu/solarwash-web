@@ -5,7 +5,7 @@ require 'spec_helper'
 
 describe "8Uhr-Ein Job vorhanden:", :type => :feature do
   before :each do
-    Device.create(name: "Miele Keller 1", devicetype: 0, state: 0)
+    Device.create(name: "Miele Keller 1", devicetype: 0, state: 1)
     Program.create(name: "Pflegeleicht", degree: "40", duration_in_min: 180, consumption_in_wh: 560, device_id: 1)
     Timecop.freeze(Time.local(2013, 9, 1, 8, 0, 0))
                 
@@ -19,7 +19,7 @@ describe "8Uhr-Ein Job vorhanden:", :type => :feature do
                 end_of_timespan: DateTime.now.change({ :hour => 16, :min => 0, :sec => 0 }),
                 start: DateTime.now.change({ :hour => 12, :min => 0, :sec => 0 }),
                 user_id: nil )
-    
+    Device.find(1).update_attributes(:state => 1)
     fill_in "Fertig bis spätestens", with: DateTime.now.change({:hour => 16, :min => 0, :sec => 0})
     
     click_button 'Auftrag erstellen'
@@ -37,7 +37,7 @@ describe "8Uhr-Ein Job vorhanden:", :type => :feature do
                 end_of_timespan: DateTime.now.change({ :hour => 16, :min => 0, :sec => 0 }),
                 start: DateTime.now.change({ :hour => 12, :min => 0, :sec => 0 }),
                 user_id: nil )
-    
+    Device.find(1).update_attributes(:state => 1)
     fill_in "Fertig bis spätestens", with: DateTime.now.change({:hour => 14, :min => 30, :sec => 0})
     
     click_button 'Auftrag erstellen'
@@ -66,7 +66,7 @@ describe "10Uhr-Ein Job vorhanden:", :type => :feature do
                 end_of_timespan: DateTime.now.change({ :hour => 16, :min => 0, :sec => 0 }),
                 start: DateTime.now.change({ :hour => 12, :min => 0, :sec => 0 }),
                 user_id: nil )
-    
+    Device.find(1).update_attributes(:state => 1)
     fill_in "Fertig bis spätestens", with: DateTime.now.change({:hour => 16, :min => 0, :sec => 0})
     
     click_button 'Auftrag erstellen'
@@ -95,7 +95,7 @@ describe "15Uhr-Ein Job vorhanden:", :type => :feature do
                 end_of_timespan: DateTime.now.change({ :hour => 17, :min => 0, :sec => 0 }),
                 start: DateTime.now.change({ :hour => 14, :min => 0, :sec => 0 }),
                 user_id: nil )
-    
+    Device.find(1).update_attributes(:state => 2)
     fill_in "Fertig bis spätestens", with: DateTime.now.change({:hour => 22, :min => 0, :sec => 0})
     
     click_button 'Auftrag erstellen'

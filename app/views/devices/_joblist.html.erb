@@ -1,4 +1,5 @@
-<table class="table">
+<table class="table table-condensed">
+	<thead>
 	<tr>
 	  <th>Programm</th>
 	  <th>Startzeit</th>
@@ -6,9 +7,10 @@
 		
 		<th>Löschen</th>
 	</tr>
-
+	</thead>
 	<% Job.all.each do |job| %>
 	  	<% if device_id == job.device_id && job.finished == 0%>
+			<tbody>
 			<tr>
 	    		<td><%= Program.find(job.program_id).name %></td>
 				<td><% if format_start_time(job).is_a?(String) %>
@@ -23,6 +25,7 @@
 				
 				<td><%= link_to "Auftrag löschen", [Device.find(job.device_id), job], :confirm => "Bist du sicher?", :method => :delete %></td>
 			</tr>
+			</tbody>
 		<% end %>
 	<% end %>
 </table>
