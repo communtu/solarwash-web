@@ -20,5 +20,5 @@
 # Learn more: http://github.com/javan/whenever
 
 every 1.minutes do
-  runner "Job.foo", :environment => 'development' 
+  runner "Job.update_job_status", :environment => 'development' 
 end

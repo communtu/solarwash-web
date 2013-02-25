@@ -16,6 +16,7 @@ gem 'jquery-ui-rails'
 gem 'devise'
 gem 'faker'
 gem 'timecop'
+gem 'whenever', :require => false
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
