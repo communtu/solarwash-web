@@ -52,7 +52,7 @@ class JobsController < ApplicationController
     if !@job.end_of_timespan.is_a?(ActiveSupport::TimeWithZone)
       @job.end_of_timespan = DateTime.strptime(params[:job]['end_of_timespan'], '%d.%m.%Y %H:%M') - 1.hour
     end
-
+    
     respond_to do |format|
       
       if @job.valid?
@@ -204,7 +204,7 @@ class JobsController < ApplicationController
   def management_if_more_jobs
     device = @device #Device.find(@job.device_id)
     duration = get_duration(@job)
-    best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
+    best_time_to_start = DateTime.now.change({:hour => 16, :min => 0, :sec => 0})
     current_time = DateTime.now
     
     if possible_start_if_shifting(device.id).to_datetime + duration.minute >= @job.end_of_timespan.to_datetime
@@ -214,12 +214,21 @@ class JobsController < ApplicationController
       @job.start = last_job(device.id).to_datetime + get_duration(last_job(device.id)).minute
     else
       benefit_from_sun = get_benefit_from_sun(@job, duration, best_time_to_start)
-      shift_jobs(device.id, benefit_from_sun)
-      #TODO Je nach possible_start_if_shifting(device.id).to_datetime verfahren
-      # < 12 -> Komplett shiften, start = 12
-      # > 12 + duration -> Komplett shiften, start danach
-      # sonst: benefit_from_sun shiften, start danach
-      @job.start = last_job(device.id).start.to_datetime + get_duration(last_job(device.id)).minute
+      if possible_start_if_shifting(device.id).to_datetime < best_time_to_start
+        #< 12 -> Komplett shiften, start so, dass man am meisten von der Sonne profitiert
+        shift_jobs(device.id, -1)
+        @job.start = (best_time_to_start + benefit_from_sun.minute) - duration.minute
+      elsif possible_start_if_shifting(device.id).to_datetime > best_time_to_start + duration.minute
+        #sdf
+        # > 12 + duration -> Komplett shiften, start danach
+        shift_jobs(device.id, -1)
+        @job.start = last_job(device.id).start.to_datetime + get_duration(last_job(device.id)).minute
+      else
+        #sdf
+        # sonst: benefit_from_sun shiften, start danach
+        shift_jobs(device.id, benefit_from_sun)
+        @job.start = last_job(device.id).start.to_datetime + get_duration(last_job(device.id)).minute
+      end
     end
     return false
   end
@@ -227,7 +236,7 @@ class JobsController < ApplicationController
   def management_for_first_job
     device = @device #Device.find(@job.device_id)
     duration = get_duration(@job)
-    best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
+    best_time_to_start = DateTime.now.change({:hour => 16, :min => 0, :sec => 0})
     current_time = DateTime.now
   
     if best_time_to_start >= @job.end_of_timespan || best_time_to_start <= current_time
@@ -293,7 +302,7 @@ class JobsController < ApplicationController
   def get_benefit_from_sun(job, duration, sun_time)
     benefit = nil
     if job.end_of_timespan.to_datetime >=  sun_time.to_datetime + duration.minute
-      benefit = -2
+      benefit = duration
     elsif job.end_of_timespan.to_datetime < sun_time.to_datetime
       benefit = -1
     else
@@ -329,9 +338,8 @@ class JobsController < ApplicationController
       if !is_processing?(j) && jobs.count == 1
         #Sonderfall, falls nur 1 job
         start_now(device_id, j)
-      elsif !is_processing?(j) && index +1 < jobs.count
+      elsif jobs[index +1] != nil
         current_space = space_between(j, jobs[index+1])
-        
         #Beruecksichtigung von maximaler Verschiebung
         if !(entire_space_to_shift == -1) && !(entire_space_to_shift == -2)
           if current_space >= entire_space_to_shift
@@ -344,8 +352,7 @@ class JobsController < ApplicationController
         
         #Verschiebung der benachbarten Jobs
         if current_space > 0
-          new_start = jobs[index+1].to_datetime - space.minute
-          
+          new_start = jobs[index+1].start.to_datetime - current_space.minute
           if new_start.to_datetime <= DateTime.now
             start_now(device_id, jobs[index+1])
           else
