@@ -3,7 +3,7 @@
 	  <th>Programm</th>
 	  <th>Startzeit</th>
 		<th>Geschätzte Endzeit</th>
-		<th>Fertig bis spätestens</th>
+		
 		<th>Löschen</th>
 	</tr>
 
@@ -16,10 +16,11 @@
 					  <div class="bar" style= "<%= format_start_time(job) %>"></div>
 					</div> 
 					<% else %>
-					<%= format_start_time(job) %>
+					<%= l(format_start_time(job), :format => '%a, %d.%m - %H:%M') %>
 					<% end %> </td>
-				<td><%= job.start + Program.find(job.program_id).duration_in_min.minute%></td>
-				<td><%= job.end_of_timespan %></td>
+				<td><%= l(	job.start + Program.find(job.program_id).duration_in_min.minute,
+							:format => '%a, %d.%m - %H:%M')%></td>
+				
 				<td><%= link_to "Auftrag löschen", [Device.find(job.device_id), job], :confirm => "Bist du sicher?", :method => :delete %></td>
 			</tr>
 		<% end %>
