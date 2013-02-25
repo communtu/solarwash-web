@@ -30,6 +30,23 @@ class Job < ActiveRecord::Base
   has_one :program
   
   #scope :without_device, where(:device_id => nil)
+
+
+  def self.update_job_status
+    Program.create(name: "Pflegeleicht", degree: "40", duration_in_min: 180, consumption_in_wh: 560, device_id: 1)
+    
+    Device.all.each do |d|
+      d.jobs.find(:all, :conditions => ["finished == ?", 0]).each do |j|
+        if (j.start.to_datetime + Program.find(j.program_id).duration_in_min.minute) <= DateTime.now
+          j.update_attributes(:finished => 1)
+        end
+      end
+      if d.jobs.find(:all, :conditions => ["finished == ?", 0]).count == 0
+        d.update_attributes(:state => 0)
+      end
+    end
+    
+  end
   
   private
   
