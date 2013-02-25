@@ -6,3 +6,4 @@
       = select_tag 'user_id', options_for_select([""] + User.all.map{|user| ["#{user.email}", user.id] })
       = text_field_tag :simulate_datetime
       = button_tag 'Bestätigen', class: 'btn'
+    = l( DateTime.now,:format => '%a, %d.%m - %H:%M' )
