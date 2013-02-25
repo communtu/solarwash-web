@@ -2,7 +2,7 @@
 
 class SessionsController < ApplicationController
 
-  before_filter :check_development_mode!
+  #before_filter :check_development_mode!
 
   def create
     Timecop.travel(params[:simulate_datetime])
