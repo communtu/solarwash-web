@@ -1,0 +1,8 @@
+#development-bar.container
+  .well.well-small    
+    Benutzer und aktuelle Zeit simulieren:
+    = form_tag development_session_path, class: 'input-prepend input-append' do
+      .add-on Anmelden als
+      = select_tag 'user_id', options_for_select([""] + User.all.map{|user| ["#{user.email}", user.id] })
+      = text_field_tag :simulate_datetime
+      = button_tag 'Bestätigen', class: 'btn'
