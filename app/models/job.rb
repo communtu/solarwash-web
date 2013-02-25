@@ -30,6 +30,11 @@ class Job < ActiveRecord::Base
   has_one :program
   
   #scope :without_device, where(:device_id => nil)
+
+
+  def self.foo
+    Program.create(name: "heuehueueueueu", degree: "1000", duration_in_min: 180, consumption_in_wh: 560, device_id: 1)
+  end
   
   private
   
