@@ -31,7 +31,7 @@ class DevicesController < ApplicationController
       format.json { render json: @device }
     end
   end
-
+  
   # GET /devices/1/edit
   def edit
     @device = Device.find(params[:id])

@@ -4,8 +4,8 @@
 	  <th>Programm</th>
 	  <th>Startzeit</th>
 		<th>Geschätzte Endzeit</th>
-		
-		<th>Löschen</th>
+		<th></th>
+		<th></th>
 	</tr>
 	</thead>
 	<% Job.all.each do |job| %>
@@ -22,8 +22,17 @@
 					<% end %> </td>
 				<td><%= l(	job.start + Program.find(job.program_id).duration_in_min.minute,
 							:format => '%a, %d.%m - %H:%M')%></td>
-				
-				<td><%= link_to "Auftrag löschen", [Device.find(job.device_id), job], :confirm => "Bist du sicher?", :method => :delete %></td>
+				<% if has_to_be_confirmed(Device.find(job.device_id), job) %>
+					<td><%= link_to 'Bereit'.html_safe,
+							device_job_update_confirm_path(Device.find(job.device_id), job),
+							class: "btn btn-info novisit ",
+							:confirm => "Bist du wirklich bereit fuer den Vorgang von #{Device.find(job.device_id).name}?",
+							:method => :put %></td>
+				<% end %>
+				<td><%= link_to "Löschen", 
+						[Device.find(job.device_id), job],
+						class: "btn btn-inverse novisit ",
+				 		:confirm => "Bist du sicher?", :method => :delete %></td>
 			</tr>
 			</tbody>
 		<% end %>

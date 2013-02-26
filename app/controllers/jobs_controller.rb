@@ -1,4 +1,6 @@
 class JobsController < ApplicationController
+  include ConflictHelper
+  
   # GET /jobs
   # GET /jobs.json
   def index    
@@ -33,7 +35,26 @@ class JobsController < ApplicationController
       format.json { render json: @job }
     end
   end
-
+  
+  def update_confirm
+    @device = Device.find(params[:device_id])
+    @job = @device.jobs.find(params[:job_id])
+    
+    respond_to do |format|
+      if @job.update_attribute('confirm',true)
+        if @job.start.to_datetime < DateTime.now
+          @job.update_attribute('start', DateTime.now)
+        end
+        
+          format.html { redirect_to root_path, notice: 'Vorgang wird so frueh wie moeglich gestartet!' }
+          format.json { head :no_content }
+      else
+          format.html { redirect_to root_path, notice: 'Fehler bei dem Update' }
+          format.json { render json: @job.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
   # GET /jobs/1/edit
   def edit
     @device = Device.find(params[:device_id])
@@ -55,7 +76,7 @@ class JobsController < ApplicationController
     respond_to do |format|
       
       if @job.valid?
-        if !conflict_management
+        if !conflict_management(@job, @device)
           @job.save
           flash[:success] = "Auftrag wurde erfolgreich angelegt"
           format.html { redirect_to root_path}
@@ -93,52 +114,20 @@ class JobsController < ApplicationController
   def destroy
     @device = Device.find(params[:device_id])
     @job = @device.jobs.find(params[:id])
-    @job.destroy
-
-    respond_to do |format|
-      format.html { redirect_to root_path }
-      format.json { head :no_content }
-    end
-  end
-  
-  def conflict_management
-    if @device.state == 0
-      management_for_first_job
-      return false
-    else
-      return management_if_more_jobs
-    end
-  end
-  
-  def management_if_more_jobs
-    device = @device #Device.find(@job.device_id)
-    duration = get_duration(@job)
-    best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
-    current_time = DateTime.now
     
-    if possible_start_if_shifting(device.id).to_datetime + duration.minute >= @job.end_of_timespan.to_datetime
-      return true
-    elsif current_time >= best_time_to_start + duration.minute
-      #Sonne kann nicht beruecksichtigt werden => In Queue reihen
-      @job.start = last_job(device.id).to_datetime + get_duration(last_job(device.id)).minute
+    if is_processing?(@job)
+      flash[:error] = "Auftrag wird gerade bearbeitet und kann nicht mehr geloescht werden"
     else
-      benefit_from_sun = get_benefit_from_sun(@job, duration, best_time_to_start)
-      if possible_start_if_shifting(device.id).to_datetime < best_time_to_start
-        #< 12 -> Komplett shiften, start so, dass man am meisten von der Sonne profitiert
-        shift_jobs(device.id, -1)
-        @job.start = (best_time_to_start + benefit_from_sun.minute) - duration.minute
-      elsif possible_start_if_shifting(device.id).to_datetime > best_time_to_start + duration.minute
-        #sdf
-        # > 12 + duration -> Komplett shiften, start danach
-        shift_jobs(device.id, -1)
-        @job.start = last_job(device.id).start.to_datetime + get_duration(last_job(device.id)).minute
+      job_id = @job.id
+      @job.destroy
+      if @device.jobs.count == 0
+        @device.update_attributes(:state => 0)
       else
-        #sdf
-        # sonst: benefit_from_sun shiften, start danach
-        shift_jobs(device.id, benefit_from_sun)
-        @job.start = last_job(device.id).start.to_datetime + get_duration(last_job(device.id)).minute
+        delete_management(@device, job_id)
       end
+      flash[:success] = "Auftrag wurde erfolgreich geloescht"
     end
+<<<<<<< HEAD
     return false
   end
   
@@ -296,4 +285,13 @@ class JobsController < ApplicationController
       return DateTime.now + duration_of_queue(device_id).minute
     end
   end
+=======
+
+    respond_to do |format|
+      format.html { redirect_to root_path }
+      format.json { head :no_content }
+    end
+  end
+
+>>>>>>> 49ac702886d38739d939c7bbabcef18c2e95d38b
 end

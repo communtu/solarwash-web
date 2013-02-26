@@ -19,6 +19,7 @@ gem 'timecop'
 gem "gccxml_gem", "~> 0.9.3"
 gem "rbgccxml", "~> 1.0.3"
 gem "bit-struct", "~> 0.13.6"
+gem 'whenever', :require => false
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
