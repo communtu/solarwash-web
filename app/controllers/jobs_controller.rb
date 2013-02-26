@@ -76,7 +76,7 @@ class JobsController < ApplicationController
     respond_to do |format|
       
       if @job.valid?
-        if !conflict_management(@job, @device)
+        if !ConflictHelper.conflict_management(@job, @device)
           @job.save
           flash[:success] = "Auftrag wurde erfolgreich angelegt"
           format.html { redirect_to root_path}
@@ -115,7 +115,7 @@ class JobsController < ApplicationController
     @device = Device.find(params[:device_id])
     @job = @device.jobs.find(params[:id])
     
-    if is_processing?(@job)
+    if ConflictHelper.is_processing?(@job)
       flash[:error] = "Auftrag wird gerade bearbeitet und kann nicht mehr geloescht werden"
     else
       job_id = @job.id
@@ -123,7 +123,7 @@ class JobsController < ApplicationController
       if @device.jobs.count == 0
         @device.update_attributes(:state => 0)
       else
-        delete_management(@device, job_id)
+        ConflictHelper.delete_management(@device, job_id)
       end
       flash[:success] = "Auftrag wurde erfolgreich geloescht"
     end

@@ -1,6 +1,6 @@
 module ConflictHelper
 
-  def delete_management(device, job_id)
+  def self.delete_management(device, job_id)
      #Zwischenspeichern der nachfolgenden Jobs
      jobs = device.jobs.order("id ASC").find(:all, :conditions => ["finished == ? and id > ?", 0, job_id])
      #Loeschen der nachfolgenden Jobs
@@ -18,7 +18,7 @@ module ConflictHelper
      end
    end
 
-   def conflict_management(job, device)
+   def self.conflict_management(job, device)
      if device.state == 0
        management_for_first_job(job)
        return false
@@ -27,7 +27,7 @@ module ConflictHelper
      end
    end
 
-   def management_if_more_jobs(job)
+   def self.management_if_more_jobs(job)
      device = Device.find(job.device_id)
      duration = get_duration(job)
      best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
@@ -57,7 +57,7 @@ module ConflictHelper
      return false
    end
 
-   def management_for_first_job(job)
+   def self.management_for_first_job(job)
      device = Device.find(job.device_id)
      duration = get_duration(job)
      best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
@@ -82,7 +82,7 @@ module ConflictHelper
 
 
 
-   def is_next_job(job_to_tested, device_id)
+   def self.is_next_job(job_to_tested, device_id)
      if job_to_tested.finished == 0 && Device.find(device_id).jobs.find_all{ |j| j.finished == 0 }.count == 1
        true
      else
@@ -91,7 +91,7 @@ module ConflictHelper
    end
 
    #Gibt die Gesamtdauer aller wartender Jobs zurueck
-   def duration_of_queue(device_id)
+   def self.duration_of_queue(device_id)
      dur = 0
      Device.find(device_id).jobs.find(:all, :conditions => ["finished == ?", 0]).each { |j| 
        dur += get_duration(j) unless is_processing?(j)
@@ -101,7 +101,7 @@ module ConflictHelper
    end
 
    #Gibt den Gesamtabstand zwischen den Jobs zurueck
-   def entire_space_between_jobs(device_id)
+   def self.entire_space_between_jobs(device_id)
      entire_space = 0
      jobs = Device.find(device_id).jobs.order("id ASC").find(:all, :conditions => ["finished == ?", 0])
      jobs.each_with_index { |j,index|
@@ -114,7 +114,7 @@ module ConflictHelper
    end
 
    #Gibt den Abstand zwischen zwei Jobs zurueck
-   def space_between(job_1,job_2)
+   def self.space_between(job_1,job_2)
      end_of_job_1 = job_1.start.to_datetime + get_duration(job_1).minute
      space = ((job_2.start.to_datetime - end_of_job_1.to_datetime).to_f*24*60).to_i
 
@@ -123,7 +123,7 @@ module ConflictHelper
 
    # -2 => Job kann komplett ab 12 uhr starten
    # -1 => Job muss vor 12 Fertig sein
-   def get_benefit_from_sun(job, duration, sun_time)
+   def self.get_benefit_from_sun(job, duration, sun_time)
      benefit = nil
      if job.end_of_timespan.to_datetime >=  sun_time.to_datetime + duration.minute
        benefit = duration
@@ -136,18 +136,18 @@ module ConflictHelper
      benefit
    end
 
-   def first_job(device_id)
+   def self.first_job(device_id)
      first_job = Device.find(device_id).jobs.order("id ASC").limit(1).find(:all, :conditions => ["finished == ?", 0])
 
      first_job[0]
    end
 
-   def last_job(device_id)
+   def self.last_job(device_id)
      last_job = Device.find(device_id).jobs.order("id DESC").limit(1).find(:all, :conditions => ["finished == ?", 0])
 
      last_job[0]
    end
-   def start_now(device_id, job)
+   def self.start_now(device_id, job)
      job.update_attributes(:start => DateTime.now)
      if job.confirm
        Device.find(device_id).update_attributes(:state => 2)
@@ -156,7 +156,7 @@ module ConflictHelper
 
    #"entire_space_to_shift" gibt an, wieviel verschoben werden soll
    # Wenn -1 oder -2 dann maximale Verschiebung
-   def shift_jobs(device_id, entire_space_to_shift)
+   def self.shift_jobs(device_id, entire_space_to_shift)
      jobs = Device.find(device_id).jobs.order("id ASC").find(:all, :conditions => ["finished == ?", 0])
      jobs.each_with_index do |j,index| 
        if !is_processing?(j) && jobs.count == 1
@@ -187,20 +187,20 @@ module ConflictHelper
      end
    end
 
-   def is_processing?(first_job)
-     if DateTime.now <= first_job.start.to_datetime
-       false
-     else
+   def self.is_processing?(first_job)
+     if first_job.start.to_datetime <= DateTime.now && first_job.confirm == true
        true
+     else
+       false
      end
    end
 
-   def get_duration(job)
+   def self.get_duration(job)
 
      Program.find(job.program_id).duration_in_min
    end
 
-   def possible_start_if_shifting(device_id)
+   def self.possible_start_if_shifting(device_id)
      first_job = first_job(device_id) 
      if is_processing?(first_job)
        return  first_job.start.to_datetime +

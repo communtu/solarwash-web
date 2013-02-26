@@ -57,18 +57,28 @@ class Job < ActiveRecord::Base
   end
   
   def self.shift_jobs
-    puts "Jetzt: #{DateTime.now}"
     Device.all.each do |d|
-      first_job = d.jobs.order("id ASC").limit(1).find(:all, :conditions => ["finished = ?", 0])
+      first_job = d.jobs.order("id ASC").limit(1).find(:all, :conditions => ["finished = ?", 0])[0]
       
-      if  first_job[0] != nil && first_job[0].start.to_datetime < DateTime.now &&
-          first_job[0].confirm == false
-          
-            ConfirmHelper.confirm_shift_first_job(first_job[0])
-            puts 'hole jobs_to_shift'
+      if first_job != nil && first_job.start.to_datetime < DateTime.now &&
+         first_job.confirm == false
+        
+          #Ueberpruefung ob Zeit fuer Confirm abgelaufen ist
+          time_to_confirm = 15
+          time_difference = ((first_job.start.to_datetime - first_job.start_of_timespan.to_datetime).to_f*24*60).to_i
+          if time_difference >= time_to_confirm 
+            id = first_job.id
+            first_job.destroy
+            if d.jobs.count == 0
+              d.update_attributes(:state => 0)
+            else
+              ConflictHelper.delete_management(d, id)
+            end
+          else
+            ConfirmHelper.confirm_shift_first_job(first_job)
             jobs_to_shift = d.jobs.find(:all, :conditions => ["finished = ?", 0])
-            puts "#{jobs_to_shift}"
             ConfirmHelper.confirm_shift_all_jobs(jobs_to_shift)
+          end
       end
     end
   end
