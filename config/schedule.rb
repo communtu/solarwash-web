@@ -28,3 +28,10 @@ every 1.minutes do
   runner "Job.shift_jobs", :environment => 'development'
 end
 
+every 1.minutes do
+  runner "Job.update_job_status", :environment => 'production'
+end
+
+every 1.minutes do
+  runner "Job.shift_jobs", :environment => 'production'
+end

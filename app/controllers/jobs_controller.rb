@@ -41,7 +41,7 @@ class JobsController < ApplicationController
     respond_to do |format|
       if @job.update_attribute('confirm',true)
         if @job.start.to_datetime < DateTime.now
-          @job.update_attributes('start', DateTime.now)
+          @job.update_attribute('start', DateTime.now)
         end
         
           format.html { redirect_to root_path, notice: 'Vorgang wird so frueh wie moeglich gestartet!' }
