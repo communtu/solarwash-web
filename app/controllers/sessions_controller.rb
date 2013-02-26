@@ -2,6 +2,8 @@
 
 class SessionsController < ApplicationController
 
+  before_filter :authenticate_user!
+
   #before_filter :check_development_mode!
 
   def create
