@@ -33,19 +33,49 @@ class Job < ActiveRecord::Base
 
 
   def self.update_job_status
-    Program.create(name: "Pflegeleicht", degree: "40", duration_in_min: 180, consumption_in_wh: 560, device_id: 1)
-    
     Device.all.each do |d|
-      d.jobs.find(:all, :conditions => ["finished == ?", 0]).each do |j|
-        if (j.start.to_datetime + Program.find(j.program_id).duration_in_min.minute) <= DateTime.now
-          j.update_attributes(:finished => 1)
+      d.jobs.find(:all, :conditions => ["finished = ?", 0]).each do |j|
+        if (j.start.to_datetime + Program.find(j.program_id).duration_in_min.minute) <= DateTime.now &&
+            j.confirm == true
+          if j.update_attribute('finished', 1)
+            puts "Device: #{d.name}, Job_id: #{j.id} wurde auf beendet gesetzt"
+          else
+            puts "Fehler beim Beenden von Device: #{d.name}, Job_id: #{j.id}"
+          end
         end
       end
       if d.jobs.find(:all, :conditions => ["finished == ?", 0]).count == 0
-        d.update_attributes(:state => 0)
+        if d.update_attributes(:state => 0)
+          puts "Status von Device: #{d.name} wurde auf 0 gesetzt"
+        else
+          puts "Fehler beim Status auf 0 setzen von Device: #{d.name}"
+        end
       end
     end
-    
+  end
+  
+  def self.shift_jobs
+    puts "Start"
+    Device.all.each do |d|
+      puts "#{d.name}"
+      first_job = d.jobs.order("id ASC").limit(1).find(:all, :conditions => ["finished = ?", 0])
+      puts "#{d.jobs.order("id ASC").limit(1).find(:all, :conditions => ["finished = ?", 0])}"
+      puts "FirstJob: #{first_job[0]}"
+      if  first_job[0] != nil && first_job[0].start.to_datetime < DateTime.now &&
+          first_job[0].confirm == false
+        
+        time_difference = ((DateTime.now - first_job[0].start.to_datetime).to_f*24*60).to_i
+        puffer = 1
+        d.jobs.find(:all, :conditions => ["finished == ?", 0]).each do |j|
+          puts "Job: #{j}"
+          if j.update_attribute('start', (j.start.to_datetime + time_difference.minute + puffer.minute))
+            puts "Device: #{d.name}, Job_id: #{j.id} - Startzeit erhoeht"
+          else
+            puts "Device: #{d.name}, Job_id: #{j.id} - Fehler: Startzeit sollte um 1 Minute erhoeht werden"
+          end
+        end
+      end
+    end
   end
   
   private

@@ -5,5 +5,15 @@ module JobsHelper
     else
       "false"
     end
-  end    
+  end
+  
+  def has_to_be_confirmed(device, job)
+    first_job = device.jobs.order("id ASC").limit(1).find(:all, :conditions => ["finished == ?", 0])
+    if first_job[0] == job && job.confirm != true
+      return true
+    else
+      return false
+    end
+  end
+  
 end

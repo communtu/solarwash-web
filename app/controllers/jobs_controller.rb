@@ -33,7 +33,26 @@ class JobsController < ApplicationController
       format.json { render json: @job }
     end
   end
-
+  
+  def update_confirm
+    @device = Device.find(params[:device_id])
+    @job = @device.jobs.find(params[:job_id])
+    
+    respond_to do |format|
+      if @job.update_attribute('confirm',true)
+        if @job.start.to_datetime < DateTime.now
+          @job.update_attributes('start', DateTime.now)
+        end
+        
+          format.html { redirect_to root_path, notice: 'Vorgang wird so frueh wie moeglich gestartet!' }
+          format.json { head :no_content }
+      else
+          format.html { redirect_to root_path, notice: 'Fehler bei dem Update' }
+          format.json { render json: @job.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
   # GET /jobs/1/edit
   def edit
     @device = Device.find(params[:device_id])
@@ -126,6 +145,7 @@ class JobsController < ApplicationController
         management_if_more_jobs(j)
       end
       updated_job = j.dup
+      updated_job.update_attributes(:id => j.id)
       updated_job.save
     end
   end

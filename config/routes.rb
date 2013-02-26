@@ -4,7 +4,9 @@ Awe09::Application.routes.draw do
 
   root to: 'devices#index'
   resources :devices do
-    resources :jobs, :except => :index
+    resources :jobs, :except => :index do
+      put :update_confirm
+    end
   end
   resources :programs
 

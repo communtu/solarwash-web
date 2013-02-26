@@ -18,7 +18,13 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
+set :output, 'log/whenever.log'
 
 every 1.minutes do
-  runner "Job.update_job_status", :environment => 'development' 
+  runner "Job.update_job_status", :environment => 'development'
 end
+
+every 1.minutes do
+  runner "Job.shift_jobs", :environment => 'development'
+end
+
