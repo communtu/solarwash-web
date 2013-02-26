@@ -37,6 +37,7 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.1)
       debug_inspector (>= 0.0.1)
+    bit-struct (0.13.6)
     bootstrap-sass (2.3.0.1)
       sass (~> 3.2)
     bootstrap-tooltip-rails (0.1)
@@ -59,7 +60,7 @@ GEM
     coffee-script (2.2.0)
       coffee-script-source
       execjs
-    coffee-script-source (1.4.0)
+    coffee-script-source (1.5.0)
     debug_inspector (0.0.2)
     devise (2.2.3)
       bcrypt-ruby (~> 3.0)
@@ -80,8 +81,9 @@ GEM
     ffi (1.4.0)
     font-awesome-rails (3.0.2.0)
       railties (>= 3.1)
-    foreigner (1.3.0)
+    foreigner (1.4.0)
       activerecord (>= 3.0.0)
+    gccxml_gem (0.9.3)
     growl (1.0.3)
     guard (1.6.2)
       listen (>= 0.6.0)
@@ -100,7 +102,7 @@ GEM
       tilt
     has_scope (0.5.1)
     hike (1.2.1)
-    i18n (0.6.1)
+    i18n (0.6.2)
     journey (1.0.4)
     jquery-rails (2.2.1)
       railties (>= 3.0, < 5.0)
@@ -121,7 +123,7 @@ GEM
     method_source (0.8.1)
     mime-types (1.21)
     multi_json (1.6.1)
-    nokogiri (1.5.6)
+    nokogiri (1.4.7)
     orm_adapter (0.4.0)
     pg (0.14.1)
     polyglot (0.3.3)
@@ -155,6 +157,9 @@ GEM
       thor (>= 0.14.6, < 2.0)
     rake (10.0.3)
     rb-fsevent (0.9.1)
+    rbgccxml (1.0.3)
+      gccxml_gem (~> 0.9)
+      nokogiri (~> 1.4.0)
     rdoc (3.12.2)
       json (~> 1.4)
     rspec (2.13.0)
@@ -183,7 +188,7 @@ GEM
       multi_json (~> 1.0)
       rubyzip
       websocket (~> 1.0.4)
-    simple_form (2.0.4)
+    simple_form (2.1.0)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
     slop (3.4.3)
@@ -221,6 +226,7 @@ DEPENDENCIES
   bcrypt-ruby (= 3.0.1)
   better_errors
   binding_of_caller
+  bit-struct (~> 0.13.6)
   bootstrap-sass (~> 2.3.0.1)
   bootstrap-tooltip-rails
   capybara
@@ -230,6 +236,7 @@ DEPENDENCIES
   faker
   font-awesome-rails
   foreigner
+  gccxml_gem (~> 0.9.3)
   growl
   guard-rspec
   guard-spork
@@ -241,6 +248,7 @@ DEPENDENCIES
   pg
   rails (= 3.2.12)
   rb-fsevent (= 0.9.1)
+  rbgccxml (~> 1.0.3)
   rspec-rails
   sass-rails (~> 3.2.3)
   simple_form
