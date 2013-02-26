@@ -16,6 +16,7 @@
 #
 
 class Job < ActiveRecord::Base
+  
   before_validation :check_end_of_timespans
   
   attr_accessible :device_id, :end_of_timespan, :finished,
@@ -33,6 +34,7 @@ class Job < ActiveRecord::Base
 
 
   def self.update_job_status
+    puts "JETZT: #{DateTime.now}"
     Device.all.each do |d|
       d.jobs.find(:all, :conditions => ["finished = ?", 0]).each do |j|
         if (j.start.to_datetime + Program.find(j.program_id).duration_in_min.minute) <= DateTime.now &&
@@ -44,7 +46,7 @@ class Job < ActiveRecord::Base
           end
         end
       end
-      if d.jobs.find(:all, :conditions => ["finished == ?", 0]).count == 0
+      if d.jobs.find(:all, :conditions => ["finished = ?", 0]).count == 0
         if d.update_attributes(:state => 0)
           puts "Status von Device: #{d.name} wurde auf 0 gesetzt"
         else
@@ -55,25 +57,18 @@ class Job < ActiveRecord::Base
   end
   
   def self.shift_jobs
-    puts "Start"
+    puts "Jetzt: #{DateTime.now}"
     Device.all.each do |d|
-      puts "#{d.name}"
       first_job = d.jobs.order("id ASC").limit(1).find(:all, :conditions => ["finished = ?", 0])
-      puts "#{d.jobs.order("id ASC").limit(1).find(:all, :conditions => ["finished = ?", 0])}"
-      puts "FirstJob: #{first_job[0]}"
+      
       if  first_job[0] != nil && first_job[0].start.to_datetime < DateTime.now &&
           first_job[0].confirm == false
-        
-        time_difference = ((DateTime.now - first_job[0].start.to_datetime).to_f*24*60).to_i
-        puffer = 1
-        d.jobs.find(:all, :conditions => ["finished == ?", 0]).each do |j|
-          puts "Job: #{j}"
-          if j.update_attribute('start', (j.start.to_datetime + time_difference.minute + puffer.minute))
-            puts "Device: #{d.name}, Job_id: #{j.id} - Startzeit erhoeht"
-          else
-            puts "Device: #{d.name}, Job_id: #{j.id} - Fehler: Startzeit sollte um 1 Minute erhoeht werden"
-          end
-        end
+          
+            ConfirmHelper.confirm_shift_first_job(first_job[0])
+            puts 'hole jobs_to_shift'
+            jobs_to_shift = d.jobs.find(:all, :conditions => ["finished = ?", 0])
+            puts "#{jobs_to_shift}"
+            ConfirmHelper.confirm_shift_all_jobs(jobs_to_shift)
       end
     end
   end

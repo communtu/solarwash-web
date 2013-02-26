@@ -5,8 +5,8 @@ class SessionsController < ApplicationController
   #before_filter :check_development_mode!
 
   def create
-    Timecop.travel(params[:simulate_datetime])
-    flash[:success] = "Zeit gesetzt auf #{params[:simulate_datetime]}."
+    #Timecop.travel(params[:simulate_datetime])
+    #flash[:success] = "Zeit gesetzt auf #{params[:simulate_datetime]}."
 
     user_id = params[:user_id]
 
