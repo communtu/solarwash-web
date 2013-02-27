@@ -86,6 +86,10 @@ class Job < ActiveRecord::Base
   private
   
   def check_end_of_timespans
-    return false if end_of_timespan < DateTime.now + (Program.find(device_id).duration_in_min).minute
+    if end_of_timespan < DateTime.now + (Program.find(device_id).duration_in_min).minute
+      return false 
+    else
+      return true
+    end
   end
 end

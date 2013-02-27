@@ -35,7 +35,7 @@ module DevicesHelper
   end
 
   def format_start_time(job)
-    if job.start <= DateTime.now && job.confirm == true
+    if job.start <= DateTime.now && job.confirm == true && job.finished == 0
        entire_duration = Program.find(job.program_id).duration_in_min
   		 balance_time = entire_duration -  ((DateTime.now - job.start.to_datetime).to_f*24*60).to_i
   		 percent = ((entire_duration-balance_time).to_f/entire_duration.to_f*100).to_i
