@@ -69,7 +69,7 @@ class JobsController < ApplicationController
     @job = @device.jobs.new(params[:job])
     
     confirm = 0  if @job.confirm == nil
-
+    
     if !@job.end_of_timespan.is_a?(ActiveSupport::TimeWithZone)
       @job.end_of_timespan = DateTime.strptime(params[:job]['end_of_timespan'], '%d.%m.%Y %H:%M') - 1.hour
     end
@@ -77,6 +77,7 @@ class JobsController < ApplicationController
     respond_to do |format|
       
       if @job.valid?
+        sdf
         if !ConflictHelper.conflict_management(@job, @device)
           @job.save
           flash[:success] = "Auftrag wurde erfolgreich angelegt"
@@ -86,7 +87,7 @@ class JobsController < ApplicationController
           flash[:error] = "Aufgrund von anderen Auftraegen, kann die Waesche nicht rechtzeitig fertig werden"
         end
       else
-        flash[:error] = "Der Vorgang dauert mindestens #{Program.find(@job.program_id).duration_in_min} Minuten!"
+        #flash[:error] = "Der Vorgang dauert mindestens #{Program.find(@job.program_id).duration_in_min} Minuten!"
       end
       format.html { render action: "new"}
       format.json { render json: @job.errors, status: :unprocessable_entity }
