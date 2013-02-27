@@ -40,9 +40,11 @@ module DevicesHelper
   		 balance_time = entire_duration -  ((DateTime.now - job.start.to_datetime).to_f*24*60).to_i
   		 percent = ((entire_duration-balance_time).to_f/entire_duration.to_f*100).to_i
   		  
-  		  "width: #{percent}%;"	 
+       "<div class='progress progress-striped active'>
+            <div class='bar' style= 'width: #{percent}%;'></div>
+       </div>".html_safe
   	else
-  	    job.start
+  	    ""
 	  end
   end
   
