@@ -22,17 +22,20 @@
 					<% end %> </td>
 				<td><%= l(	job.start + Program.find(job.program_id).duration_in_min.minute,
 							:format => '%a, %d.%m - %H:%M')%></td>
-				<% if has_to_be_confirmed(Device.find(job.device_id), job) %>
+				<% if owner?(job) && has_to_be_confirmed(Device.find(job.device_id), job) %>
 					<td><%= link_to 'Bereit'.html_safe,
 							device_job_update_confirm_path(Device.find(job.device_id), job),
 							class: "btn btn-info novisit ",
 							:confirm => "Bist du wirklich bereit fuer den Vorgang von #{Device.find(job.device_id).name}?",
 							:method => :put %></td>
 				<% end %>
-				<td><%= link_to "Löschen", 
+				<td><% if owner?(job) %>
+						<%= link_to "Löschen", 
 						[Device.find(job.device_id), job],
 						class: "btn btn-inverse novisit ",
-				 		:confirm => "Bist du sicher?", :method => :delete %></td>
+				 		:confirm => "Bist du sicher?",
+						:method => :delete %>
+					<% end %></td>
 			</tr>
 			</tbody>
 		<% end %>

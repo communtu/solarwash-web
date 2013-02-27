@@ -13,7 +13,7 @@
   </tr>
 
   <% Job.all.each do |job| %> 
-    <% if (job.user_id == current_user.id) && ((old_jobs && job.finished == 1) || (!old_jobs && job.finished == 0)) %>
+    <% if owner?(job) && ((old_jobs && job.finished == 1) || (!old_jobs && job.finished == 0)) %>
       <tr>
         <td><%= Device.find(job.device_id).name %></td>
         <td><%= Program.find(job.program_id).name %></td>      
