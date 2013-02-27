@@ -4,7 +4,7 @@ gem 'rails', '3.2.12'
 gem 'bootstrap-sass', '~> 2.3.0.1'
 gem 'bcrypt-ruby', '3.0.1'
 gem "font-awesome-rails"  
-gem 'simple_form'
+gem 'simple_form', '~> 2.0.4'
 gem 'foreigner'
 gem 'has_scope'
 gem 'ui_datepicker-rails3'
