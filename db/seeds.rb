@@ -19,8 +19,7 @@ Program.create(name: "Trocknervorgang-Normal", degree: "40", duration_in_min: 18
 Program.create(name: "Trocknervorgang-Normal", degree: "40", duration_in_min: 180, consumption_in_wh: 560, device_id: 4)
 
 # Nutzer
-10.times do
-  User.create!(email: Faker::Internet.email, :password => '12341234')
-end
+User.create!(email: "sbrink@tzi.de", :password => '12345678')
+User.create!(email: "eikebehr@tzi.de", :password => 'ddofd666')
 
 #attr_accessible :device_id, :end_of_timespan, :finished, :program_id, :start_of_timespan, :user_id
