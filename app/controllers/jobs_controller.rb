@@ -1,6 +1,6 @@
 class JobsController < ApplicationController
   include ConflictHelper
-  
+  include ApplicationHelper
   # GET /jobs
   # GET /jobs.json
   def index    
@@ -41,16 +41,22 @@ class JobsController < ApplicationController
     @job = @device.jobs.find(params[:job_id])
     
     respond_to do |format|
+      if !owner?(@job)
+        flash[:error] = "Dazu hast du keine Berechtigung!"
+        format.html { redirect_to root_path }
+        format.json { render json: @job.errors, status: :unprocessable_entity }
+      end
       if @job.update_attribute('confirm',true)
         if @job.start.to_datetime < DateTime.now
           @job.update_attribute('start', DateTime.now)
           @device.update_attributes(:state => 2)
         end
-        
-          format.html { redirect_to root_path, notice: 'Vorgang wird so frueh wie moeglich gestartet!' }
+          flash[:success] = "Auftrag wurde erfolgreich angelegt"
+          format.html { redirect_to root_path }
           format.json { head :no_content }
       else
-          format.html { redirect_to root_path, notice: 'Fehler bei dem Update' }
+          flash[:error] = "Fehler bei dem Update"
+          format.html { redirect_to root_path }
           format.json { render json: @job.errors, status: :unprocessable_entity }
       end
     end
@@ -85,8 +91,6 @@ class JobsController < ApplicationController
         else
           flash[:error] = "Aufgrund von anderen Auftraegen, kann die Waesche nicht rechtzeitig fertig werden"
         end
-      else
-        #flash[:error] = "Der Vorgang dauert mindestens #{Program.find(@job.program_id).duration_in_min} Minuten!"
       end
       format.html { render action: "new"}
       format.json { render json: @job.errors, status: :unprocessable_entity }
@@ -100,8 +104,11 @@ class JobsController < ApplicationController
     @job = @device.jobs.find(params[:id])
 
     respond_to do |format|
-      if @job.update_attributes(params[:job])
-        format.html { redirect_to root_path, notice: 'Auftrag wurde erfolgreich geaendert.' }
+      if !owner?(@job)
+        flash[:error] = "Dazu hast du keine Berechtigung!"
+      elsif @job.update_attributes(params[:job])
+        flash[:success] = "Auftrag wurde erfolgreich geaendert"
+        format.html { redirect_to root_path }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -116,7 +123,9 @@ class JobsController < ApplicationController
     @device = Device.find(params[:device_id])
     @job = @device.jobs.find(params[:id])
     
-    if ConflictHelper.is_processing?(@job)
+    if !owner?(@job)
+      flash[:error] = "Dazu hast du keine Berechtigung!"
+    elsif ConflictHelper.is_processing?(@job)
       flash[:error] = "Auftrag wird gerade bearbeitet und kann nicht mehr geloescht werden"
     else
       job_id = @job.id

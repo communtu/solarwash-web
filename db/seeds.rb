@@ -23,8 +23,11 @@ user = User.new(email: "sbrink@tzi.de", :password => '12345678')
 user.skip_confirmation! 
 user.save!
 
-user = User.new(email: "eikebehr@tzi.de", :password => 'ddofd666')
+user = User.new(email: "eikebehr@tzi.de", :password => 'ddofd666', :admin => true)
 user.skip_confirmation! 
 user.save! 
 
+user = User.new(email: "solarwash@solarwash.de", :password => '12345678')
+user.skip_confirmation!
+user.save!
 #attr_accessible :device_id, :end_of_timespan, :finished, :program_id, :start_of_timespan, :user_id
