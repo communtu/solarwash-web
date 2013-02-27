@@ -20,7 +20,7 @@ gem "gccxml_gem", "~> 0.9.3"
 gem "rbgccxml", "~> 1.0.3"
 gem "bit-struct", "~> 0.13.6"
 gem 'whenever', :require => false
-gem 'activeadmin'
+gem 'activeadmin', github: 'Daxter/active_admin', branch: 'bugfix/1773-execjs'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
