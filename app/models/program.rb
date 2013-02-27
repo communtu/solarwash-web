@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # == Schema Information
 #
 # Table name: programs
@@ -19,5 +21,9 @@ class Program < ActiveRecord::Base
 
   def to_param
     [id, name.parameterize].join("-")
+  end
+
+  def full_name
+  	"#{name}, #{degree}° (#{duration_in_min} Minuten)"
   end
 end

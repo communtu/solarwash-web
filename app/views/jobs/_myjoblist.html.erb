@@ -16,7 +16,7 @@
     <% if owner?(job) && ((old_jobs && job.finished == 1) || (!old_jobs && job.finished == 0)) %>
       <tr>
         <td><%= Device.find(job.device_id).name %></td>
-        <td><%= Program.find(job.program_id).name %></td>      
+        <td><%= Program.find(job.program_id).full_name %></td>      
         <td><%= l(job.start_of_timespan, :format => '%a, %d.%m - %H:%M') %></td>
         <td><% if format_start_time(job).is_a?(String) %>
           <div class="progress progress-striped active">
