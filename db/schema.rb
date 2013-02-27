@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130227151645) do
+ActiveRecord::Schema.define(:version => 20130227171707) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -57,6 +57,15 @@ ActiveRecord::Schema.define(:version => 20130227151645) do
     t.integer  "consumption_in_wh"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+  end
+
+  create_table "settings", :force => true do |t|
+    t.integer  "sun_hour"
+    t.integer  "sun_minute"
+    t.integer  "sun_second"
+    t.integer  "time_to_confirm"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "users", :force => true do |t|

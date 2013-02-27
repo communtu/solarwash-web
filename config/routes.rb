@@ -1,5 +1,8 @@
 Awe09::Application.routes.draw do
 
+  resources :settings
+
+
   ActiveAdmin.routes(self)
 
   devise_for :users

@@ -30,7 +30,9 @@ module ConflictHelper
    def self.management_if_more_jobs(job)
      device = Device.find(job.device_id)
      duration = get_duration(job)
-     best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
+     best_time_to_start = DateTime.now.change({ :hour => Setting.find(1).sun_hour.to_i,
+                                                 :min => Setting.find(1).sun_minute.to_i,
+                                                 :sec => Setting.find(1).sun_second.to_i})
      current_time = DateTime.now
 
      if possible_start_if_shifting(device.id).to_datetime + duration.minute >= job.end_of_timespan.to_datetime
@@ -60,7 +62,9 @@ module ConflictHelper
    def self.management_for_first_job(job)
      device = Device.find(job.device_id)
      duration = get_duration(job)
-     best_time_to_start = DateTime.now.change({:hour => 12, :min => 0, :sec => 0})
+     best_time_to_start = DateTime.now.change({ :hour => Setting.find(1).sun_hour.to_i,
+                                                 :min => Setting.find(1).sun_minute.to_i,
+                                                 :sec => Setting.find(1).sun_second.to_i})
      current_time = DateTime.now
 
      if best_time_to_start >= job.end_of_timespan || best_time_to_start <= current_time
