@@ -21,7 +21,7 @@
           <% end %>
         </td>
 				<td>
-					<%= "#{User.find(job.user_id).id}" %>
+					<%= "#{User.find(job.user_id).name}" %>
 				</td>
 	    	<td>
 	    		<%= Program.find(job.program_id).full_name %>
