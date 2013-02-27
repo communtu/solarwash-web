@@ -2,10 +2,14 @@
   <tr>
     <th>Gerät</th>
     <th>Programm</th>
-    <th>Status</th>
     <th>Auftrag eingestellt</th>
     <th>Startzeit</th>
-    <th>Geschätzte Endzeit</th>
+    <th><% if !old_jobs %>
+	Geschätzte Endzeit
+		<%else%>
+		Endzeit
+		<%end%>
+	</th>
   </tr>
 
   <% Job.all.each do |job| %> 
@@ -13,7 +17,6 @@
       <tr>
         <td><%= Device.find(job.device_id).name %></td>
         <td><%= Program.find(job.program_id).name %></td>      
-        <td><%= job.finished %></td>
         <td><%= l(job.start_of_timespan, :format => '%a, %d.%m - %H:%M') %></td>
         <td><% if format_start_time(job).is_a?(String) %>
           <div class="progress progress-striped active">
