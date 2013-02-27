@@ -2,7 +2,7 @@
   %div{:class => "alert alert-#{key}"}= value
 = simple_form_for [@job.device, @job], html: {class: 'form-horizontal'} do |f|
   = f.hidden_field :user_id, :value => current_user.id
-  = f.input :program_id, collection: @job.device.programs, label:"Programm"
+  = f.input :program_id, collection: @job.device.programs, label:"Programm", :label_method => lambda { |program| "#{program.name}, #{program.duration_in_min}min, #{program.degree}°" }, :value_method => :id
   = f.hidden_field :finished, :value => 0
   = f.hidden_field :start_of_timespan, :value => DateTime.now # TODO immer aktuelle Zeit
   = f.input :end_of_timespan, :as => :ui_date_time_picker, label:"Fertig bis spätestens", :value => DateTime.now.change({:hour => 8, :min => 0, :sec => 0})
