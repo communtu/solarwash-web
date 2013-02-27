@@ -44,7 +44,7 @@ class JobsController < ApplicationController
       if @job.update_attribute('confirm',true)
         if @job.start.to_datetime < DateTime.now
           @job.update_attribute('start', DateTime.now)
-          @device.update_attributes(:start => 2)
+          @device.update_attributes(:state => 2)
         end
         
           format.html { redirect_to root_path, notice: 'Vorgang wird so frueh wie moeglich gestartet!' }
@@ -70,14 +70,13 @@ class JobsController < ApplicationController
     
     confirm = 0  if @job.confirm == nil
     
-    if !@job.end_of_timespan.is_a?(ActiveSupport::TimeWithZone)
+    if @job.end_of_timespan != nil && !@job.end_of_timespan.is_a?(ActiveSupport::TimeWithZone)
       @job.end_of_timespan = DateTime.strptime(params[:job]['end_of_timespan'], '%d.%m.%Y %H:%M') - 1.hour
     end
     
     respond_to do |format|
       
       if @job.valid?
-        sdf
         if !ConflictHelper.conflict_management(@job, @device)
           @job.save
           flash[:success] = "Auftrag wurde erfolgreich angelegt"
