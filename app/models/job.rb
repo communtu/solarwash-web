@@ -95,7 +95,9 @@ class Job < ActiveRecord::Base
   private
   
   def check_end_of_timespans
-    if end_of_timespan < DateTime.now + (Program.find(device_id).duration_in_min).minute
+    if end_of_timespan == nil
+      errors.add(:end_of_timespan, "Du musst eine Zeit eingeben")
+    elsif end_of_timespan < DateTime.now + (Program.find(device_id).duration_in_min).minute
       errors.add(:end_of_timespan, "Die angegebene Zeit ist zu klein")
     end
   end
