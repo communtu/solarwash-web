@@ -7,9 +7,9 @@
 	  <%= f.error_notification %>
 
 	  <div class="form-inputs">
-	    <%= f.input :email, :required => true, :autofocus => true %>
-	    <%= f.input :password, :required => true %>
-	    <%= f.input :password_confirmation, :required => true %>
+	    <%= f.input :email, :required => true, :autofocus => true, label:"Email" %>
+	    <%= f.input :password, :required => true, label:"Passwort" %>
+	    <%= f.input :password_confirmation, :required => true, label:"Passwort wiederholen" %>
 	  </div>
 
 	  <div class="form-actions">
