@@ -3,6 +3,14 @@
     <div class="container">
       <%= link_to "SolarWash ", root_path, class: "brand" %>
       <i class="<%= vacant_device %> icon_baseline brand"></i>
+
+      <div id="user_nav">
+        <% if user_signed_in? %>
+          Angemeldet als <%= current_user.email %>
+          <%= link_to 'Abmelden', destroy_user_session_path, :method => :delete %>
+        <% end %>
+      </div>
+
       <ul class="nav pull-right">
         <li><%= link_to '<i class="icon-tasks icon_baseline"></i> Aufträge'.html_safe, my_jobs_path%></li>
         <li><%= link_to '<i class="icon-briefcase icon_baseline"></i> Geräte'.html_safe, devices_path%></li>

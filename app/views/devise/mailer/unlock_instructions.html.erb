@@ -1,0 +1,7 @@
+<p>Hallo <%= @resource.email %>!</p>
+
+<p>Dein Account wurde wegen einer hohen Zahl fehlgeschlagener Anmeldeversuche gesperrt.</p>
+
+<p>Klicke auf folgenden Link, um deinen Account wieder freizuschalten:</p>
+
+<p><%= link_to 'Account freischalten', unlock_url(@resource, :unlock_token => @resource.unlock_token) %></p>
