@@ -21,6 +21,8 @@ gem "rbgccxml", "~> 1.0.3"
 gem "bit-struct", "~> 0.13.6"
 gem 'whenever', :require => false
 gem 'activeadmin', github: 'Daxter/active_admin', branch: 'bugfix/1773-execjs'
+gem 'execjs'
+gem 'therubyracer'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -58,6 +60,4 @@ group :test do
 end
 
 group :production do
-  gem 'execjs'
-  gem 'therubyracer'
 end

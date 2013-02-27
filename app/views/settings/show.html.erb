@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Sun:</b>
+  <%= @setting.sun %>
+</p>
+
+<p>
+  <b>Time to confirm:</b>
+  <%= @setting.time_to_confirm %>
+</p>
+
+
+<%= link_to 'Edit', edit_setting_path(@setting) %> |
+<%= link_to 'Back', settings_path %>

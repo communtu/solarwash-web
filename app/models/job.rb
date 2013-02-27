@@ -70,7 +70,7 @@ class Job < ActiveRecord::Base
          first_job.confirm == false
         
           #Ueberpruefung ob Zeit fuer Confirm abgelaufen ist
-          time_to_confirm = 3
+          time_to_confirm = Setting.find(1).time_to_confirm
           time_difference = ((first_job.start.to_datetime - first_job.start_of_timespan.to_datetime).to_f*24*60).to_i
           if time_difference >= time_to_confirm 
             puts "shift_jobs: time_to_confirm abgelaufen => Loeschen"
