@@ -1,32 +1,50 @@
 <table class="table">
   <tr>
+    <th></th>
     <th>Gerät</th>
     <th>Programm</th>
     <th>Auftrag eingestellt</th>
     <th>Startzeit</th>
+    <th>Fortschritt</th>
     <th><% if !old_jobs %>
 	Geschätzte Endzeit
 		<%else%>
 		Endzeit
 		<%end%>
-	</th>
+    <th></th>
+    <th></th>
   </tr>
 
   <% Job.all.each do |job| %> 
     <% if owner?(job) && ((old_jobs && job.finished == 1) || (!old_jobs && job.finished == 0)) %>
       <tr>
+        <tr <% if !is_running?(job) %> data-provides="rowlink" <%end %>>
+        <td>
+          <% if !is_running?(job) %>
+            <%= link_to "", edit_device_job_path(Device.find(job.device_id), job) %>
+          <% end %>
+        </td>
         <td><%= Device.find(job.device_id).name %></td>
         <td><%= Program.find(job.program_id).full_name %></td>      
         <td><%= l(job.start_of_timespan, :format => '%a, %d.%m - %H:%M') %></td>
-        <td><% if format_start_time(job).is_a?(String) %>
-          <div class="progress progress-striped active">
-            <div class="bar" style= "<%= format_start_time(job) %>"></div>
-          </div> 
-          <% else %>
-          <%= l(format_start_time(job), :format => '%a, %d.%m - %H:%M') %>
-          <% end %> </td>
-        <td><%= l(  job.start + Program.find(job.program_id).duration_in_min.minute,
-              :format => '%a, %d.%m - %H:%M')%></td>
+        <td>
+          <%= l(job.start, :format => '%H:%M') %>
+        </td>
+        <td>
+          <%= format_start_time(job) %>
+        </td>
+        <td>
+          <%= l(job.start + Program.find(job.program_id).duration_in_min.minute, :format => '%a, %d.%m - %H:%M')%>
+        </td>
+        <% if owner?(job) && has_to_be_confirmed(Device.find(job.device_id), job) %>
+          <td class="nolink">
+            <%= link_to 'Bereit'.html_safe, device_job_update_confirm_path(Device.find(job.device_id), job),class: "btn btn-info novisit ", :confirm => "Bist du wirklich bereit für den Vorgang von #{Device.find(job.device_id).name}?", :method => :put %></td>
+        <% end %>
+        <td class="nolink">
+          <% if !is_running?(job) %> 
+            <%= link_to "Löschen", [Device.find(job.device_id), job], class: "btn btn-inverse novisit", :confirm => "Bist du sicher?", :method => :delete %>
+          <% end %> 
+        </td>
       </tr>
     <% end %>
   <% end %>
