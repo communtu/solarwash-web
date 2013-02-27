@@ -13,7 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
-//= require jquery.ui.all
+//= require jquery-ui
 //= require bootstrap-tooltip.js
 //= require bootstrap-popover.js
 //= require_tree .
