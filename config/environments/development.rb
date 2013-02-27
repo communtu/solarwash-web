@@ -43,6 +43,6 @@ Awe09::Application.configure do
   :port                 => 587,
   :user_name            => 'awe.solarwash',
   :password             => 'solarwash',
-  :authentication       => 'plain',
+  :authentication       => :plain,
   :enable_starttls_auto => true  }
 end
