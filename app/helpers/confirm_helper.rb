@@ -2,15 +2,10 @@ module ConfirmHelper
   
   def self.confirm_shift_all_jobs(jobs)
     jobs.each_with_index do |j,index|
-      puts "hodor_1"
       if jobs[index+1] != nil
-        puts "hodor_1"
         time_difference = ((j.start.to_datetime + Program.find(j.program_id).duration_in_min.minute -
                             jobs[index+1].start.to_datetime).to_f*24*60).to_i
-        puts "Zeitdifferenz: #{time_difference}"
-        puts "Job: #{j}"
         if time_difference > 0
-          puts "Job_id: #{j.start.to_datetime + Program.find(j.program_id).duration_in_min.minute} - foo"
           if jobs[index+1].update_attribute('start', (j.start.to_datetime + Program.find(j.program_id).duration_in_min.minute))
             puts "Job_id: #{jobs[index+1].start} - Startzeit erhoeht"
           else
