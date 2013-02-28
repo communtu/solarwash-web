@@ -13,6 +13,9 @@
               <li><%= link_to '<i class="icon-tasks icon_baseline"></i> Aufträge'.html_safe, my_jobs_path%></li>
               <li><%= link_to '<i class="icon-briefcase icon_baseline"></i> Geräte'.html_safe, devices_path%></li>
               <li><%= link_to '<i class="icon-cog icon_baseline"></i> Einstellungen'.html_safe, edit_user_registration_path%></li>
+              <% if current_admin_user %>
+                <li><%= link_to '<i class="icon-dashboard icon_baseline"></i> Administration'.html_safe, admin_root_path%></li>
+              <% end %>
             </ul>
           </div>       
         </div>
