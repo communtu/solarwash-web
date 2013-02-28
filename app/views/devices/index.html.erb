@@ -1,6 +1,5 @@
 <div>
 <h1>Übersicht</h1>
-<h3> (Es wird voerst angenommen, dass 12:00 Uhr die günstigste Startzeit ist) </h3>
 <div class="row-fluid">
 <% @devices.each_with_index do |device, index| %>
     <%if (index%2==0) %><div class="row-fluid"><% end %>
@@ -22,7 +21,7 @@
           </div>  
         </div>
       </div>
-      <div class="container-fluid">
+      <div class="container-fluid overflow">
        <%= render 'joblist', :device_id => device.id %>
       </div>
     </div>

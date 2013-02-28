@@ -24,10 +24,14 @@ class Program < ActiveRecord::Base
   #end
 
   def full_name_degree
-  	"#{name}, #{degree}°"
+    if degree
+      "#{name}, #{degree}°"
+    else
+      "#{name}"
+    end
   end
   
   def full_duration
-    "(#{duration_in_min} Minuten)"
+    " (#{duration_in_min} Minuten)"
   end
 end

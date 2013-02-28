@@ -17,6 +17,7 @@ module JobsHelper
   end
 
   def is_running?(job)
+    
     job.is_running
   end
   

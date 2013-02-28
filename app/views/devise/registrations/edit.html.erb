@@ -4,8 +4,8 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-	<%= f.input :name %>
-	<%= f.input :apartmentnumber %>
+	<%= f.input :name, label:"Name" %>
+	<%= f.input :apartmentnumber, label:"Wohnungsnummer" %>
 	<%= f.input :email, :required => true, :autofocus => true, label:"Email" %>
 
     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -25,5 +25,3 @@
 <h3>Account kündigen</h3>
 
 <%= link_to "Account löschen", registration_path(resource_name), :data => { :confirm => "Bist du sicher?" }, :method => :delete %>
-</br>
-<%= link_to "Zurück", :back %>
