@@ -5,7 +5,7 @@
   = f.hidden_field :start_of_timespan, :value => DateTime.now
   = f.input :end_of_timespan, :as => :ui_date_time_picker, label:"Fertig bis spätestens"
   -if @job.device.state == 0
-    = f.input :confirm, as: :radio_buttons, label:"Wäsche in der Waschmaschine?", :checked => setDefaultConfirm(@job.device.state)
+    = f.input :confirm, as: :radio_buttons, label:"#{clothes_inside(@job.device.devicetype)}", :checked => setDefaultConfirm(@job.device.state)
 
   .form-actions
     = f.button :submit, "Auftrag erstellen", class: 'btn-primary'

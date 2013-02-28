@@ -1,9 +1,23 @@
+# encoding: utf-8
+
 module DevicesHelper
   def type_title(devicetype)
     if devicetype == 0
       "Waschmaschine"
-    else
+    elsif devicetype == 1
       "Trockner"
+    else
+      "Unbekannter Gerätetyp"
+    end
+  end
+
+  def clothes_inside(devicetype)
+    if devicetype == 0
+      "Wäsche in der Waschmaschine?"
+    elsif devicetype == 1
+      "Wäsche im Trockner?"
+    else
+      "Wäsche im unbekannten Gerät?"
     end
   end
   
