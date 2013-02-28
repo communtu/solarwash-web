@@ -23,7 +23,7 @@ class Job < ActiveRecord::Base
   
   attr_accessible :device_id, :end_of_timespan, :finished,
                   :program_id, :start_of_timespan, :user_id,
-                  :start, :confirm
+                  :start, :confirm, :is_running
   
   #def to_param
   #  [id, "job"].join("-")
@@ -44,6 +44,8 @@ class Job < ActiveRecord::Base
         if (j.start.to_datetime + Program.find(j.program_id).duration_in_min.minute) <= DateTime.now &&
             j.confirm == true
           if j.update_attribute('finished', 1)
+            j.update_attributes(:is_running => false)
+            d.update_attribute('state', 1)
             puts "Device: #{d.name}, Job_id: #{j.id} wurde auf beendet gesetzt"
           else
             puts "Fehler beim Beenden von Device: #{d.name}, Job_id: #{j.id}"
@@ -67,7 +69,7 @@ class Job < ActiveRecord::Base
       first_job = d.jobs.order("id ASC").limit(1).find(:all, :conditions => ["finished = ?", 0])[0]
       
       if first_job != nil && first_job.start.to_datetime < DateTime.now &&
-         first_job.confirm == false
+         !first_job.confirm
         
           #Ueberpruefung ob Zeit fuer Confirm abgelaufen ist
           time_to_confirm = Setting.find(1).time_to_confirm

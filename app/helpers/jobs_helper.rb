@@ -17,7 +17,7 @@ module JobsHelper
   end
 
   def is_running?(job)
-    true if job.start <= DateTime.now && job.finished == 0
+    job.is_running
   end
   
 end

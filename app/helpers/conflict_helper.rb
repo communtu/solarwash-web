@@ -70,6 +70,7 @@ module ConflictHelper
      if best_time_to_start >= job.end_of_timespan || best_time_to_start <= current_time
        job.start = current_time # Weit vor 12 oder Weit nach 12
        if job.confirm
+         job.update_attributes(:is_running => true)
          device.update_attributes(:state => 2)
        else
          device.update_attributes(:state => 1)
@@ -86,13 +87,13 @@ module ConflictHelper
 
 
 
-   def self.is_next_job(job_to_tested, device_id)
-     if job_to_tested.finished == 0 && Device.find(device_id).jobs.find_all{ |j| j.finished == 0 }.count == 1
-       true
-     else
-       false
-     end
-   end
+   #def self.is_next_job(job_to_tested, device_id)
+  #   if job_to_tested.finished == 0 && Device.find(device_id).jobs.find_all{ |j| j.finished == 0 }.count == 1
+   #    true
+    # else
+     #  false
+    # end
+   #end
 
    #Gibt die Gesamtdauer aller wartender Jobs zurueck
    def self.duration_of_queue(device_id)
@@ -154,6 +155,7 @@ module ConflictHelper
    def self.start_now(device_id, job)
      job.update_attributes(:start => DateTime.now)
      if job.confirm
+       job.update_attributes(:is_running => true)
        Device.find(device_id).update_attributes(:state => 2)
      end
    end
@@ -192,11 +194,8 @@ module ConflictHelper
    end
 
    def self.is_processing?(first_job)
-     if first_job.start.to_datetime <= DateTime.now && first_job.confirm == true
-       true
-     else
-       false
-     end
+     
+     first_job.is_running
    end
 
    def self.get_duration(job)
