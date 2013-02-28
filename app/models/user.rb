@@ -33,5 +33,9 @@ class User < ActiveRecord::Base
   validates :email, presence: true, 
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
+
+  validates :name, presence: true
+  validates :apartmentnumber, presence: true
+  validates :password_confirmation, presence: true
   # attr_accessible :title, :body
 end

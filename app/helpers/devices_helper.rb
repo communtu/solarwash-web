@@ -34,14 +34,16 @@ module DevicesHelper
   def type_icon(devicetype)
     if devicetype == 0
       "icon-tint"
-    else
+    elsif devicetype == 1
       "icon-fire"
+    else
+      "icon-ban-circle"
     end
   end
 
-  def vacant_device
+  def vacant_device(type)
     Device.all.map { |d|
-      if d.state == 0 || d.state == 1 # Geraet laeuft nicht
+      if d.devicetype == type && d.state == 0 # Geraet laeuft nicht        
         return "icon-ok"
       end      
     }

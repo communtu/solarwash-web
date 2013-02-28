@@ -1,34 +1,31 @@
 <header class="navbar navbar-inverse">
   <div class="navbar-inner">
-    <div class="container">
 
-      <div class="container-fluid">
-        <div class="row-fluid">
-          <div class="span2">
-            <%= link_to "SolarWash ", root_path, class: "brand" %>
-            <i class="<%= vacant_device %> icon_baseline brand"></i>
-          </div>
-          <div class="span10">
-            <ul class="nav pull-right">
-              <li><%= link_to '<i class="icon-tasks icon_baseline"></i> Aufträge'.html_safe, my_jobs_path%></li>
-              <li><%= link_to '<i class="icon-briefcase icon_baseline"></i> Geräte'.html_safe, devices_path%></li>
-              <li><%= link_to '<i class="icon-cog icon_baseline"></i> Einstellungen'.html_safe, edit_user_registration_path%></li>
-              <% if current_admin_user %>
-                <li><%= link_to '<i class="icon-dashboard icon_baseline"></i> Administration'.html_safe, admin_root_path%></li>
-              <% end %>
-            </ul>
-          </div>       
-        </div>
-    
-        <div class="row-fluid">
-          <% if user_signed_in? %>
-          Angemeldet als <%= current_user.email %>
-          <%= link_to 'Abmelden', destroy_user_session_path, :method => 'delete', :confirm => "Wirklich abmelden?" %>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <%= link_to "SolarWash ", root_path, class: "brand" %>
+        <i class="icon-tint icon_baseline brand"></i><i class="<%= vacant_device(0) %> icon_baseline brand"></i>
+
+        <i class="icon-fire icon_baseline brand"></i><i class="<%= vacant_device(1) %> icon_baseline brand"></i>
+
+        <ul class="nav pull-right">
+          <li><%= link_to '<i class="icon-tasks icon_baseline"></i> Aufträge'.html_safe, my_jobs_path%></li>
+          <li><%= link_to '<i class="icon-briefcase icon_baseline"></i> Geräte'.html_safe, devices_path%></li>
+          <li><%= link_to '<i class="icon-cog icon_baseline"></i> Einstellungen'.html_safe, edit_user_registration_path%></li>
+          <% if current_admin_user %>
+            <li><%= link_to '<i class="icon-dashboard icon_baseline"></i> Administration'.html_safe, admin_root_path%></li>
           <% end %>
-        </div>
-        
+        </ul>  
+      </div>
+  
+      <div class="row-fluid">
+        <% if user_signed_in? %>
+        Angemeldet als <%= current_user.email %>
+        <%= link_to 'Abmelden', destroy_user_session_path, :method => 'delete', :confirm => "Wirklich abmelden?" %>
+        <% end %>
       </div>
       
     </div>
+      
   </div>
 </header>

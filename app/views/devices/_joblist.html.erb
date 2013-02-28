@@ -21,7 +21,7 @@
           <% end %>
         </td>
 				<td class="span2">
-					<%= "#{User.find(job.user_id).name}" %>
+					<%= "#{User.find(job.user_id).name} (#{User.find(job.user_id).apartmentnumber})" %>
 				</td>
 	    	<td class="span3">
 	    		<p><%= Program.find(job.program_id).full_name_degree %></p>

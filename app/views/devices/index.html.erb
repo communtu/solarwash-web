@@ -1,5 +1,10 @@
 <div>
 <h1>Übersicht</h1>
+
+<span class="label" rel="popover" title="Comment" data-placement="left" data-content="Tooltip on top">
+  <i class="icon-fire icon"></i>
+</span>
+
 <div class="row-fluid">
 <% @devices.each_with_index do |device, index| %>
     <%if (index%2==0) %><div class="row-fluid"><% end %>
@@ -32,3 +37,6 @@
     <% end %>
   <% end %>
 </div>
+
+
+$('.label').popover();
