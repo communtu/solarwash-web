@@ -23,7 +23,11 @@ class Program < ActiveRecord::Base
   #  [id, name.parameterize].join("-")
   #end
 
-  def full_name
-  	"#{name}, #{degree}° (#{duration_in_min} Minuten)"
+  def full_name_degree
+  	"#{name}, #{degree}°"
+  end
+  
+  def full_duration
+    "(#{duration_in_min} Minuten)"
   end
 end

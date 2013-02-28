@@ -1,14 +1,14 @@
 <table class="table table-condensed">
 	<thead>
 	<tr>
-		<th></th>
-		<th>Auftrag- geber</th>
-	  <th>Programm</th>
-	  <th>Startzeit</th>
-	  <th>Fortschritt</th>
-		<th>Geschätzte Endzeit</th>
-		<th></th>
-		<th></th>
+		<td></td>
+		<td>Auftraggeber</td>
+	  <td>Programm</td>
+		<td></td>
+	  <td><p style="text-align:center">Fortschritt</p></td>
+		<td></td>
+		<td></td>
+		<td></td>
 	</tr>
 	</thead>
 	<% Job.all.each do |job| %>
@@ -20,34 +20,41 @@
           	<%= link_to "", edit_device_job_path(Device.find(job.device_id), job) %>
           <% end %>
         </td>
-				<td>
+				<td class="span2">
 					<%= "#{User.find(job.user_id).name}" %>
 				</td>
-	    	<td>
-	    		<%= Program.find(job.program_id).full_name %>
+	    	<td class="span3">
+	    		<p><%= Program.find(job.program_id).full_name_degree %></p>
+				<p><%= Program.find(job.program_id).full_duration %></p>
 	    	</td>
-	    	<td>
-					<%= l(job.start, :format => '%H:%M') %>
+	    	<td class="span1">
+				<p style="text-align:right"><%= l(job.start, :format => '%H:%M') %></p>
+			</td>
+			<td class="span2">
+				<%= format_start_time(job) %>
+			</td>
+			<td class="span1">			
+				<%= l(job.start + Program.find(job.program_id).duration_in_min.minute,
+							:format => '%H:%M') %> 
+			</td>
+			<% if owner?(job) && has_to_be_confirmed(Device.find(job.device_id), job) %>
+				<td class="span1 nolink"><%= link_to ' Bereit &nbsp;'.html_safe,
+					device_job_update_confirm_path(Device.find(job.device_id), job),
+					class: "btn btn-info novisit",
+					:confirm => "Bist du wirklich bereit für den Vorgang von #{Device.find(job.device_id).name}?",
+					:method => :put %>
 				</td>
-				<td>
-					<%= format_start_time(job) %>
-				</td>				
-				<td><%= l(job.start + Program.find(job.program_id).duration_in_min.minute,
-							:format => '%a, %d.%m - %H:%M')%></td>
-				<% if owner?(job) && has_to_be_confirmed(Device.find(job.device_id), job) %>
-					<td class="nolink"><%= link_to 'Bereit'.html_safe,
-							device_job_update_confirm_path(Device.find(job.device_id), job),
-							class: "btn btn-info novisit",
-							:confirm => "Bist du wirklich bereit für den Vorgang von #{Device.find(job.device_id).name}?",
-							:method => :put %></td>
-				<% end %>
-				<td class="nolink"><% if owner?(job) && !is_running?(job)%>
-						<%= link_to "Löschen", 
-						[Device.find(job.device_id), job],
-						class: "btn btn-inverse novisit",
-				 		:confirm => "Bist du sicher?",
-						:method => :delete %>
-					<% end %></td>
+			<% end %>
+			<% if owner?(job) && !is_running?(job)%>	
+				<td class="span1 nolink">
+					<%= link_to "Löschen", 
+					[Device.find(job.device_id), job],
+					class: "btn btn-inverse novisit",
+				 	:confirm => "Bist du sicher?",
+					:method => :delete %>
+				</td>
+			<% end %>
+				
 			</tr>
 			</tbody>
 		<% end %>

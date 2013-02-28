@@ -25,7 +25,8 @@
           <% end %>
         </td>
         <td><%= Device.find(job.device_id).name %></td>
-        <td><%= Program.find(job.program_id).full_name %></td>      
+        <td><%= Program.find(job.program_id).full_name_degree %> </br>
+		<%= Program.find(job.program_id).full_duration %></td>      
         <td><%= l(job.start_of_timespan, :format => '%a, %d.%m - %H:%M') %></td>
         <td>
           <%= l(job.start, :format => '%H:%M') %>
