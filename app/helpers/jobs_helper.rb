@@ -18,7 +18,7 @@ module JobsHelper
 
   def is_running?(job)
     
-    job.is_running
+    job.is_running && job.finished == 0
   end
   
 end

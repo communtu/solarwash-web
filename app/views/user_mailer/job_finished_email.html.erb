@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <p>Hallo, <%= @user.name %></p>
+    <p>
+      Deine Auftrag: "<%= @program.name %>" von der Maschine: "<%= @device.name %>" wurde erfolgreich beendet.<br/>
+    </p>
+	<p>
+	  Unter folgenden Link gelangst du zur Solarwash-Seite: <a href="<%= @url %>">Solarwash</a>.
+	</p>
+    <p>Einen schoenen Tag wuenscht dir Solarwash!</p>
+  </body>
+</html>

@@ -6,9 +6,15 @@ module ConflictHelper
      #Loeschen der nachfolgenden Jobs
      Job.delete_all([ "finished = ? AND id > ? AND device_id = ?", 0,job_id,device.id ])
      jobs.each do |j| 
-       if device.jobs.count == 0
+       if device.jobs.find(:all, :conditions => ["finished == ?", 0]).count == 0
          device.update_attributes(:state => 0)
          management_for_first_job(j)
+         if j.start.to_datetime <= DateTime.now
+           UserMailer.confirm_possible( User.find(j.user_id), 
+                                        Device.find(j.device_id),
+                                        Program.find(j.program_id),
+                                        j).deliver
+         end
        else
          management_if_more_jobs(j)
        end
@@ -157,6 +163,15 @@ module ConflictHelper
      if job.confirm
        job.update_attributes(:is_running => true)
        Device.find(device_id).update_attributes(:state => 2)
+       UserMailer.job_start( User.find(job.user_id), 
+                                     Device.find(device_id),
+                                     Program.find(job.program_id),
+                                     job).deliver
+     else
+       UserMailer.confirm_possible( User.find(job.user_id), 
+                                    Device.find(device_id),
+                                    Program.find(job.program_id),
+                                    job).deliver
      end
    end
 
@@ -195,7 +210,7 @@ module ConflictHelper
 
    def self.is_processing?(first_job)
      
-     first_job.is_running
+     first_job.is_running && finished == 0
    end
 
    def self.get_duration(job)
