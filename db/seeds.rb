@@ -7,16 +7,15 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 #Geräte
-Device.create(name: "Miele Keller 1", devicetype: 0, state: 0)
-Device.create(name: "Miele Keller 2", devicetype: 0, state: 0)
-Device.create(name: "Bosch Keller 1", devicetype: 1, state: 0)
-Device.create(name: "Bauknecht Keller 2", devicetype: 1, state: 0)
+Device.create(name: "Miele W6000", devicetype: 0, state: 0)
+Device.create(name: "Miele T8861", devicetype: 1, state: 0)
 
 #:consumption_in_wh, :degree, :duration_in_min, :name
-Program.create(name: "Pflegeleicht", degree: "40", duration_in_min: 5, consumption_in_wh: 560, device_id: 1)
-Program.create(name: "Pflegeleicht", degree: "40", duration_in_min: 5, consumption_in_wh: 560, device_id: 2)
-Program.create(name: "Standard", degree: "40", duration_in_min: 5, consumption_in_wh: 560, device_id: 3)
-Program.create(name: "Standard", degree: "40", duration_in_min: 5, consumption_in_wh: 560, device_id: 4)
+Program.create(name: "Baumwolle", degree: "40", duration_in_min: 7, consumption_in_wh: 560, device_id: 1)
+Program.create(name: "Automatic Plus", degree: "60", duration_in_min: 180, consumption_in_wh: 560, device_id: 1)
+Program.create(name: "Oberhemden", degree: "50", duration_in_min: 120, consumption_in_wh: 560, device_id: 1)
+Program.create(name: "Schranktrocken", degree: "40", duration_in_min: 5, consumption_in_wh: 560, device_id: 2)
+Program.create(name: "Baumwolle Hygiene", degree: "55", duration_in_min: 75, consumption_in_wh: 560, device_id: 2)
 
 # Nutzer
 user = User.new(name: "Stephan Brinkmann", email: "sbrink@tzi.de", :password => '12345678', :password_confirmation => '12345678', apartmentnumber:1)
@@ -37,3 +36,4 @@ user.save!
 
 Setting.create(sun_hour: 12, sun_minute: 0, sun_second:0 , time_to_confirm: 5)
 #attr_accessible :device_id, :end_of_timespan, :finished, :program_id, :start_of_timespan, :user_id
+
