@@ -90,7 +90,7 @@ class JobsController < ApplicationController
           format.html { redirect_to root_path}
           format.json { render json: @job, status: :created, location: @job }
         else
-          flash[:error] = "Aufgrund von anderen Auftraegen, kann die Waesche nicht rechtzeitig fertig werden"
+          flash[:error] = JobsHelper.errormsg_end_of_timespan(@device.id, @job)
         end
       end
       format.html { render action: "new"}

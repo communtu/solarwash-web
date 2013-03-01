@@ -210,7 +210,7 @@ module ConflictHelper
 
    def self.is_processing?(first_job)
      
-     first_job.is_running && finished == 0
+     first_job.is_running && first_job.finished == 0
    end
 
    def self.get_duration(job)
