@@ -9,7 +9,10 @@
       Dein Auftrag: "<%= @program.name %>" fuer das Geraet: "<%= @device.name %>" kann jetzt bestaetigt werden und wird dann voraussichtlich um: <%= l(@job.start, :format => '%H:%M') %> gestartet.<br/>
     </p>
 	<p>
-	  Unter folgenden Link gelangst du zur Solarwash-Seite: <a href="<%= @url %>">Solarwash</a>.
+	 Fuer die Bestaetigung hast du <%= Setting.find(1).time_to_confirm%> Minuten Zeit, ansonsten wird dein Auftrag geloescht!
+	</p>
+	<p>
+	  Unter folgendem Link gelangst du zur Solarwash-Seite: <a href="<%= @url %>">Solarwash</a>.
 	</p>
     <p>Einen schoenen Tag wuenscht dir Solarwash!</p>
   </body>

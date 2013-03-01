@@ -35,5 +35,5 @@ user = User.new(name: "Admin", email: "admin@solarwash.de", :password => '123456
 user.skip_confirmation!
 user.save!
 
-Setting.create(sun_hour: 12, sun_minute: 0, sun_second:0 , time_to_confirm: 5)
+Setting.create(sun_hour: 18, sun_minute: 0, sun_second:0 , time_to_confirm: 5)
 #attr_accessible :device_id, :end_of_timespan, :finished, :program_id, :start_of_timespan, :user_id

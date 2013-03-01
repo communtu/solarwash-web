@@ -17,7 +17,7 @@
 
 
 .white {
-    color:white;
+    color:white !important;
 }
 
 [rel="popover"]{
@@ -77,7 +77,7 @@ a.icon_novisit:visited {
 }
 
 a.icon_novisit:hover {
-    color: white;
+    color: white !important;
 }
 /* move down carets for tabs */
 /*!

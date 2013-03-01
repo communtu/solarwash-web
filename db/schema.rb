@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(:version => 20130227171707) do
     t.integer  "finished"
     t.boolean  "confirm"
     t.boolean  "is_running"
+    t.integer  "time_to_confirm"
     t.datetime "start_of_timespan"
     t.datetime "end_of_timespan"
     t.datetime "start"

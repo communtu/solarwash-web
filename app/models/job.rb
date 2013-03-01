@@ -23,7 +23,7 @@ class Job < ActiveRecord::Base
   
   attr_accessible :device_id, :end_of_timespan, :finished,
                   :program_id, :start_of_timespan, :user_id,
-                  :start, :confirm, :is_running
+                  :start, :confirm, :is_running, :time_to_confirm
   
   #def to_param
   #  [id, "job"].join("-")
@@ -75,9 +75,14 @@ class Job < ActiveRecord::Base
          !first_job.confirm
         
           #Ueberpruefung ob Zeit fuer Confirm abgelaufen ist
-          time_to_confirm = Setting.find(1).time_to_confirm
-          time_difference = ((first_job.start.to_datetime - first_job.start_of_timespan.to_datetime).to_f*24*60).to_i
-          if time_difference >= time_to_confirm 
+          setting_time_to_confirm = Setting.find(1).time_to_confirm
+          if first_job.time_to_confirm == nil
+            first_job.update_attribute('time_to_confirm', setting_time_to_confirm)
+          else
+            first_job.update_attribute('time_to_confirm', first_job.time_to_confirm-1)
+          end
+
+          if first_job.time_to_confirm <= 0 
             puts "shift_jobs: time_to_confirm abgelaufen => Loeschen"
             id = first_job.id
             user_id = first_job.user_id
