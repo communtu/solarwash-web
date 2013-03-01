@@ -3,7 +3,7 @@ class UserMailer < ActionMailer::Base
   
   def job_finished_email(user, device, program)
       @user = user
-      @url = "http://communtu.de:3020/"
+      @url = "http://localhost:3000/"
       @device  = device
       @program = program
       mail(:to => user.email, :subject => "Waesche ist fertig")
@@ -11,7 +11,7 @@ class UserMailer < ActionMailer::Base
   
   def confirm_time_has_expired_mail(user, device, program)
     @user = user
-    @url = "http://communtu.de:3020/"
+    @url = "http://localhost:3000/"
     @device  = device
     @program = program
     mail(:to => user.email, :subject => "Auftrag geloescht")
@@ -19,7 +19,7 @@ class UserMailer < ActionMailer::Base
   
   def confirm_possible(user, device, program, job)
     @user = user
-    @url = "http://communtu.de:3020/"
+    @url = "http://localhost:3000/"
     @device  = device
     @job = job
     @program = program
@@ -28,7 +28,7 @@ class UserMailer < ActionMailer::Base
   
   def job_start(user, device, program, job)
     @user = user
-    @url = "http://communtu.de:3020/"
+    @url = "http://localhost:3000/"
     @device  = device
     @job = job
     @program = program
