@@ -45,17 +45,17 @@ module DevicesHelper
     Device.all.map { |d|
       if d.devicetype == type && d.state == 0 # Geraet laeuft nicht und ist leer       
         if type == 0
-          return 'class="icon-ok icon_baseline brand" rel="popover" data-placement="bottom" title="Glück gehabt" data-content="Es ist mindestens eine Waschmaschine frei"'.html_safe
+          return 'class="icon-ok icon_baseline brand white" rel="popover" data-placement="bottom" title="Glück gehabt" data-content="Es ist mindestens eine Waschmaschine frei"'.html_safe
         elsif type == 1
-          return 'class="icon-ok icon_baseline brand" rel="popover" data-placement="bottom" title="Glück gehabt" data-content="Es ist mindestens ein Trockner frei."'.html_safe
+          return 'class="icon-ok icon_baseline brand white" rel="popover" data-placement="bottom" title="Glück gehabt" data-content="Es ist mindestens ein Trockner frei."'.html_safe
         end
       end      
     }
 
     if type == 0
-      'class="icon-ban-circle icon_baseline brand" rel="popover" data-placement="bottom" title="Sorry" data-content="Leider ist gerade keine Waschmaschine frei. Du kannst aber einen Auftrag einreihen."'.html_safe
+      'class="icon-ban-circle icon_baseline brand white" rel="popover" data-placement="bottom" title="Sorry" data-content="Leider ist gerade keine Waschmaschine frei. Du kannst aber einen Auftrag einreihen."'.html_safe
     elsif type == 1
-      'class="icon-ban-circle icon_baseline brand" rel="popover" data-placement="bottom" title="Sorry" data-content="Leider ist gerade kein Trockner frei. Du kannst aber einen Auftrag einreihen."'.html_safe
+      'class="icon-ban-circle icon_baseline brand white" rel="popover" data-placement="bottom" title="Sorry" data-content="Leider ist gerade kein Trockner frei. Du kannst aber einen Auftrag einreihen."'.html_safe
     end
   end
 

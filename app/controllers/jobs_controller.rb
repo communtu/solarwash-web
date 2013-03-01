@@ -108,6 +108,7 @@ class JobsController < ApplicationController
       if !owner?(@job)
         flash[:error] = "Dazu hast du keine Berechtigung!"
       elsif @job.update_attributes(params[:job])
+        ConflictHelper.delete_management(@device, @job.id-1)
         flash[:success] = "Auftrag wurde erfolgreich geaendert"
         format.html { redirect_to root_path }
         format.json { head :no_content }
