@@ -1,10 +1,6 @@
 <div>
 <h1>Übersicht</h1>
 
-<span class="label" rel="popover" title="Comment" data-placement="left" data-content="Tooltip on top">
-  <i class="icon-fire icon"></i>
-</span>
-
 <div class="row-fluid">
 <% @devices.each_with_index do |device, index| %>
     <%if (index%2==0) %><div class="row-fluid"><% end %>
@@ -14,7 +10,7 @@
             <div class="span10">
             <h3>
               <%= type_title(device.devicetype) %>
-              <i class="<%= state_image(device.state) %>"><a title="bla"></a></i>
+              <i <%= state_image(device.state) %> ></i>
             </h3>
             <h3><%= device.name %></h3>            
 
@@ -22,7 +18,7 @@
 
           </div>
           <div class="span2"> 
-            <i class="<%= type_icon(device.devicetype) %> icon-4x icon_devicetype"></i>
+            <i <%= type_icon(device.devicetype) %> ></i>
           </div>  
         </div>
       </div>
@@ -38,5 +34,8 @@
   <% end %>
 </div>
 
-
-$('.label').popover();
+<script>
+  $(document).ready(function() {
+    $('[rel=popover]').popover({'trigger':'hover'});
+  });
+</script>

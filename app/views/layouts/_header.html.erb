@@ -4,9 +4,9 @@
     <div class="container-fluid">
       <div class="row-fluid">
         <%= link_to "SolarWash ", root_path, class: "brand" %>
-        <i class="icon-tint icon_baseline brand"></i><i class="<%= vacant_device(0) %> icon_baseline brand"></i>
+        <i class="icon-tint icon_baseline brand"></i><i <%= vacant_device(0) %> ></i>
 
-        <i class="icon-fire icon_baseline brand"></i><i class="<%= vacant_device(1) %> icon_baseline brand"></i>
+        <i class="icon-fire icon_baseline brand"></i><i <%= vacant_device(1) %> ></i>
 
         <ul class="nav pull-right">
           <li><%= link_to '<i class="icon-tasks icon_baseline"></i> Aufträge'.html_safe, my_jobs_path%></li>
@@ -20,8 +20,8 @@
   
       <div class="row-fluid">
         <% if user_signed_in? %>
-        Angemeldet als <%= current_user.email %>
-        <%= link_to 'Abmelden', destroy_user_session_path, :method => 'delete', :confirm => "Wirklich abmelden?" %>
+        <span class="white">Angemeldet als <%= current_user.email %> &bull;</span>
+        <%= link_to 'Abmelden', destroy_user_session_path, :method => 'delete', :class => 'novisit', :confirm => "Wirklich abmelden?" %>
         <% end %>
       </div>
       

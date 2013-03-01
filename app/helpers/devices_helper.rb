@@ -23,31 +23,40 @@ module DevicesHelper
   
   def state_image(state)
     if state == 0
-      "icon-circle-blank icon_ready"
+      'class="icon-circle-blank icon_ready" rel="popover" title="Tipp" data-content="Dieses Gerät ist leer und bereit."'.html_safe
     elsif state == 1
-      "icon-circle icon_waiting"
+      'class="icon-circle icon_waiting" rel="popover" title="Tipp" data-content="Dieses Gerät ist voll und wartet."'.html_safe
     else
-      "icon-refresh icon_working"
+      'class="icon-refresh icon_working" rel="popover" title="Tipp" data-content="Dieses Gerät arbeitet gerade."'.html_safe
     end
   end
   
   def type_icon(devicetype)
     if devicetype == 0
-      "icon-tint"
+      'class="icon-tint icon-4x icon_devicetype" rel="popover" title="Tipp" data-content="Waschmaschine"'.html_safe
     elsif devicetype == 1
-      "icon-fire"
+      'class="icon-fire icon-4x icon_devicetype" rel="popover" title="Tipp" data-content="Trockner"'.html_safe
     else
-      "icon-ban-circle"
+      'class="icon-ban-circle icon-4x icon_devicetype" rel="popover" title="Tipp" data-content="Unbekannter Gerätetyp"'.html_safe
     end
   end
 
   def vacant_device(type)
     Device.all.map { |d|
-      if d.devicetype == type && d.state == 0 # Geraet laeuft nicht        
-        return "icon-ok"
+      if d.devicetype == type && d.state == 0 # Geraet laeuft nicht und ist leer       
+        if type == 0
+          return 'class="icon-ok icon_baseline brand" rel="popover" data-placement="bottom" title="Glück gehabt" data-content="Es ist mindestens eine Waschmaschine frei"'.html_safe
+        elsif type == 1
+          return 'class="icon-ok icon_baseline brand" rel="popover" data-placement="bottom" title="Glück gehabt" data-content="Es ist mindestens ein Trockner frei."'.html_safe
+        end
       end      
     }
-    "icon-ban-circle"
+
+    if type == 0
+      'class="icon-ban-circle icon_baseline brand" rel="popover" data-placement="bottom" title="Sorry" data-content="Leider ist gerade keine Waschmaschine frei. Du kannst aber einen Auftrag einreihen."'.html_safe
+    elsif type == 1
+      'class="icon-ban-circle icon_baseline brand" rel="popover" data-placement="bottom" title="Sorry" data-content="Leider ist gerade kein Trockner frei. Du kannst aber einen Auftrag einreihen."'.html_safe
+    end
   end
 
   def format_start_time(job)
