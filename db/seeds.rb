@@ -9,13 +9,16 @@
 #Geräte
 Device.create(name: "Miele W6000", devicetype: 0, state: 0)
 Device.create(name: "Miele T8861", devicetype: 1, state: 0)
+Device.create(name: "Bauknecht RuckzuckTrocken", devicetype: 1, state: 0)
 
 #:consumption_in_wh, :degree, :duration_in_min, :name
 Program.create(name: "Baumwolle", degree: "40", duration_in_min: 7, consumption_in_wh: 560, device_id: 1)
 Program.create(name: "Automatic Plus", degree: "60", duration_in_min: 180, consumption_in_wh: 560, device_id: 1)
 Program.create(name: "Oberhemden", degree: "50", duration_in_min: 120, consumption_in_wh: 560, device_id: 1)
-Program.create(name: "Schranktrocken", degree: "40", duration_in_min: 5, consumption_in_wh: 560, device_id: 2)
-Program.create(name: "Baumwolle Hygiene", degree: "55", duration_in_min: 75, consumption_in_wh: 560, device_id: 2)
+Program.create(name: "Schranktrocken", degree: "", duration_in_min: 5, consumption_in_wh: 560, device_id: 2)
+Program.create(name: "Baumwolle Hygiene", degree: "", duration_in_min: 75, consumption_in_wh: 560, device_id: 2)
+Program.create(name: "Wolle", degree: "", duration_in_min: 180, consumption_in_wh: 560, device_id: 3)
+Program.create(name: "Schonen Plus", degree: "", duration_in_min: 60, consumption_in_wh: 560, device_id: 3)
 
 # Nutzer
 user = User.new(name: "Stephan Brinkmann", email: "sbrink@tzi.de", :password => '12345678', :password_confirmation => '12345678', apartmentnumber:1)
