@@ -48,12 +48,11 @@
 			<% if owner?(job) && !is_running?(job)%>	
 				<td class="span1 nolink">
 					<%= link_to "Löschen", 
-					[Device.find(job.device_id), job],
-					class: "btn btn-inverse novisit",
-				 	:confirm => "Bist du sicher?",
+					device_job_path(Device.find(job.device_id), job),	class: "btn btn-inverse novisit delete_job", :confirm => "Auftrag wirklich löschen?",				 	 
 					:method => :delete %>
 				</td>
 			<% end %>
+
 				
 			</tr>
 			</tbody>

@@ -140,6 +140,7 @@ class JobsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to root_path }
       format.json { head :no_content }
+      format.js { render :nothing => true, :status => 200 }
     end
   end
 
