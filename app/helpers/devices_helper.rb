@@ -53,9 +53,9 @@ module DevicesHelper
     }
 
     if type == 0
-      'class="icon-ban-circle icon_baseline white" rel="popover" data-placement="bottom" title="Sorry" data-content="Leider ist gerade keine Waschmaschine frei. Du kannst aber einen Auftrag einreihen."'.html_safe
+      'class="icon-ban-circle icon_baseline brand white" rel="popover" data-placement="bottom" title="Sorry" data-content="Leider ist gerade keine Waschmaschine frei. Du kannst aber einen Auftrag einreihen."'.html_safe
     elsif type == 1
-      'class="icon-ban-circle icon_baseline white" rel="popover" data-placement="bottom" title="Sorry" data-content="Leider ist gerade kein Trockner frei. Du kannst aber einen Auftrag einreihen."'.html_safe
+      'class="icon-ban-circle icon_baseline brand white" rel="popover" data-placement="bottom" title="Sorry" data-content="Leider ist gerade kein Trockner frei. Du kannst aber einen Auftrag einreihen."'.html_safe
     end
   end
 
