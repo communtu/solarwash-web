@@ -2,9 +2,9 @@
   = f.hidden_field :user_id, :value => current_user.id
   = f.input :program_id, collection: @job.device.programs, label:"Programm", :label_method => lambda { |program| "#{program.full_name_degree}#{program.full_duration}"  }, :value_method => :id
   = f.hidden_field :finished, :value => 0
-  = f.hidden_field :start_of_timespan, :value => DateTime.now
   = f.hidden_field :is_running, :value => false
-  = f.input :end_of_timespan, :as => :ui_date_time_picker, label:"Fertig bis spätestens"
+  = f.hidden_field :start_of_timespan, :value => DateTime.now
+  = f.input :end_of_timespan, :as => :ui_date_time_picker, label:"Fertig bis spätestens", hint: "Falls manuelle Eingabe gewünscht: im Format 01.03.2013 12:00"
   -if @job.device.state == 0
     = f.input :confirm, as: :radio_buttons, label:"#{clothes_inside(@job.device.devicetype)}", :checked => setDefaultConfirm(@job.device.state)
 

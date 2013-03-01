@@ -5,33 +5,13 @@
  - Neben löschen button: Wäsche ist drin bestätigen (nur wenn
    erster job in der liste und nicht confirmed)
  - Wäsche in der Waschmaschine (bei trockner muss anderer Text)
+
 -Neuer Auftrag
   -Default end_of_timespan ist aktuelle Zeit+duration von Programm
-  -Bestaetigung
-
--Auftragsliste:
-  -finished=0
-  -Nur aktive Auftraege
-  -Zeit vernuenftig
-  -Progressbar
-
--HAML
 
 -tooltips
 
--Devise
-  -Developer Bar
-
--ActiveAdmin
-
--Background Tasks
-
--DONE Nutzer sieht alle Auftraege DONE
--Auftraege editieren, loeschen
-
 -Foreignkeys mit Loesch-Abhaengigkeiten
-
--DONE Date-Time-Picker richtig DONE
 
 -Mehr Validations
 
@@ -40,12 +20,5 @@
 -Action-Mailer
   -Exception-Mailer?
 
-- Views von Devise
-- interface z-wave
-- solar log
-- spalten ruer user: name, wohnungsnummer 
-
-  ### vorm deployen ###
-  -auftrag erstellen (popover) raus
-  -"fertig bis spätestens" raus auf startseite
-  -logik beim auftrag erstellen korrigieren/kompletieren
+-Interface z-wave
+-Solarlog

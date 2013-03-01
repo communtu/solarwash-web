@@ -21,7 +21,7 @@
           <% end %>
         </td>
 				<td class="span2">
-					<%= "#{User.find(job.user_id).name}" %>
+					<%= "#{User.find(job.user_id).name} (#{User.find(job.user_id).apartmentnumber})" %>
 				</td>
 	    	<td class="span3">
 	    		<p><%= Program.find(job.program_id).full_name_degree %></p>
@@ -47,11 +47,11 @@
 				
 			<% end %>
 			<% if owner?(job) && !is_running?(job)%>	
-				
+
 					<%= link_to '<p text-align:center><i class="icon-trash icon-3x"></i></p>'.html_safe, 
-					[Device.find(job.device_id), job],
+					device_job_path(Device.find(job.device_id), job),
 					class: "icon_novisit",
-				 	:confirm => "Bist du sicher?",
+				 	:confirm => "Auftrag wirklich löschen?",
 					:method => :delete %>
 				
 			<% end %>

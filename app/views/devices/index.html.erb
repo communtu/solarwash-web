@@ -1,5 +1,6 @@
 <div>
 <h1>Übersicht</h1>
+
 <div class="row-fluid">
 <% @devices.each_with_index do |device, index| %>
     <%if (index%2==0) %><div class="row-fluid"><% end %>
@@ -9,7 +10,7 @@
             <div class="span10">
             <h3>
               <%= type_title(device.devicetype) %>
-              <i class="<%= state_image(device.state) %>"><a title="bla"></a></i>
+              <i <%= state_image(device.state) %> ></i>
             </h3>
             <h3><%= device.name %></h3>            
 
@@ -17,7 +18,7 @@
 
           </div>
           <div class="span2"> 
-            <i class="<%= type_icon(device.devicetype) %> icon-4x icon_devicetype"></i>
+            <i <%= type_icon(device.devicetype) %> ></i>
           </div>  
         </div>
       </div>
@@ -32,3 +33,9 @@
     <% end %>
   <% end %>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('[rel=popover]').popover({'trigger':'hover'});
+  });
+</script>

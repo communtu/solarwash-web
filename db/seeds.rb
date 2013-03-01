@@ -19,19 +19,19 @@ Program.create(name: "Standard", degree: "40", duration_in_min: 5, consumption_i
 Program.create(name: "Standard", degree: "40", duration_in_min: 5, consumption_in_wh: 560, device_id: 4)
 
 # Nutzer
-user = User.new(name: "Stephan Brinkmann", email: "sbrink@tzi.de", :password => '12345678')
+user = User.new(name: "Stephan Brinkmann", email: "sbrink@tzi.de", :password => '12345678', :password_confirmation => '12345678', apartmentnumber:1)
 user.skip_confirmation! 
 user.save!
 
-user = User.new(name: "Eike Behrends", email: "eikebehr@tzi.de", :password => 'ddofd666')
+user = User.new(name: "Eike Behrends", email: "eikebehr@tzi.de", :password => 'ddofd666', :password_confirmation => 'ddofd666', apartmentnumber:2)
 user.skip_confirmation! 
 user.save! 
 
-user = User.new(name: "Solarwash", email: "solarwash@solarwash.de", :password => '12345678')
+user = User.new(name: "Solarwash", email: "solarwash@solarwash.de", :password => '12345678', :password_confirmation => '12345678', apartmentnumber:3)
 user.skip_confirmation!
 user.save!
 
-user = User.new(name: "Admin", email: "admin@solarwash.de", :password => '12345678', :admin => true)
+user = User.new(name: "Admin", email: "admin@solarwash.de", :password => '12345678', :password_confirmation => '12345678', apartmentnumber:4, :admin => true)
 user.skip_confirmation!
 user.save!
 
