@@ -49,9 +49,10 @@ class JobsController < ApplicationController
       if @job.update_attribute('confirm',true)
         if @job.start.to_datetime < DateTime.now
           @job.update_attribute('start', DateTime.now)
+          @job.update_attributes(:is_running => true)
           @device.update_attributes(:state => 2)
         end
-          flash[:success] = "Auftrag wurde erfolgreich angelegt"
+          flash[:success] = "Auftrag wurde erfolgreich bestaetigt"
           format.html { redirect_to root_path }
           format.json { head :no_content }
       else
@@ -74,7 +75,7 @@ class JobsController < ApplicationController
     @device = Device.find(params[:device_id])
     @job = @device.jobs.new(params[:job])
     
-    confirm = 0  if @job.confirm == nil
+    @job.confirm = false  if @job.confirm == nil
     
     if @job.end_of_timespan != nil && !@job.end_of_timespan.is_a?(ActiveSupport::TimeWithZone)
       @job.end_of_timespan = DateTime.strptime(params[:job]['end_of_timespan'], '%d.%m.%Y %H:%M') - 1.hour
@@ -89,7 +90,7 @@ class JobsController < ApplicationController
           format.html { redirect_to root_path}
           format.json { render json: @job, status: :created, location: @job }
         else
-          flash[:error] = "Aufgrund von anderen Auftraegen, kann die Waesche nicht rechtzeitig fertig werden"
+          flash[:error] = JobsHelper.errormsg_end_of_timespan(@device.id, @job)
         end
       end
       format.html { render action: "new"}
@@ -130,7 +131,7 @@ class JobsController < ApplicationController
     else
       job_id = @job.id
       @job.destroy
-      if @device.jobs.count == 0
+      if @device.jobs.find(:all, :conditions => ["finished == ?", 0]).count == 0
         @device.update_attributes(:state => 0)
       else
         ConflictHelper.delete_management(@device, job_id)

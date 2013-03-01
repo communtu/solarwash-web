@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <p>Hallo, <%= @user.name %></p>
+    <p>
+      Dein Auftrag: "<%= @program.name %>" fuer das Geraet: "<%= @device.name %>" kann jetzt bestaetigt werden und wird dann voraussichtlich um: <%= l(@job.start, :format => '%H:%M') %> gestartet.<br/>
+    </p>
+	<p>
+	  Unter folgenden Link gelangst du zur Solarwash-Seite: <a href="<%= @url %>">Solarwash</a>.
+	</p>
+    <p>Einen schoenen Tag wuenscht dir Solarwash!</p>
+  </body>
+</html>

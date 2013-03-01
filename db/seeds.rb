@@ -13,27 +13,27 @@ Device.create(name: "Bosch Keller 1", devicetype: 1, state: 0)
 Device.create(name: "Bauknecht Keller 2", devicetype: 1, state: 0)
 
 #:consumption_in_wh, :degree, :duration_in_min, :name
-Program.create(name: "Pflegeleicht", degree: "40", duration_in_min: 180, consumption_in_wh: 560, device_id: 1)
-Program.create(name: "Pflegeleicht", degree: "40", duration_in_min: 180, consumption_in_wh: 560, device_id: 2)
-Program.create(name: "Trocknervorgang-Normal", degree: "40", duration_in_min: 180, consumption_in_wh: 560, device_id: 3)
-Program.create(name: "Trocknervorgang-Normal", degree: "40", duration_in_min: 180, consumption_in_wh: 560, device_id: 4)
+Program.create(name: "Pflegeleicht", degree: "40", duration_in_min: 5, consumption_in_wh: 560, device_id: 1)
+Program.create(name: "Pflegeleicht", degree: "40", duration_in_min: 5, consumption_in_wh: 560, device_id: 2)
+Program.create(name: "Standard", degree: "40", duration_in_min: 5, consumption_in_wh: 560, device_id: 3)
+Program.create(name: "Standard", degree: "40", duration_in_min: 5, consumption_in_wh: 560, device_id: 4)
 
 # Nutzer
-user = User.new(name: "Stephan Brinkmann", email: "sbrink@tzi.de", :password => '12345678')
+user = User.new(name: "Stephan Brinkmann", email: "sbrink@tzi.de", :password => '12345678', :password_confirmation => '12345678', apartmentnumber:1)
 user.skip_confirmation! 
 user.save!
 
-user = User.new(name: "Eike Behrends", email: "eikebehr@tzi.de", :password => 'ddofd666')
+user = User.new(name: "Eike Behrends", email: "eikebehr@tzi.de", :password => 'ddofd666', :password_confirmation => 'ddofd666', apartmentnumber:2)
 user.skip_confirmation! 
 user.save! 
 
-user = User.new(name: "Solarwash", email: "solarwash@solarwash.de", :password => '12345678')
+user = User.new(name: "Solarwash", email: "solarwash@solarwash.de", :password => '12345678', :password_confirmation => '12345678', apartmentnumber:3)
 user.skip_confirmation!
 user.save!
 
-user = User.new(name: "Admin", email: "admin@solarwash.de", :password => '12345678', :admin => true)
+user = User.new(name: "Admin", email: "admin@solarwash.de", :password => '12345678', :password_confirmation => '12345678', apartmentnumber:4, :admin => true)
 user.skip_confirmation!
 user.save!
 
-Setting.create(sun_hour: 12, sun_minute: 0, sun_second:0 , time_to_confirm: 15)
+Setting.create(sun_hour: 12, sun_minute: 0, sun_second:0 , time_to_confirm: 5)
 #attr_accessible :device_id, :end_of_timespan, :finished, :program_id, :start_of_timespan, :user_id

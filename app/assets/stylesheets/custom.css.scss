@@ -72,8 +72,13 @@ a.novisit:visited {
     color: white;
 }
 
+a.icon_novisit:visited {
+    color: black;
+}
 
-
+a.icon_novisit:hover {
+    color: white;
+}
 /* move down carets for tabs */
 /*!
  * metro-bootstrap v2.2.3

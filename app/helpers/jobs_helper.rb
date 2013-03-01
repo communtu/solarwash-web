@@ -17,7 +17,20 @@ module JobsHelper
   end
 
   def is_running?(job)
-    true if job.start <= DateTime.now && job.finished == 0 && job.confirm
+    
+    job.is_running && job.finished == 0
   end
   
+  def self.errormsg_end_of_timespan(device_id, job)
+    if Device.find(device_id).jobs.find(:all, :conditions => ["finished == ?", 0]).count == 0
+      duration = ConflictHelper.get_duration(job)
+      earliest_start_time = DateTime.now + duration.minute
+    else
+      endtime_of_last_job = ConflictHelper.possible_start_if_shifting(device_id)
+      duration = ConflictHelper.get_duration(job)
+      earliest_start_time = endtime_of_last_job.to_datetime + duration.minute
+    end
+    
+    "Deine Waesche kann fruehestens um #{earliest_start_time.to_time.strftime('%H:%M')}Uhr fertig werden!"
+  end
 end

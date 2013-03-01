@@ -6,9 +6,15 @@ module ConflictHelper
      #Loeschen der nachfolgenden Jobs
      Job.delete_all([ "finished = ? AND id > ? AND device_id = ?", 0,job_id,device.id ])
      jobs.each do |j| 
-       if device.jobs.count == 0
+       if device.jobs.find(:all, :conditions => ["finished == ?", 0]).count == 0
          device.update_attributes(:state => 0)
          management_for_first_job(j)
+         if j.start.to_datetime <= DateTime.now
+           UserMailer.confirm_possible( User.find(j.user_id), 
+                                        Device.find(j.device_id),
+                                        Program.find(j.program_id),
+                                        j).deliver
+         end
        else
          management_if_more_jobs(j)
        end
@@ -70,6 +76,7 @@ module ConflictHelper
      if best_time_to_start >= job.end_of_timespan || best_time_to_start <= current_time
        job.start = current_time # Weit vor 12 oder Weit nach 12
        if job.confirm
+         job.update_attributes(:is_running => true)
          device.update_attributes(:state => 2)
        else
          device.update_attributes(:state => 1)
@@ -86,13 +93,13 @@ module ConflictHelper
 
 
 
-   def self.is_next_job(job_to_tested, device_id)
-     if job_to_tested.finished == 0 && Device.find(device_id).jobs.find_all{ |j| j.finished == 0 }.count == 1
-       true
-     else
-       false
-     end
-   end
+   #def self.is_next_job(job_to_tested, device_id)
+  #   if job_to_tested.finished == 0 && Device.find(device_id).jobs.find_all{ |j| j.finished == 0 }.count == 1
+   #    true
+    # else
+     #  false
+    # end
+   #end
 
    #Gibt die Gesamtdauer aller wartender Jobs zurueck
    def self.duration_of_queue(device_id)
@@ -154,7 +161,17 @@ module ConflictHelper
    def self.start_now(device_id, job)
      job.update_attributes(:start => DateTime.now)
      if job.confirm
+       job.update_attributes(:is_running => true)
        Device.find(device_id).update_attributes(:state => 2)
+       UserMailer.job_start( User.find(job.user_id), 
+                                     Device.find(device_id),
+                                     Program.find(job.program_id),
+                                     job).deliver
+     else
+       UserMailer.confirm_possible( User.find(job.user_id), 
+                                    Device.find(device_id),
+                                    Program.find(job.program_id),
+                                    job).deliver
      end
    end
 
@@ -192,11 +209,8 @@ module ConflictHelper
    end
 
    def self.is_processing?(first_job)
-     if first_job.start.to_datetime <= DateTime.now && first_job.confirm == true
-       true
-     else
-       false
-     end
+     
+     first_job.is_running && first_job.finished == 0
    end
 
    def self.get_duration(job)

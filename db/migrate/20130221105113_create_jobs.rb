@@ -6,6 +6,7 @@ class CreateJobs < ActiveRecord::Migration
       t.integer :program_id
       t.integer :finished
       t.boolean :confirm
+      t.boolean :is_running
       t.datetime :start_of_timespan
       t.datetime :end_of_timespan
       t.datetime :start

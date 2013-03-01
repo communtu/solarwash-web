@@ -1,0 +1,8 @@
+Hallo, <%= @user.name %>
+===============================================
+
+Dein Auftrag: <%= @program.name %> fuer das Geraet: <%= @device.name %> kann jetzt bestaetigt werden und wird dann voraussichtlich um: <%= l(@job.start, :format => '%H:%M') %> gestartet.
+
+Unter folgenden Link gelangst du zur Solarwash-Seite: <%= @url %>.
+
+Einen schoenen Tag wuenscht dir Solarwash!

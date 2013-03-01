@@ -23,7 +23,7 @@ class Job < ActiveRecord::Base
   
   attr_accessible :device_id, :end_of_timespan, :finished,
                   :program_id, :start_of_timespan, :user_id,
-                  :start, :confirm
+                  :start, :confirm, :is_running
   
   #def to_param
   #  [id, "job"].join("-")
@@ -44,6 +44,11 @@ class Job < ActiveRecord::Base
         if (j.start.to_datetime + Program.find(j.program_id).duration_in_min.minute) <= DateTime.now &&
             j.confirm == true
           if j.update_attribute('finished', 1)
+            j.update_attributes(:is_running => false)
+            d.update_attribute('state', 1)
+            UserMailer.job_finished_email(User.find(j.user_id), 
+                                          Device.find(j.device_id),
+                                          Program.find(j.program_id)).deliver
             puts "Device: #{d.name}, Job_id: #{j.id} wurde auf beendet gesetzt"
           else
             puts "Fehler beim Beenden von Device: #{d.name}, Job_id: #{j.id}"
@@ -67,7 +72,7 @@ class Job < ActiveRecord::Base
       first_job = d.jobs.order("id ASC").limit(1).find(:all, :conditions => ["finished = ?", 0])[0]
       
       if first_job != nil && first_job.start.to_datetime < DateTime.now &&
-         first_job.confirm == false
+         !first_job.confirm
         
           #Ueberpruefung ob Zeit fuer Confirm abgelaufen ist
           time_to_confirm = Setting.find(1).time_to_confirm
@@ -75,7 +80,15 @@ class Job < ActiveRecord::Base
           if time_difference >= time_to_confirm 
             puts "shift_jobs: time_to_confirm abgelaufen => Loeschen"
             id = first_job.id
+            user_id = first_job.user_id
+            device_id = first_job.device_id
+            program_id = first_job.program_id
             first_job.destroy
+            
+            UserMailer.confirm_time_has_expired_mail( User.find(user_id), 
+                                                      Device.find(device_id),
+                                                      Program.find(program_id)).deliver
+                                                      
             if d.jobs.count == 0
               d.update_attributes(:state => 0)
             else
@@ -87,6 +100,9 @@ class Job < ActiveRecord::Base
             jobs_to_shift = d.jobs.find(:all, :conditions => ["finished = ?", 0])
             ConfirmHelper.confirm_shift_all_jobs(jobs_to_shift)
           end
+      elsif first_job != nil && first_job.start.to_datetime < DateTime.now &&
+            first_job.confirm && !first_job.is_running
+          ConflictHelper.start_now(d, first_job)
       end
     end
     puts "END: shift_jobs"
@@ -98,7 +114,7 @@ class Job < ActiveRecord::Base
     if end_of_timespan == nil
       errors.add(:end_of_timespan, "Du musst eine Zeit eingeben")
     elsif end_of_timespan < DateTime.now + (Program.find(device_id).duration_in_min).minute
-      errors.add(:end_of_timespan, "Die angegebene Zeit ist zu klein")
+      errors.add(:end_of_timespan, JobsHelper.errormsg_end_of_timespan(self.device_id, self))
     end
   end
   
