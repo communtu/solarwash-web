@@ -63,7 +63,7 @@ class Job < ActiveRecord::Base
         end
       end
     end
-    puts "END: shift_jobs"
+    puts "END: update_job_status"
   end
   
   def self.shift_jobs
