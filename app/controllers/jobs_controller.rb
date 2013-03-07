@@ -4,7 +4,7 @@ class JobsController < ApplicationController
   # GET /jobs
   # GET /jobs.json
   def index    
-    @jobs = Job.all.find_all{ |job| job.user_id == 1 } # TODO tatsaechlichen User nehmen
+    @jobs = Job.all.find_all{ |job| job.user_id == current_user.user_id }
 
     respond_to do |format|
       format.html # index.html.erb
