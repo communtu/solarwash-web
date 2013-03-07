@@ -5,6 +5,7 @@ require 'spec_helper'
 
 describe "Ein Job vorhanden:", :type => :feature do
   before :each do
+    Timecop.freeze(DateTime.now)
     #TODO : Auslagern
     user = User.new(  name: "Stephan Brinkmann",
                       email: "sbrink@tzi.de",

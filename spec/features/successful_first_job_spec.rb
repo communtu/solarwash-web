@@ -6,6 +6,7 @@ require 'spec_helper'
 describe "Erster Auftrag fuer das Device", :type => :feature do
 
   before :each do
+    Timecop.freeze(DateTime.now)
     #TODO : Auslagern
     user = User.new(  name: "Stephan Brinkmann",
                       email: "sbrink@tzi.de",
