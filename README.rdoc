@@ -9,3 +9,10 @@ Es geht in diesem Projekt um eine Webschnittstelle zur Information und Steuerung
 -Steuerung der Geräte (Festlegung von Zeitfenstern für die Erledigung einer Aufgabe; Job eines anderen Nutzers sofort starten, damit der eigene möglichst schnell ausgeführt werden kann und das Gerät nicht blockiert ist)
 -(grafische Darstellung von Stromerzeugung und -verbrauch (heute, diese Woche, dieser Monat, dieses Jahr, vorige Jahre...))
 -(Prognose von Stromerzeugung (anhand von Wetterbericht) und -verbrauch (anhand von Erfahrungsdaten/Lastkurven und Nutzereingabe))
+
+
+
+Benutzung von Whenever:
+Vor dem Starten des Servers initial folgende Befehle ausführen:
+Bei Production: whenever --set environment=production --update-crontab
+whenever -w
