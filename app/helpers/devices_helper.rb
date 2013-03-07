@@ -25,7 +25,7 @@ module DevicesHelper
     if state == 0
       'class="icon-circle-blank icon_ready" rel="popover" title="Tipp" data-content="Dieses Gerät ist leer und bereit."'.html_safe
     elsif state == 1
-      'class="icon-circle icon_waiting" rel="popover" title="Tipp" data-content="Dieses Gerät ist voll und wartet."'.html_safe
+      'class="icon-circle icon_waiting" rel="popover" title="Tipp" data-content="Dieses Gerät hat einen oder mehrere Aufträge."'.html_safe
     else
       'class="icon-refresh icon_working" rel="popover" title="Tipp" data-content="Dieses Gerät arbeitet gerade."'.html_safe
     end

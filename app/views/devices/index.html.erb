@@ -2,7 +2,7 @@
 <h1>Übersicht</h1>
 
 <div class="row-fluid">
-<% @devices.each_with_index do |device, index| %>
+<% @devices.sort! { |dev1, dev2| dev1.devicetype <=> dev2.devicetype }.each_with_index do |device, index| %>
     <%if (index%2==0) %><div class="row-fluid"><% end %>
     <div class="span6 device_tile">
       <div class="container-fluid">
