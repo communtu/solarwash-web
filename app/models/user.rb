@@ -17,7 +17,6 @@
 #  updated_at             :datetime         not null
 #
 
-# TODO: name, wohnungsnummer hinzufuegen
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   #:token_authenticatable, :confirmable,
