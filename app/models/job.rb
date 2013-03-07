@@ -118,8 +118,11 @@ class Job < ActiveRecord::Base
   def check_end_of_timespans
     if end_of_timespan == nil
       errors.add(:end_of_timespan, "Du musst eine Zeit eingeben")
-    elsif end_of_timespan < DateTime.now + (Program.find(device_id).duration_in_min).minute
-      errors.add(:end_of_timespan, JobsHelper.errormsg_end_of_timespan(self.device_id, self))
+    else
+      minimum_end_of_timespan = JobsHelper.errormsg_end_of_timespan(self.device_id, self)
+      if end_of_timespan.to_datetime < minimum_end_of_timespan.to_datetime
+        errors.add(:end_of_timespan, "Deine Waesche kann fruehestens um #{minimum_end_of_timespan.to_time.strftime('%H:%M')}Uhr fertig werden!")
+      end
     end
   end
   

@@ -31,6 +31,6 @@ module JobsHelper
       earliest_start_time = endtime_of_last_job.to_datetime + duration.minute
     end
     
-    "Deine Waesche kann fruehestens um #{earliest_start_time.to_time.strftime('%H:%M')}Uhr fertig werden!"
+    earliest_start_time
   end
 end
