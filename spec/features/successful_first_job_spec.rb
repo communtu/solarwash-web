@@ -34,8 +34,8 @@ describe "Erster Auftrag fuer das Device", :type => :feature do
     select('Pflegeleicht, 40° (180 Minuten)', :from => 'Program')
     choose('Yes')
   end
-
-  describe "Sonnenzeit: Jetzt + 4 Stunden - Erster Job fuer das Device:", :type => :feature do
+  
+  describe "Sonnenzeit: Jetzt + 4 Stunden - Erster Job(confirmed) fuer das Device:", :type => :feature do
     
     before :each do
       Setting.create(sun_hour: DateTime.now.hour+4, sun_minute: DateTime.now.min, sun_second: DateTime.now.sec , time_to_confirm: 5)
@@ -102,4 +102,20 @@ describe "Erster Auftrag fuer das Device", :type => :feature do
     end
   end
 
+  describe "Sonnenzeit: Jetzt + 4 Stunden - Erster Job(NICHT bestätigt) fuer das Device:", :type => :feature do
+    
+    before :each do
+      Setting.create(sun_hour: DateTime.now.hour+4, sun_minute: DateTime.now.min, sun_second: DateTime.now.sec , time_to_confirm: 5)
+    end      
+
+    it "Job muss spätestens in 3 Stunden fertig sein" do
+      choose('No')
+      fill_in "Fertig bis spätestens", with: (DateTime.now + 3.hour)
+      
+      click_button 'Auftrag erstellen'
+      current_path.should == root_path
+      assert_equal(DateTime.now, Job.find(1).start.to_datetime)
+      assert_equal(1, Device.find(1).state)
+    end
+  end
 end
