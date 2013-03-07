@@ -8,7 +8,7 @@ module JobsHelper
   end
   
   def has_to_be_confirmed(device, job)
-    first_job = device.jobs.order("id ASC").limit(1).find(:all, :conditions => ["finished == ?", 0])
+    first_job = device.jobs.order("id ASC").limit(1).find(:all, conditions: ["finished == ?", 0])
     if first_job[0] == job && job.confirm != true
       return true
     else
@@ -22,7 +22,7 @@ module JobsHelper
   end
   
   def self.errormsg_end_of_timespan(device_id, job)
-    if Device.find(device_id).jobs.find(:all, :conditions => ["finished == ?", 0]).count == 0
+    if Device.find(device_id).jobs.find(:all, conditions: ["finished == ?", 0]).count == 0
       duration = ConflictHelper.get_duration(job)
       earliest_start_time = DateTime.now + duration.minute
     else
