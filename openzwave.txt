@@ -1,0 +1,40 @@
+Am einfachsten duerfte das Image sein:
+
+Open Z-Wave-Image fuer den Raspberry:
+http://thomasloughlin.com/new-open-zwave-image-for-raspberry-pi
+
+
+Von Hand kann man auch folgendes Interface direkt fuer Ruby/Rails probieren:
+
+ansible4ozw
+(Ruby-based home automation scripting framework for KNX and ZWave devices)
+https://github.com/jgrevich/ansible
+=>benoetigt:
+1. Stompserver (stompserver_ng ist veraltet)
+2. Thrift4OZW (multi-lingual interface to the OpenZWave library)
+-https://github.com/ekarak/Thrift4OZW 
+(README https://github.com/ekarak/Thrift4OZW/blob/master/README-OpenZWave.txt)
+=>Thrift4OZW benoetigt wiederum:
+1. open-zwave
+2. openzwave-control-panel
+3. BoostStomp
+4. Apache Thrift
+5. Ruby >=1.9.1
+6. RbGCCXML und bit-struct
+
+Bei meinen diversen Versuchen kompilierte immer mindestens eine Dependency nicht.
+
+Weiteres:
+
+Lights Control (Interface fuer Open Z-Wave)
+http://conradvassallo.com/2012/11/22/lights-control
+https://code.google.com/p/lights-control
+
+
+Open Z-Wave Controller (Socket Server)
+http://code.google.com/p/open-zwave-controller
+
+
+Evtl. auch interessant:
+Z-Wave direkt auf dem Raspberry via Hardware
+(http://razberry.zwave.me)
