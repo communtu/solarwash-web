@@ -4,8 +4,14 @@
 	  <title>SolarWash</title>
 	  <%= stylesheet_link_tag    "application", :media => "all" %>
 	  <%= javascript_include_tag "application" %>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	  <%= csrf_meta_tags %>
+
+	  <script>
+			$(document).ready(function() {
+	    	$('[rel=popover]').popover({'trigger':'hover'});
+	  	});
+		</script>
 	</head>
 	<body>	
 		<%= render 'layouts/header' %>
@@ -17,10 +23,5 @@
 			<%= yield %>
 		</div>
 	</body>
-</html>
 
-<script>
-$(document).ready(function() {
-    $('[rel=popover]').popover({'trigger':'hover'});
-  });
-</script>
+</html>
