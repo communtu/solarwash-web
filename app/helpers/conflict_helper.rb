@@ -2,12 +2,12 @@ module ConflictHelper
 
   def self.delete_management(device, job_id)
      #Zwischenspeichern der nachfolgenden Jobs
-     jobs = device.jobs.order("id ASC").find(:all, :conditions => ["finished == ? and id > ?", 0, job_id])
+     jobs = device.jobs.order("id ASC").find(:all, conditions: ["finished == ? and id > ?", 0, job_id])
      #Loeschen der nachfolgenden Jobs
      Job.delete_all([ "finished = ? AND id > ? AND device_id = ?", 0,job_id,device.id ])
      jobs.each do |j| 
-       if device.jobs.find(:all, :conditions => ["finished == ?", 0]).count == 0
-         device.update_attributes(:state => 0)
+       if device.jobs.find(:all, conditions: ["finished == ?", 0]).count == 0
+         device.update_attributes(state: 0)
          management_for_first_job(j)
          if j.start.to_datetime <= DateTime.now
            UserMailer.confirm_possible( User.find(j.user_id), 
@@ -19,7 +19,7 @@ module ConflictHelper
          management_if_more_jobs(j)
        end
        updated_job = j.dup
-       updated_job.update_attributes(:id => j.id)
+       updated_job.update_attributes(id: j.id)
        updated_job.save
      end
    end
@@ -36,9 +36,9 @@ module ConflictHelper
    def self.management_if_more_jobs(job)
      device = Device.find(job.device_id)
      duration = get_duration(job)
-     best_time_to_start = DateTime.now.change({ :hour => Setting.find(1).sun_hour.to_i,
-                                                 :min => Setting.find(1).sun_minute.to_i,
-                                                 :sec => Setting.find(1).sun_second.to_i})
+     best_time_to_start = DateTime.now.change({ hour: Setting.find(1).sun_hour.to_i,
+                                                min: Setting.find(1).sun_minute.to_i,
+                                                sec: Setting.find(1).sun_second.to_i})
      current_time = DateTime.now
 
      if possible_start_if_shifting(device.id).to_datetime + duration.minute >= job.end_of_timespan.to_datetime
@@ -68,18 +68,18 @@ module ConflictHelper
    def self.management_for_first_job(job)
      device = Device.find(job.device_id)
      duration = get_duration(job)
-     best_time_to_start = DateTime.now.change({ :hour => Setting.find(1).sun_hour.to_i,
-                                                 :min => Setting.find(1).sun_minute.to_i,
-                                                 :sec => Setting.find(1).sun_second.to_i})
+     best_time_to_start = DateTime.now.change({ hour: Setting.find(1).sun_hour.to_i,
+                                                min: Setting.find(1).sun_minute.to_i,
+                                                sec: Setting.find(1).sun_second.to_i})
      current_time = DateTime.now
 
      if best_time_to_start >= job.end_of_timespan || best_time_to_start <= current_time
        job.start = current_time # Weit vor 12 oder Weit nach 12
        if job.confirm
-         job.update_attributes(:is_running => true)
-         device.update_attributes(:state => 2)
+         job.update_attributes(is_running: true)
+         device.update_attributes(state: 2)
        else
-         device.update_attributes(:state => 1)
+         device.update_attributes(state: 1)
        end   
      else
        if best_time_to_start + duration.minute <= job.end_of_timespan
@@ -87,24 +87,14 @@ module ConflictHelper
        else
          job.start = job.end_of_timespan - duration.minute
        end
-       device.update_attributes(:state => 1)
+       device.update_attributes(state: 1)
      end
   end
-
-
-
-   #def self.is_next_job(job_to_tested, device_id)
-  #   if job_to_tested.finished == 0 && Device.find(device_id).jobs.find_all{ |j| j.finished == 0 }.count == 1
-   #    true
-    # else
-     #  false
-    # end
-   #end
 
    #Gibt die Gesamtdauer aller wartender Jobs zurueck
    def self.duration_of_queue(device_id)
      dur = 0
-     Device.find(device_id).jobs.find(:all, :conditions => ["finished == ?", 0]).each { |j| 
+     Device.find(device_id).jobs.find(:all, conditions: ["finished == ?", 0]).each { |j| 
        dur += get_duration(j) unless is_processing?(j)
      }
 
@@ -114,7 +104,7 @@ module ConflictHelper
    #Gibt den Gesamtabstand zwischen den Jobs zurueck
    def self.entire_space_between_jobs(device_id)
      entire_space = 0
-     jobs = Device.find(device_id).jobs.order("id ASC").find(:all, :conditions => ["finished == ?", 0])
+     jobs = Device.find(device_id).jobs.order("id ASC").find(:all, conditions: ["finished == ?", 0])
      jobs.each_with_index { |j,index|
        if jobs[index+1] != nil
          entire_space += space_between(j, jobs[index+1])
@@ -148,21 +138,21 @@ module ConflictHelper
    end
 
    def self.first_job(device_id)
-     first_job = Device.find(device_id).jobs.order("id ASC").limit(1).find(:all, :conditions => ["finished == ?", 0])
+     first_job = Device.find(device_id).jobs.order("id ASC").limit(1).find(:all, conditions: ["finished == ?", 0])
 
      first_job[0]
    end
 
    def self.last_job(device_id)
-     last_job = Device.find(device_id).jobs.order("id DESC").limit(1).find(:all, :conditions => ["finished == ?", 0])
+     last_job = Device.find(device_id).jobs.order("id DESC").limit(1).find(:all, conditions: ["finished == ?", 0])
 
      last_job[0]
    end
    def self.start_now(device_id, job)
-     job.update_attributes(:start => DateTime.now)
+     job.update_attributes(start: DateTime.now)
      if job.confirm
-       job.update_attributes(:is_running => true)
-       Device.find(device_id).update_attributes(:state => 2)
+       job.update_attributes(is_running: true)
+       Device.find(device_id).update_attributes(state: 2)
        UserMailer.job_start( User.find(job.user_id), 
                                      Device.find(device_id),
                                      Program.find(job.program_id),
@@ -178,7 +168,7 @@ module ConflictHelper
    #"entire_space_to_shift" gibt an, wieviel verschoben werden soll
    # Wenn -1 oder -2 dann maximale Verschiebung
    def self.shift_jobs(device_id, entire_space_to_shift)
-     jobs = Device.find(device_id).jobs.order("id ASC").find(:all, :conditions => ["finished == ?", 0])
+     jobs = Device.find(device_id).jobs.order("id ASC").find(:all, conditions: ["finished == ?", 0])
      jobs.each_with_index do |j,index| 
        if !is_processing?(j) && jobs.count == 1
          #Sonderfall, falls nur 1 job
@@ -201,7 +191,7 @@ module ConflictHelper
            if new_start.to_datetime <= DateTime.now
              start_now(device_id, jobs[index+1])
            else
-             jobs[index+1].update_attributes(:start => new_start.to_datetime)
+             jobs[index+1].update_attributes(start: new_start.to_datetime)
            end
          end
        end

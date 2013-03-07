@@ -32,7 +32,7 @@ class Job < ActiveRecord::Base
   belongs_to :device
   has_one :program
   
-  validates :program_id, :presence => {:message => "Kein Programm ausgewaehlt"}
+  validates :program_id, presence: {message: "Kein Programm ausgewaehlt"}
   validate :check_end_of_timespans
   #scope :without_device, where(:device_id => nil)
 
@@ -40,11 +40,11 @@ class Job < ActiveRecord::Base
   def self.update_job_status
     puts "Start: update_job_status - #{DateTime.now}"
     Device.all.each do |d|
-      d.jobs.find(:all, :conditions => ["finished = ?", 0]).each do |j|
+      d.jobs.find(:all, conditions: ["finished = ?", 0]).each do |j|
         if (j.start.to_datetime + Program.find(j.program_id).duration_in_min.minute) <= DateTime.now &&
             j.confirm == true
           if j.update_attribute('finished', 1)
-            j.update_attributes(:is_running => false)
+            j.update_attributes(is_running: false)
             d.update_attribute('state', 1)
             UserMailer.job_finished_email(User.find(j.user_id), 
                                           Device.find(j.device_id),
@@ -55,8 +55,8 @@ class Job < ActiveRecord::Base
           end
         end
       end
-      if d.jobs.find(:all, :conditions => ["finished = ?", 0]).count == 0
-        if d.update_attributes(:state => 0)
+      if d.jobs.find(:all, conditions: ["finished = ?", 0]).count == 0
+        if d.update_attributes(state: 0)
           puts "Status von Device: #{d.name} wurde auf 0 gesetzt"
         else
           puts "Fehler beim Status auf 0 setzen von Device: #{d.name}"
@@ -69,7 +69,7 @@ class Job < ActiveRecord::Base
   def self.shift_jobs
     puts "Start: shift_jobs - #{DateTime.now}"
     Device.all.each do |d|
-      first_job = d.jobs.order("id ASC").limit(1).find(:all, :conditions => ["finished = ?", 0])[0]
+      first_job = d.jobs.order("id ASC").limit(1).find(:all, conditions: ["finished = ?", 0])[0]
       
       if first_job != nil && first_job.start.to_datetime < DateTime.now &&
          !first_job.confirm
@@ -95,14 +95,14 @@ class Job < ActiveRecord::Base
                                                       Program.find(program_id)).deliver
                                                       
             if d.jobs.count == 0
-              d.update_attributes(:state => 0)
+              d.update_attributes(state: 0)
             else
               ConflictHelper.delete_management(d, id)
             end
           else
             puts "shift_jobs: time_to_confirm nicht abgelaufen => Shifting"
             ConfirmHelper.confirm_shift_first_job(first_job)
-            jobs_to_shift = d.jobs.find(:all, :conditions => ["finished = ?", 0])
+            jobs_to_shift = d.jobs.find(:all, conditions: ["finished = ?", 0])
             ConfirmHelper.confirm_shift_all_jobs(jobs_to_shift)
           end
       elsif first_job != nil && first_job.start.to_datetime < DateTime.now &&
