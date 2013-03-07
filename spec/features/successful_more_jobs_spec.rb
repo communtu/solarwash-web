@@ -5,6 +5,7 @@ require 'spec_helper'
 
 describe "Mehrere Jobs vorhanden - Sonnenzeit: Jetzt + 7 Stunden", :type => :feature do
   before :each do
+    Timecop.freeze(DateTime.now)
     #TODO : Auslagern
     user = User.new(  name: "Stephan Brinkmann",
                       email: "sbrink@tzi.de",
